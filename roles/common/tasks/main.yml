@@ -1,0 +1,39 @@
+- name: Install ssh_config
+  copy:
+    src=ssh_config
+    dest=/etc/ssh/ssh_config
+    owner=root
+    group=wheel
+    mode=644
+
+- name: Install sshd_config
+  copy:
+    src=sshd_config
+    dest=/etc/ssh/sshd_config
+    owner=root
+    group=wheel
+    mode=644
+
+- name: Install CA cert
+  copy:
+    src=ca-cert.pem
+    dest=/etc/ssl/certs/ca-cert.pem
+    owner=root
+    group=wheel
+    mode=644
+
+- name: Install CA CRL
+  copy:
+    src=ca-crl.pem
+    dest=/etc/ssl/certs/ca-crl.pem
+    owner=root
+    group=wheel
+    mode=644
+
+- name: Install krb5.conf
+  template:
+    src=krb5.conf
+    dest=/etc/krb5.conf
+    owner=root
+    group=wheel
+    mode=644
