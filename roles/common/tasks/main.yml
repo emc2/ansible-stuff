@@ -1,11 +1,3 @@
-- name: Install ssh_config
-  copy:
-    src=ssh_config
-    dest=/etc/ssh/ssh_config
-    owner=root
-    group=wheel
-    mode=644
-
 - name: Install sshd_config
   copy:
     src=sshd_config
