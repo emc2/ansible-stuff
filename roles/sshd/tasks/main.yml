@@ -1,0 +1,8 @@
+- name: Install sshd_config
+  copy:
+    src=sshd_config
+    dest=/etc/ssh/sshd_config
+    owner=root
+    group=wheel
+    mode=644
+
