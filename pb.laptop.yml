@@ -1,0 +1,6 @@
+- name: Basic machine setup
+  hosts: laptop
+  become: yes
+  roles:
+    - ssh
+

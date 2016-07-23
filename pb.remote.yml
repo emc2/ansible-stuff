@@ -1,0 +1,7 @@
+- name: Basic machine setup
+  hosts: remote
+  become: yes
+  roles:
+    - ssh
+    - sshd
+
