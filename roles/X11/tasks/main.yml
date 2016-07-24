@@ -3,9 +3,9 @@
     src={{ fontconfig_dir }}/conf.avail/{{ item }}
     dest={{ fontconfig_dir }}/conf.d/{{ item }}
     state=link
-    with_items :
-      - 10-autohint.conf
-      - 10-sub-pixel-vrgb.conf
-      - 11-lcdfilter-default.conf
-      - 69-unifont.conf
-      - 70-no-bitmaps.conf
+  with_items :
+    - 10-autohint.conf
+    - 10-sub-pixel-vrgb.conf
+    - 11-lcdfilter-default.conf
+    - 69-unifont.conf
+    - 70-no-bitmaps.conf
