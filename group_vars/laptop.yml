@@ -1,0 +1,4 @@
+---
+primary_user: eric
+primary_user_group: "{{ primary_user }}"
+primary_homedir: "/home/{{ primary_user }}"

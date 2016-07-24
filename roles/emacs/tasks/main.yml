@@ -11,3 +11,17 @@
     dest={{ rc_conf }}
     regexp="^emacs_daemon_enable="
     line="emacs_daemon_enable=YES"
+
+- name: Set primary user for emacs daemon
+  lineinfile:
+    dest={{ rc_conf }}
+    regexp="^emacs_daemon_users="
+    line="emacs_daemon_users={{ primary_user }}"
+
+- name: Install .emacs file
+  copy:
+    src=dot.emacs
+    dest="{{ primary_homedir }}"
+    owner={{ primary_user }}
+    group={{ primary_user_group }}
+    mode=644
