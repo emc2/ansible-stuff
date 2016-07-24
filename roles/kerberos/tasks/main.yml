@@ -5,4 +5,23 @@
     owner=root
     group=wheel
     mode=644
-   
+
+- name: Install system PAM configuration
+  copy:
+    src=system.pam
+    dest="{{ pam_dir }}/{{ item }}"
+    owner=root
+    group=wheel
+    mode=644
+  with_items:
+    - system
+    - other
+
+- name: Install su PAM configuration
+  copy:
+    src=su.pam
+    dest="{{ pam_dir }}/su"
+    owner=root
+    group=wheel
+    mode=644
+
