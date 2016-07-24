@@ -1,0 +1,8 @@
+- name: Install krb5.conf file
+  template:
+    src=krb5.conf.j2
+    dest="{{ krb5_conf }}"
+    owner=root
+    group=wheel
+    mode=644
+   

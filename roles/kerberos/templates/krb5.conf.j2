@@ -1,0 +1,16 @@
+[libdefaults]
+  default_realm = {{ kerberos_realm }}
+  allow_weak_crypto = false
+  forwardable = true
+  proxiable = true
+
+[realms]
+  {{ kerberos_realm }} = {
+    kdc = {{ primary_kdc }}:88
+    admin_server = {{ primary_kdc }}:749
+    default_domain = {{ network_name }}
+  }
+
+[domain_realm]
+  {{ network_name }} = {{ kerberos_realm }}
+  .{{ network_name }} = {{ kerberos_realm }}
