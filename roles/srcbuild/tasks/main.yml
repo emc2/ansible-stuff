@@ -1,0 +1,18 @@
+- name: Configure ports to use LibreSSL
+  lineinfile:
+    dest=/etc/make.conf
+    regexp="^DEFAULT_VERSIONS\+="
+    line="DEFAULT_VERSIONS+=ssl=libressl"
+
+- name: Set legacy WITH_OPENSSL_PORT option
+  lineinfile:
+    dest=/etc/make.conf
+    regexp="^WITH_OPENSSL_PORT="
+    line="WITH_OPENSSL_PORT=yes"
+
+- name: Set legacy OPENSSL_PORT option
+  lineinfile:
+    dest=/etc/make.conf
+    regexp="^OPENSSL_PORT="
+    line="OPENSSL_PORT=security/libressl"
+

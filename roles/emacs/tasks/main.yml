@@ -1,0 +1,13 @@
+- name: Install emacs rc script
+  copy:
+    src=rc.d.emacs
+    dest="{{ local_rc_dir }}/emacs"
+    owner=root
+    group=wheel
+    mode=755
+
+- name: Enable emacs daemon
+  lineinfile:
+    dest={{ rc_conf }}
+    regexp="^emacs_daemon_enable="
+    line="emacs_daemon_enable=YES"

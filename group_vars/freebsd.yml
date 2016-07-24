@@ -1,3 +1,5 @@
 ---
+rc_conf: /etc/rc.conf
 local_config_dir: /usr/local/etc
-fontconfig_dir: {{ local_config_dir }}/fonts
+local_rc_dir: "{{ local_config_dir }}/rc.d"
+fontconfig_dir: "{{ local_config_dir }}/fonts"

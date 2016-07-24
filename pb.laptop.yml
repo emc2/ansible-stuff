@@ -4,4 +4,5 @@
   roles:
     - ssh
     - X11
-
+    - srcbuild
+    - emacs
