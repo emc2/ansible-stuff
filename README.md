@@ -16,15 +16,15 @@ found (on a FreeBSD machine) at `/usr/local/etc/ansible/hosts`.  The two
 playbook files `pb.laptop.yml` and `pb.remote.yml` and the `group_vars` assume
 a setup akin to the following:
 
-> [freebsd:children]
-> remote
-> laptop
->
-> [laptop]
-> localhost
->
-> [remote:children]
-> ...
+    [freebsd:children]
+    remote
+    laptop
+
+    [laptop]
+    localhost
+
+    [remote:children]
+    ...
 
 This creates a top-level group `freebsd`, with two children: `laptop` and
 `remote` (it is assumed desktops will be configured remotely).  For mixed-OS
