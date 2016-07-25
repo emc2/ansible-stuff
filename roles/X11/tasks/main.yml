@@ -1,3 +1,10 @@
+# Set up fontconfig.  This is done by setting up symlinks from the conf.d
+# directory to files in the conf.avail directory.
+#
+# We turn on autohinting and subpixel rendering to get antialiased fonts, set up
+# some LCD filtering options, add unicode fonts, and disable the ugly bitmap
+# fonts.
+
 - name: Install X11 Font Configs
   file:
     src={{ fontconfig_dir }}/conf.avail/{{ item }}

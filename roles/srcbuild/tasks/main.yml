@@ -1,3 +1,7 @@
+# Set up port builds to use LibreSSL instead of OpenSSL.  LibreSSL has a better
+# track record in terms of security, and it provides some better crypto options
+# like the chacha20/poly1305 cipher.
+
 - name: Configure ports to use LibreSSL
   lineinfile:
     dest=/etc/make.conf

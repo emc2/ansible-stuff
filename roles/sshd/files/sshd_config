@@ -1,14 +1,50 @@
 Protocol 2
 Compression yes
+
+# Symmetric-Key Ciphers
+#
+# Prefer ChaCha20/Poly1305 due to its modern and open-source origins.  Stick
+# to counter mode AES at 256 bit strength.  Both these ciphers resist all
+# known exponential-speed quantum attacks (but are subject to the quadratic-
+# speed Grover iteration attack)
+
 Ciphers chacha20-poly1305@openssh.com,aes256-ctr
+
+# Public-Key Ciphers
+#
+# Prefer Curve25519, avoid NIST P curves, allow RSA because of ubiquity, avoid
+# DSA for its insecurity.  No quantum-safe options exist here (yet).
+
+HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com,ssh-ed25519,ssh-rsa-cert-v01@openssh.com,ssh-rsa
+KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
+PubkeyAcceptedKeyTypes ssh-ed25519-cert-v01@openssh.com,ssh-ed25519,ssh-rsa-cert-v01@openssh.com,ssh-rsa
+
+
+# MACs
+#
+# Disallow SHA1, MD5, and any other MAC known to be broken.  Some preference
+# of RipeMD160, but not over SHA512.  Prefer ETM (encrypt-then-MAC) modes
+# over any others.
+
+MACs hmac-sha2-512-etm@openssh.com,hmac-ripemd160-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-ripemd160,hmac-sha2-256
+
+
+# Kerberos setup.  GSSAPI authentication allows use of an existing ticket to
+# login via SSH.  Make sure we cleanup the ticket when the user logs out.
+#
+# Kerberos authentication allows a ticket to be obtained from a given username
+# and password.  We enable password logins to achieve this.
+#
+# Lastly, disable PAM, as we are logging in directly.
+
 GSSAPIAuthentication yes
 GSSAPICleanupCredentials yes
-HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com,ssh-ed25519,ssh-rsa-cert-v01@openssh.com,ssh-rsa
 KerberosAuthentication yes
 KerberosTicketCleanup yes
-KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
-MACs hmac-sha2-512-etm@openssh.com,hmac-ripemd160-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-ripemd160,hmac-sha2-256
 PasswordAuthentication yes
-PermitEmptyPasswords no
-PubkeyAcceptedKeyTypes ssh-ed25519-cert-v01@openssh.com,ssh-ed25519,ssh-rsa-cert-v01@openssh.com,ssh-rsa
 UsePAM no
+
+
+# Safety check.
+
+PermitEmptyPasswords no

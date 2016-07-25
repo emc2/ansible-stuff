@@ -1,3 +1,6 @@
+# Set up an RC script that brings up emacs daemons for specific users.  This is
+# present on some Linux systems, though generally not on FreeBSD.
+
 - name: Install emacs rc script
   copy:
     src=rc.d.emacs
@@ -6,17 +9,24 @@
     group=wheel
     mode=755
 
+# Add rc.conf option to enable the emacs daemon.
+
 - name: Enable emacs daemon
   lineinfile:
     dest={{ rc_conf }}
     regexp="^emacs_daemon_enable="
     line="emacs_daemon_enable=YES"
 
+# Add rc.conf option to start an emacs daemon for the primary user.
+
 - name: Set primary user for emacs daemon
   lineinfile:
     dest={{ rc_conf }}
     regexp="^emacs_daemon_users="
     line="emacs_daemon_users={{ primary_user }}"
+
+
+# Install my .emacs file
 
 - name: Install .emacs file
   copy:

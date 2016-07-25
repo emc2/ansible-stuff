@@ -1,3 +1,5 @@
+# Install the realm configuration file (krb5.conf)
+
 - name: Install krb5.conf file
   template:
     src=krb5.conf.j2
@@ -5,6 +7,15 @@
     owner=root
     group=wheel
     mode=644
+
+
+# Set up PAM to first authenticate against Kerberos, then the local UNIX
+# acconts.  This will allow logins via methods such as direct physical
+# access to check Kerberos.
+#
+# Note that the PAM configuration makes UNIX accounts required for account
+# existence.  This means that LDAP must also be set up as a source of UNIX
+# account information in order for logins by network accounts to work.
 
 - name: Install system PAM configuration
   copy:
@@ -16,6 +27,15 @@
   with_items:
     - system
     - other
+
+
+# Set up PAM to have su do Kerberos authentication.  This will allow any user
+# for which a user/root principal exists to su and whose principal appears in
+# root's .k5login to su to root.  It will also enable any user whose principal
+# appears in another user's .k5login to su to that user.
+#
+# Note that both these actions still require input of a password.  There is no
+# way to su to another account based solely on possession of a Kerberos ticket.
 
 - name: Install su PAM configuration
   copy:
