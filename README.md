@@ -1,4 +1,9 @@
-# Ansible Scripts for a Secure FreeBSD-Based Network
+# Ansible Scripts for a Secure FreeBSD-Based Network and Personal Machines
+
+This repository contains a collection of Ansible scripts which aim to become
+the primary means for configuring my personal machines and my network.  Care is
+taken to see that the scripts can be reused in whole or in part by changing
+variables.
 
 ## Ansible Access Configuration
 
@@ -22,3 +27,20 @@ account's home directory, with the private key being kept exclusively on the
 red-box.  The root password is set to a *different* random value on each
 machine locally.  This permits the red-box to access the machines even if
 the KDC is down or PAM has not been set up for Kerberos authentication.
+
+## Kerberos
+
+All authentication is handled through Kerberos, which is provided by a central
+KDC.  *This also holds for service-to-service authentication!*  All machines
+directly wired to the network are provided with the krb5.conf file.  Laptops
+are assumed to be mobile, and thus are not directly Kerberized.
+
+Pluggable Authentication Modules (PAM) on all wired machines are configured to
+authenticate through Kerberos, then through UNIX accounts.  This facilitates the
+creation of the local `admin` account, as a failsafe for network failure (and to
+allow the red-box to work).
+
+Ansible does *not* automatically generate the host keytabs at `/etc/krb5.keytab`
+or any other keytab, as doing so would require Ansible to be provided with the
+KDC admin password.  This is simply too great of a risk.  Keytabs need to be
+generated out-of-band.
