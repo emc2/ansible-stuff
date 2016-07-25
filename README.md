@@ -5,10 +5,35 @@ the primary means for configuring my personal machines and my network.  Care is
 taken to see that the scripts can be reused in whole or in part by changing
 variables.
 
-## Ansible Access Configuration
+## Setup
+
+This section describes the Ansible setup.
+
+### Ansible Inventory and Configuration
+
+The Ansible `hosts` file is not included in this repository, as it is typically
+found (on a FreeBSD machine) at `/usr/local/etc/ansible/hosts`.  The two
+playbook files `pb.laptop.yml` and `pb.remote.yml` and the `group_vars` assume
+a setup akin to the following:
+
+> [freebsd:children]
+> remote
+> laptop
+>
+> [laptop]
+> localhost
+>
+> [remote:children]
+> ...
+
+This creates a top-level group `freebsd`, with two children: `laptop` and
+`remote` (it is assumed desktops will be configured remotely).  For mixed-OS
+networks or setups, a different topology may be better.
+
+### Access Configuration
 
 Ansible is set up to access the machines based on two configurations: the
-"normal" configuration and the "red-box" configuration.  The red-box is intedend
+"normal" configuration and the "red-box" configuration.  The red-box is intended
 to be a designated machine to be used only in case of emergency to bring the
 network back up, and avoids the disaster that would take place if the KDC were
 to go down.  The red-box configuration is also necessary to bootstrap the
@@ -27,6 +52,9 @@ account's home directory, with the private key being kept exclusively on the
 red-box.  The root password is set to a *different* random value on each
 machine locally.  This permits the red-box to access the machines even if
 the KDC is down or PAM has not been set up for Kerberos authentication.
+
+This is all achieved through vault files which are not included in this
+repository for obvious reasons.
 
 ## Kerberos
 
