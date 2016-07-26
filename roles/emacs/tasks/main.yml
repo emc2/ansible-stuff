@@ -31,7 +31,7 @@
 - name: Install .emacs file
   copy:
     src=dot.emacs
-    dest="{{ primary_homedir }}"
+    dest="{{ primary_homedir }}/.emacs"
     owner={{ primary_user }}
     group={{ primary_user_group }}
     mode=644

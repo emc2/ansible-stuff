@@ -11,3 +11,17 @@
 (setq whitespace-line-column 80)
 (global-whitespace-mode 1)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+;; Highlight the line we're on
+(global-hl-line-mode 1)
+(set-face-background 'hl-line "grey")
+
+;; Haskell stuff
+(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/haskell-mode")
+(require 'haskell-mode-autoloads)
+
+(setq auto-mode-alist (cons '("\\.hs$" . haskell-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '("\\.lhs$" . haskell-mode) auto-mode-alist))
+(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+
