@@ -9,3 +9,4 @@ network_name: metricspace.net
 kerberos_realm: METRICSPACE.NET
 primary_kdc: kdc.metricspace.net
 ansible_python_interpreter: /usr/local/bin/python
+ansible_become_method: su
