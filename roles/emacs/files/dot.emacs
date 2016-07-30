@@ -38,7 +38,11 @@
 
 ;; Flycheck
 
+(require 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
+(set-face-attribute 'flycheck-error nil :foreground "white" :background "red")
+(set-face-attribute 'flycheck-warning nil :foreground "black"
+                                          :background "yellow")
 
 
 ;; Haskell Mode Setup
