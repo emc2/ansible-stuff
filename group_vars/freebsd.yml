@@ -8,3 +8,4 @@ fontconfig_dir: "{{ local_config_dir }}/fonts"
 network_name: metricspace.net
 kerberos_realm: METRICSPACE.NET
 primary_kdc: kdc.metricspace.net
+ansible_python_interpreter: /usr/local/bin/python
