@@ -1,6 +1,12 @@
 (global-set-key "\C-h" 'delete-backward-char)
 (global-set-key [f1] 'help-command)
 
+;; MELPA
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa" . "https://stable.melpa.org/packages/") t)
+(package-initialize)
+
 ;; Disable hard tabs
 (setq-default indent-tabs-mode nil)
 
@@ -24,4 +30,3 @@
 (setq auto-mode-alist (cons '("\\.lhs$" . haskell-mode) auto-mode-alist))
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-
