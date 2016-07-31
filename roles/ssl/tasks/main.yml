@@ -1,0 +1,33 @@
+# Install the internal CA cert on the machine
+#
+# We store internal SSL certs at /etc/ssl/certs, the CRL at /etc/ssl/crl, and
+# keys at /etc/ssl/private.   We install the internal CA certificate and CRL
+# on every machine that user the internal CA in any way.
+
+- name: Create SSL directories
+  file:
+    path={{ item }}
+    state=directory
+    owner=root
+    group=wheel
+    mode=755
+  with_items:
+    - "{{ ssl_certs_dir }}"
+    - "{{ ssl_keys_dir }}"
+    - "{{ ssl_crl_dir }}"
+
+- name: Install internal CA certificate
+  copy:
+    src=/etc/ssl/CA/certs/ca-cert.pem
+    dest="{{ ssl_ca_cert }}"
+    owner=root
+    group=wheel
+    mode=644
+
+#- name: install CRL
+#  copy:
+#    src=/etc/ssl/CA/crl/crl.pem
+#    dest="{{ ssl_ca_crl }}"
+#    owner=root
+#    group=wheel
+#    mode=644
