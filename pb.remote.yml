@@ -6,7 +6,6 @@
     - sshd
     - kerberos
     - ssl
-    - srcbuild
 
 - name: Machines with LDAP search capability
   hosts:
@@ -23,3 +22,6 @@
     - mail
     - www
     - others
+  become: yes
+  roles:
+    - nslcd
