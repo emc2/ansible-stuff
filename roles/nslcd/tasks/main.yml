@@ -9,7 +9,7 @@
 - name: Add nsswitch.conf entries
   lineinfile:
     path={{ nsswitch_conf }}
-    regex="^{{ item }}':'"
+    regexp="^{{ item }}':'"
     line="{{ item }}':' ldap files"
   with_items:
     - passwd
@@ -18,7 +18,7 @@
 - name: Enable nslcd in LDAP
   lineinfile:
     path="{{ rc_conf }}"
-    regex="^nslcd_enable="
+    regexp="^nslcd_enable="
     line="nslcd_enable=YES"
 
 - name: Ensure nslcd is running
