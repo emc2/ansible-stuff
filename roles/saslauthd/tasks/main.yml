@@ -1,0 +1,10 @@
+- name: Enable saslauthd in rc.conf
+  lineinfile:
+    dest="{{ rc_conf }}"
+    regexp="^saslauthd_enable="
+    line="saslauthd_enable=YES"
+
+- name: Ensure saslauthd is running
+  service:
+    name=saslauthd
+    state=started
