@@ -1,9 +1,10 @@
-BASE {{ ldap_base_dn }}
-URI {{ ldap_server_uri }}
-TLS_CACERT {{ ssl_ca_cert }}
-#TLS_CACRL {{ ssl_ca_crl }}
-TLS_CERT {{ ldap_client_cert }}
-TLS_KEY {{ ldap_client_key }}
-TLS_REQCERT hard
-SASL_MECH GSSAPI
-SASL_SECPROPS noplain,noanonymous
+BASE            {{ ldap_base_dn }}
+URI             {{ ldap_server_uri }}
+TLS_CACERT      {{ ssl_ca_cert }}
+#TLS_CRLFILE     {{ ssl_ca_crl }}
+#TLS_CRLCHECK    all
+TLS_CERT        {{ ldap_client_cert }}
+TLS_KEY         {{ ldap_client_key }}
+TLS_REQCERT     hard
+SASL_MECH       GSSAPI
+SASL_SECPROPS   noplain,noanonymous
