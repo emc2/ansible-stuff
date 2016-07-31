@@ -24,10 +24,10 @@
     group=wheel
     mode=644
 
-#- name: install CRL
-#  copy:
-#    src=/etc/ssl/CA/crl/crl.pem
-#    dest="{{ ssl_ca_crl }}"
-#    owner=root
-#    group=wheel
-#    mode=644
+- name: Install CRL
+  copy:
+    src=/etc/ssl/CA/crl/crl.pem
+    dest="{{ ssl_ca_crl }}"
+    owner=root
+    group=wheel
+    mode=644
