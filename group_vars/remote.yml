@@ -1,5 +1,8 @@
 ---
 ansible_become: true
+network_name: "metricspace.net"
+kerberos_realm: "METRICSPACE.NET"
+primary_kdc: "kdc.{{ network_name }}"
 ldap_base_dn: "dc=metricspace,dc=net"
-ldap_server_uri: "ldaps://ldap.metricspace.net"
+ldap_server_uri: "ldaps://ldap.{{ network_name }}"
 

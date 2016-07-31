@@ -17,3 +17,9 @@
   become: yes
   roles:
     - ldap
+
+- name: Machines with LDAP account information
+  hosts:
+    - mail
+    - www
+    - others

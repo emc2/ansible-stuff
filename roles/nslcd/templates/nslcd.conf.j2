@@ -1,0 +1,16 @@
+uid             nslcd
+gid             nslcd
+url             {{ ldap_server_uri }}
+ldap_version    3
+scope           one
+tls_reqcert     hard
+tls_cacertfile  {{ ssl_ca_cert }}
+tls_cert        {{ nslcd_cert }}
+tls_key         {{ nslcd_key }}
+sasl_mech       GSSAPI
+sasl_realm      {{ kerbers_realm }}
+base            {{ ldap_base_dn }}
+base passwd     ou=people,{{ ldap_base_dn }}
+base group      ou=groups,{{ ldap_base_dn }}
+base hosts      ou=hosts,{{ ldap_base_dn }}
+base ethers     ou=hosts,{{ ldap_base_dn }}

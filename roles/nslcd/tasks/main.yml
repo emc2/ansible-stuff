@@ -1,0 +1,27 @@
+- name: Create nslcd.conf file
+  template:
+    src=nslcd.conf.j2
+    dest="{{ nslcd_config }}"
+    owner=root
+    group=wheel
+    mode=644
+
+- name: Add nsswitch.conf entries
+  lineinfile:
+    path={{ nsswitch_conf }}
+    regex="^{{ item }}:"
+    line="{{ item }}: ldap files"
+  with_items:
+    - passwd
+    - group
+
+- name: Enable nslcd in LDAP
+  lineinfile:
+    path="{{ rc_conf }}"
+    regex="^nslcd_enable="
+    line="nslcd_enable=YES"
+
+- name: Ensure nslcd is running
+  service:
+    name=nslcd
+    state=started

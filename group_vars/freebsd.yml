@@ -17,8 +17,11 @@ ldap_client_cert_filename: "{{ ansible_hostname }}-ldap-cert.pem"
 ldap_client_cert: "{{ ssl_certs_dir }}/{{ ldap_client_cert_filename }}"
 ldap_client_key_filename: "{{ ansible_hostname }}-ldap-key.pem"
 ldap_client_key: "{{ ssl_keys_dir }}/{{ ldap_client_key_filename }}"
-network_name: metricspace.net
-kerberos_realm: METRICSPACE.NET
-primary_kdc: kdc.metricspace.net
+nlscd_config: "{{ local_config_dir }}/nslcd.conf"
+nslcd_cert_filename: "{{ ansible_hostname }}-nss-cert.pem"
+nslcd_cert: "{{ ssl_certs_dir }}/{{ nslcd_cert_filename }}"
+nslcd_key_filename: "{{ ansible_hostname }}-nss-key.pem"
+nslcd_key: "{{ ssl_certs_dir }}/{{ nslcd_key_filename }}"
+nsswitch_conf: "/etc/nsswitch.conf"
 ansible_python_interpreter: /usr/local/bin/python
 ansible_become_method: su
