@@ -54,8 +54,8 @@
 - name: Add nsswitch.conf entries
   lineinfile:
     dest={{ nsswitch_conf }}
-    regexp="^{{ item }}':'"
-    line="{{ item }}':' ldap files"
+    regexp="^{{ item }}{{ ":" }}"
+    line="{{ item }}{{ ":" }} ldap files"
   with_items:
     - passwd
     - group
