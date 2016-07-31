@@ -73,7 +73,7 @@
 
 # Enable nslcd in LDAP and ensure the daemon is running.
 
-- name: Enable nslcd in LDAP
+- name: Enable nslcd in rc.conf
   lineinfile:
     dest="{{ rc_conf }}"
     regexp="^nslcd_enable="

@@ -1,4 +1,11 @@
-- name: Machines with LDAP search capability
+- name: LDAP server machines
+  hosts:
+    - ldap
+  become: yes
+  roles:
+    - saslauthd
+
+- name: LDAP client machines
   hosts:
     - ldap
     - mail
