@@ -8,7 +8,7 @@ tls_cacertfile  {{ ssl_ca_cert }}
 tls_cert        {{ nslcd_cert }}
 tls_key         {{ nslcd_key }}
 sasl_mech       GSSAPI
-sasl_realm      {{ kerbers_realm }}
+sasl_realm      {{ kerberos_realm }}
 base            {{ ldap_base_dn }}
 base passwd     ou=people,{{ ldap_base_dn }}
 base group      ou=groups,{{ ldap_base_dn }}
