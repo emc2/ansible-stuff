@@ -5,6 +5,12 @@ pam_dir: /etc/pam.d
 local_config_dir: /usr/local/etc
 local_rc_dir: "{{ local_config_dir }}/rc.d"
 fontconfig_dir: "{{ local_config_dir }}/fonts"
+ssl_dir: "/etc/ssl"
+ssl_certs_dir: "{{ ssl_dir }}/certs"
+ssl_keys_dir: "{{ ssl_dir }}/private"
+ssl_crl_dir: "{{ ssl_dir }}/crl"
+ssl_ca_cert: "{{ ssl_certs_dir}}/ca-cert.pem"
+ssl_ca_crl: "{{ ssl_crl_dir }}/crl.pem"
 network_name: metricspace.net
 kerberos_realm: METRICSPACE.NET
 primary_kdc: kdc.metricspace.net
