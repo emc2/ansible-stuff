@@ -1,3 +1,21 @@
+# Make sure make.conf exists
+
+- name: Ensure make.conf exists
+  file:
+    path=/etc/make.conf
+    owner=root
+    group=wheel
+    mode=644
+    state=touch
+
+- name: Ensure src.conf exists
+  file:
+    path=/etc/src.conf
+    owner=root
+    group=wheel
+    mode=644
+    state=touch
+
 # Have all builds use the -march=native option for building everything.
 
 - name: Configure for local CPU optimizations
