@@ -1,3 +1,11 @@
+# Have all builds use the -march=native option for building everything.
+
+- name: Configure for local CPU optimizations
+  lineinfile:
+    dest=/etc/make.conf
+    regexp="^CPUTYPE\?="
+    line="CPUTYPE?=native"
+
 # Set up port builds to use LibreSSL instead of OpenSSL.  LibreSSL has a better
 # track record in terms of security, and it provides some better crypto options
 # like the chacha20/poly1305 cipher.
@@ -20,3 +28,31 @@
     regexp="^OPENSSL_PORT="
     line="OPENSSL_PORT=security/libressl"
 
+# Disable some useless components in src.conf.  This somewhat shortens
+# buildworld by removing a bunch of junk that we never end up using.
+
+- name: Disable some components in src.conf
+  lineinfile:
+    dest=/etc/src.conf
+    regexp="^{{ item }}="
+    line="{{ item }}=1"
+  with_items:
+    - WITHOUT_ATM
+    - WITHOUT_AUTHPF
+    - WITHOUT_BSNMP
+    - WITHOUT_FLOPPY
+    - WITHOUT_GAMES
+    - WITHOUT_GPIB
+    - WITHOUT_HAST
+    - WITHOUT_IPX
+    - WITHOUT_IPFILTER
+    - WITHOUT_IPFW
+    - WITHOUT_NCP
+    - WITHOUT_NIS
+    - WITHOUT_OFED
+    - WITHOUT_PPP
+    - WITHOUT_PMC
+    - WITHOUT_RCMDS
+    - WITHOUT_TALK
+    - WITHOUT_TELNET
+    - WITHOUT_VI

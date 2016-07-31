@@ -89,6 +89,17 @@ Additionally, everything is put in place for a Kerberos/GSSAPI-based network:
 * If a user attempts to connect and *does* possess a ticket, they will not be
   asked for a password, and the ticket will be forwarded to the new machine.
 
+### Source Building
+
+Several options are configured for source building (building world and ports):
+
+* The `CPUTYPE` variable is set to `native`, causing the compiler to auto-detect
+  and optimize for the local CPU architecture.  *This could be a cause of issues
+  for some use cases!  Be aware of this!*
+* LibreSSL is set as the OpenSSL port, and ports are configured to build using
+  it as the OpenSSL library.
+* A number of useless system components are disabled in `src.conf`.
+
 ## Server Configurations
 
 This section describes the configurations that are deployed to network machines.
