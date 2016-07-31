@@ -1,0 +1,25 @@
+# Install the ldap.conf file and certificates needed for secure communication
+
+- name: Install LDAP client certificate
+  copy:
+    src="/etc/ssl/CA/certs/{{ ldap_client_cert_filename }}"
+    dest="{{ ldap_client_cert }}"
+    owner=root
+    group=wheel
+    mode=644
+
+- name: Install LDAP client key
+  copy:
+    src="/etc/ssl/CA/private/{{ ldap_client_key_filename }}"
+    dest="{{ ldap_client_key }}"
+    owner=root
+    group=wheel
+    mode=640
+
+- name: Install LDAP conifiguration file
+  template:
+    src: ldap.conf.j2
+    dest: "{{ ldap_config_file }}"
+    owner: root
+    group: wheel
+    mode: 644

@@ -1,2 +1,5 @@
 ---
 ansible_become: true
+ldap_base_dn: "dc=metricspace,dc=net"
+ldap_server_uri: "ldaps://ldap.metricspace.net"
+

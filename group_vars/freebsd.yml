@@ -11,6 +11,12 @@ ssl_keys_dir: "{{ ssl_dir }}/private"
 ssl_crl_dir: "{{ ssl_dir }}/crl"
 ssl_ca_cert: "{{ ssl_certs_dir}}/ca-cert.pem"
 ssl_ca_crl: "{{ ssl_crl_dir }}/crl.pem"
+ldap_config_dir: "{{ local_config_dir }}/openldap"
+ldap_config_file: "{{ ldap_config_dir }}/ldap.conf"
+ldap_client_cert_filename: "{{ ansible_hostname }}-ldap-cert.pem"
+ldap_client_cert: "{{ ssl_certs_dir }}/{{ ldap_client_cert_filename }}"
+ldap_client_key_filename: "{{ ansible_hostname }}-ldap-key.pem"
+ldap_client_key: "{{ ssl_keys_dir }}/{{ ldap_client_key_filename }}"
 network_name: metricspace.net
 kerberos_realm: METRICSPACE.NET
 primary_kdc: kdc.metricspace.net
