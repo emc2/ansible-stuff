@@ -139,6 +139,13 @@ machine.  None of the CA information needs to be present in order for the
 ansible tasks, however, meaning that the red-box machine can be equipped with
 the latest snapshot of certificates in order to allow it to function.
 
+### LDAP Clients
+
+LDAP clients are supplied with a host-specific client certificate and an LDAP
+configuration file.  The certificate and configuration file will be used only
+for the LDAP command-line tools; any service will be supplied with its own
+client certificate.
+
 ## Personal Machines
 
 This section describes the configurations that take place on personal machines.
