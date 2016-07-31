@@ -2,6 +2,9 @@
 rc_conf: /etc/rc.conf
 krb5_conf: /etc/krb5.conf
 pam_dir: /etc/pam.d
+keytabs_dir: /etc/keytabs
+nonexistent_home: /nonexistent
+nologin_class: /usr/sbin/nologin
 local_config_dir: /usr/local/etc
 local_rc_dir: "{{ local_config_dir }}/rc.d"
 fontconfig_dir: "{{ local_config_dir }}/fonts"
@@ -22,6 +25,8 @@ nslcd_cert_filename: "{{ ansible_hostname }}-nss-cert.pem"
 nslcd_cert: "{{ ssl_certs_dir }}/{{ nslcd_cert_filename }}"
 nslcd_key_filename: "{{ ansible_hostname }}-nss-key.pem"
 nslcd_key: "{{ ssl_keys_dir }}/{{ nslcd_key_filename }}"
+nslcd_keytab: "{{ keytabs_dir }}/nss.keytab"
 nsswitch_conf: "/etc/nsswitch.conf"
+kinit: /usr/bin/kinit
 ansible_python_interpreter: /usr/local/bin/python
 ansible_become_method: su

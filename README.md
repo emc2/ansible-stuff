@@ -146,6 +146,20 @@ configuration file.  The certificate and configuration file will be used only
 for the LDAP command-line tools; any service will be supplied with its own
 client certificate.
 
+### LDAP NSS Information
+
+The `nslcd` utility is used to connect `nsswitch` to the network LDAP database.
+This requires a client cert be issued for each machine's `nslcd` daemon, as well
+as the creation of a Kerberos principal and a keytab for that machine's daemon,
+in keeping with the high security standards of the network.
+
+The kerberos keytab must be placed at `/etc/keytabs/nslcd.keytab` and made
+accessible to the `nslcd` user.
+
+A cron job will be set up to refresh the kerberos credentials every 6 hours.
+This ensures that the nslcd user always has a valid ticket for accessing the
+LDAP database.
+
 ## Personal Machines
 
 This section describes the configurations that take place on personal machines.

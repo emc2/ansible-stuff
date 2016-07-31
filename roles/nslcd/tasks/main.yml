@@ -1,3 +1,48 @@
+# Ensure that nslcd user and group exist
+
+- name: Create nslcd group
+  group:
+    name=nslcd
+    gid=928
+
+- name: Create nslcd user
+  user:
+    name=nslcd
+    uid=928
+    group=nslcd
+    comment="nslcd daemon"
+    home="{{ nonexistent_home }}"
+    login_class="daemon"
+    shell="{{ nologin_class }}"
+    system=yes
+
+# Copy certificate and key into place
+
+- name: Install nslcd client certificate
+  copy:
+    src="/etc/ssl/CA/certs/{{ nslcd_cert_filename }}"
+    dest="{{ nslcd_cert }}"
+    owner=root
+    group=wheel
+    mode=644
+
+- name: Install nslcd client key
+  copy:
+    src="/etc/ssl/CA/private/{{ nslcd_key_filename }}"
+    dest="{{ nslcd_key }}"
+    owner=root
+    group=nslcd
+    mode=640
+
+- name: Check nslcd keytab
+  file:
+    path="{{ nslcd_keytab }}"
+    owner=root
+    group=nslcd
+    mode=640
+
+# Set up the nslcd configuration file and nsswitch.conf files.
+
 - name: Create nslcd.conf file
   template:
     src=nslcd.conf.j2
@@ -14,6 +59,19 @@
   with_items:
     - passwd
     - group
+
+# Set up a cron job to periodically refresh the nslcd user's
+# Kerberos credentials
+
+- name: Add cron job to refresh nslcd user's credentials
+  cron:
+    name="Refresh nslcd Kerberos credentials"
+    minute="0"
+    hour="*/6"
+    user="nslcd"
+    job="{{ kinit }} -k -t {{ nslcd_keytab }} {{ nslcd_principal }}"
+
+# Enable nslcd in LDAP and ensure the daemon is running.
 
 - name: Enable nslcd in LDAP
   lineinfile:
