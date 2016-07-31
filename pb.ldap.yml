@@ -1,0 +1,10 @@
+- name: Machines with LDAP search capability
+  hosts:
+    - ldap
+    - mail
+    - www
+    - others
+  become: yes
+  roles:
+    - ldap
+
