@@ -4,6 +4,7 @@
   become: yes
   roles:
     - saslauthd
+    - slapd
 
 - name: LDAP client machines
   hosts:

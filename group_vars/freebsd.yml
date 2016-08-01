@@ -26,6 +26,11 @@ nslcd_cert: "{{ ssl_certs_dir }}/{{ nslcd_cert_filename }}"
 nslcd_key_filename: "{{ ansible_hostname }}-nss-key.pem"
 nslcd_key: "{{ ssl_keys_dir }}/{{ nslcd_key_filename }}"
 nslcd_keytab: "{{ keytabs_dir }}/nss.keytab"
+slapd_cert_filename: "{{ ansible_hostname }}-slapd-cert.pem"
+slapd_cert: "{{ ssl_certs_dir }}/{{ slapd_cert_filename }}"
+slapd_key_filename: "{{ ansible_hostname }}-slapd-key.pem"
+slapd_key: "{{ ssl_keys_dir }}/{{ slapd_key_filename }}"
+slapd_keytab: "{{ keytabs_dir }}/ldap.keytab"
 nsswitch_conf: "/etc/nsswitch.conf"
 kinit: /usr/bin/kinit
 ansible_python_interpreter: /usr/local/bin/python
