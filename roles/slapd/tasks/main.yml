@@ -10,6 +10,7 @@
     name=ldap
     uid=389
     group=ldap
+    groups=mail
     comment="OpenLDAP daemon"
     home="{{ nonexistent_home }}"
     login_class="daemon"
@@ -40,6 +41,17 @@
     owner=root
     group=ldap
     mode=640
+
+# Set up the slapd SASL config file.  This tells SASL to use saslauthd, where to
+# find the keytab, and where to find the mux.
+
+- name: Install sasl slapd.conf
+  template:
+    src=sasl2.slapd.conf.j2
+    dest="{{ slapd_sasl_file }}"
+    owner=root
+    group=wheel
+    mode=644
 
 # Set up the nslcd configuration file and nsswitch.conf files.
 

@@ -1,0 +1,2 @@
+---
+slapd_sasl_file: "{{ sasl_conf_dir }}/slapd.conf"
