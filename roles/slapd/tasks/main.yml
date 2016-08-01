@@ -3,12 +3,12 @@
 - name: Create ldap group
   group:
     name=ldap
-    gid=398
+    gid=389
 
 - name: Create ldap user
   user:
     name=ldap
-    uid=398
+    uid=389
     group=ldap
     comment="OpenLDAP daemon"
     home="{{ nonexistent_home }}"
@@ -31,7 +31,7 @@
     src="/etc/ssl/CA/private/{{ slapd_key_filename }}"
     dest="{{ slapd_key }}"
     owner=root
-    group=nslcd
+    group=ldap
     mode=640
 
 - name: Check slapd keytab
