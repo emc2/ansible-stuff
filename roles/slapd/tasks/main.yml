@@ -1,16 +1,16 @@
-# Ensure that nslcd user and group exist
+# Ensure that ldap user and group exist
 
-- name: Create nslcd group
+- name: Create ldap group
   group:
-    name=nslcd
-    gid=928
+    name=ldap
+    gid=398
 
-- name: Create nslcd user
+- name: Create ldap user
   user:
-    name=nslcd
-    uid=928
-    group=nslcd
-    comment="nslcd daemon"
+    name=ldap
+    uid=398
+    group=ldap
+    comment="OpenLDAP daemon"
     home="{{ nonexistent_home }}"
     login_class="daemon"
     shell="{{ nologin_class }}"
@@ -18,68 +18,68 @@
 
 # Copy certificate and key into place
 
-- name: Install nslcd client certificate
+- name: Install ldap client certificate
   copy:
-    src="/etc/ssl/CA/certs/{{ nslcd_cert_filename }}"
-    dest="{{ nslcd_cert }}"
+    src="/etc/ssl/CA/certs/{{ slapd_cert_filename }}"
+    dest="{{ slapd_cert }}"
     owner=root
     group=wheel
     mode=644
 
-- name: Install nslcd client key
+- name: Install ldap client key
   copy:
-    src="/etc/ssl/CA/private/{{ nslcd_key_filename }}"
-    dest="{{ nslcd_key }}"
+    src="/etc/ssl/CA/private/{{ slapd_key_filename }}"
+    dest="{{ slapd_key }}"
     owner=root
     group=nslcd
     mode=640
 
-- name: Check nslcd keytab
+- name: Check slapd keytab
   file:
-    path="{{ nslcd_keytab }}"
+    path="{{ slapd_keytab }}"
     owner=root
-    group=nslcd
+    group=ldap
     mode=640
 
 # Set up the nslcd configuration file and nsswitch.conf files.
 
-- name: Create nslcd.conf file
-  template:
-    src=nslcd.conf.j2
-    dest="{{ nslcd_config }}"
-    owner=root
-    group=wheel
-    mode=644
+#- name: Create nslcd.conf file
+#  template:
+#    src=nslcd.conf.j2
+#    dest="{{ nslcd_config }}"
+#    owner=root
+#    group=wheel
+#    mode=644
 
-- name: Add nsswitch.conf entries
-  lineinfile:
-    dest={{ nsswitch_conf }}
-    regexp="^{{ item }}{{ ":" }}"
-    line="{{ item }}{{ ":" }} ldap files"
-  with_items:
-    - passwd
-    - group
+#- name: Add nsswitch.conf entries
+#  lineinfile:
+#    dest={{ nsswitch_conf }}
+#    regexp="^{{ item }}{{ ":" }}"
+#    line="{{ item }}{{ ":" }} ldap files"
+#  with_items:
+#    - passwd
+#    - group
 
 # Set up a cron job to periodically refresh the nslcd user's
 # Kerberos credentials
 
-- name: Add cron job to refresh nslcd user's credentials
+- name: Add cron job to refresh ldap user's credentials
   cron:
     name="Refresh nslcd Kerberos credentials"
     minute="0"
     hour="*/6"
-    user="nslcd"
-    job="{{ kinit }} -k -t {{ nslcd_keytab }} {{ nslcd_principal }}"
+    user="ldap"
+    job="{{ kinit }} -k -t {{ slapd_keytab }} {{ slapd_principal }}"
 
 # Enable nslcd in LDAP and ensure the daemon is running.
 
-- name: Enable nslcd in rc.conf
-  lineinfile:
-    dest="{{ rc_conf }}"
-    regexp="^nslcd_enable="
-    line="nslcd_enable=YES"
+#- name: Enable nslcd in rc.conf
+#  lineinfile:
+#    dest="{{ rc_conf }}"
+#    regexp="^nslcd_enable="
+#    line="nslcd_enable=YES"
 
-- name: Ensure nslcd is running
-  service:
-    name=nslcd
-    state=started
+#- name: Ensure ldap is running
+#  service:
+#    name=nslcd
+#    state=started
