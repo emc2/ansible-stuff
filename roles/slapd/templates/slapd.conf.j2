@@ -4,7 +4,7 @@ include         {{ ldap_config_dir }}/schema/inetorgperson.schema
 include         {{ ldap_config_dir }}/schema/jabberd.schema
 include         {{ ldap_config_dir }}/schema/nis.schema
 include         {{ ldap_config_dir }}/schema/postfix.schema
-include         {[ ldap_config_dir }}/schema/dnszone.schema
+include         {{ ldap_config_dir }}/schema/dnszone.schema
 include         {{ ldap_config_dir }}/schema/automount.schema
 
 pidfile         /var/run/openldap/slapd.pid
