@@ -1,0 +1,55 @@
+include         {{ ldap_config_dir }}/schema/core.schema
+include         {{ ldap_config_dir }}/schema/cosine.schema
+include         {{ ldap_config_dir }}/schema/inetorgperson.schema
+include         {{ ldap_config_dir }}/schema/jabberd.schema
+include         {{ ldap_config_dir }}/schema/nis.schema
+include         {{ ldap_config_dir }}/schema/postfix.schema
+include         {[ ldap_config_dir }}/schema/dnszone.schema
+include         {{ ldap_config_dir }}/schema/automount.schema
+
+pidfile         /var/run/openldap/slapd.pid
+argsfile        /var/run/openldap/slapd.args
+
+modulepath      /usr/local/libexec/openldap
+moduleload      back_mdb
+
+database        mdb
+suffix          "{{ ldap_base_dn }}"
+directory       /var/db/openldap-data
+
+index           objectClass             eq
+index           uid                     eq
+index           memberUid               eq
+index           mail                    eq
+index           uidNumber               eq
+index           gidNumber               eq
+index           jabberID                eq
+index           cn                      eq
+index           member                  eq
+index           automountKey            eq
+index           automountMapName        eq
+
+TLSVerifyClient         try
+TLSCertificateFile      {{ slapd_cert }}
+TLSCertificateKeyFile   {{ slapd_key }}
+TLSCACertificateFile    {{ ca_cert }}
+#TLSCRLFile              {{ ca_crl }}
+#TLSCRLCheck             all
+
+include {{ slapd_access }}
+
+authz-policy from
+authz-regexp "uid=admin/admin,cn={{ kerberos_realm }},cn=gssapi,cn=auth" "cn=admin,{{ ldap_base_dn }}"
+authz-regexp "uid=admin/admin,cn={{ kerberos_realm }},cn=gss-spnego,cn=auth" "cn=admin,{{ ldap_base_dn }}"
+authz-regexp "uid=host/([^,]+).{{ kerberos_realm }},cn={{ network_name }},cn=gssapi,cn=auth" "cn=$1.{{ network_name }},ou=hosts,{{ ldap_base_dn }}"
+authz-regexp "uid=host/([^,]+).{{ kerberos_realm }},cn={{ network_name }},cn=gss-spnego,cn=auth" "cn=$1.{{ network_name }},ou=hosts,{{ ldap_base_dn }}"
+authz-regexp "uid=([^/,]+)/([^/\.,]+).{{ kerberos_realm }},cn={{ network_name}},cn=gssapi,cn=auth" "cn=$1,cn=$2.{{ network_name }},ou=hosts,{{ ldap_base_dn }}"
+authz-regexp "uid=([^/,]+)/([^/\.,]+).{{ kerberos_realm }},cn={{ network_name }},cn=gss-spnego,cn=auth" "cn=$1,cn=$2.{{ network_name }},ou=hosts,{{ ldap_base_dn }}"
+authz-regexp "uid=([^/.,]+),cn={{ kerberos_realm }},cn=gssapi,cn=auth" "cn=$1,ou=people,{{ ldap_base_dn }}"
+authz-regexp "uid=([^/.,]+),cn={{ kerberos_realm }},cn=gss-spnego,cn=auth" "cn=$1,ou=people,{{ ldap_base_dn }}"
+authz-regexp "cn=([^/\.]+).{{ network_name }},ou=hosts,o={{ network_name }}" "cn=$1.{{ network_name }},ou=hosts,{{ ldap_base_dn }}"
+
+sasl-host       {{ ansible_fqdn }}
+sasl-realm      {{ kerberos_realm }}
+sasl-secprops   noplain,noanonymous
+
