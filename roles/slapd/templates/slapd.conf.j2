@@ -32,8 +32,8 @@ index           automountMapName        eq
 TLSVerifyClient         try
 TLSCertificateFile      {{ slapd_cert }}
 TLSCertificateKeyFile   {{ slapd_key }}
-TLSCACertificateFile    {{ ca_cert }}
-#TLSCRLFile              {{ ca_crl }}
+TLSCACertificateFile    {{ ssl_ca_cert }}
+#TLSCRLFile              {{ ssl_ca_crl }}
 #TLSCRLCheck             all
 
 include {{ slapd_access }}
