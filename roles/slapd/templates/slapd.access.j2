@@ -1,0 +1,16 @@
+access to attrs=userPassword
+        by dn="cn=admin,{{ ldap_base_dn }}" write
+        by anonymous auth
+        by * none
+
+access to attrs=loginShell,sn
+        by dn="cn=admin,{{ ldap_base_dn }}" write
+        by self write
+        by * read
+
+access to dn.base=""
+        by * read
+
+access to *
+        by dn="cn=admin,{{ ldap_base_dn }}" write
+        by * read

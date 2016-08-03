@@ -53,45 +53,45 @@
     group=wheel
     mode=644
 
-# Set up the nslcd configuration file and nsswitch.conf files.
+# Set up the slapd.conf and slapd.access files
 
-#- name: Create nslcd.conf file
-#  template:
-#    src=nslcd.conf.j2
-#    dest="{{ nslcd_config }}"
-#    owner=root
-#    group=wheel
-#    mode=644
+- name: Create slapd.access file
+  template:
+    src=slapd.access.j2
+    dest="{{ slapd_access }}"
+    owner=root
+    group=wheel
+    mode=644
 
-#- name: Add nsswitch.conf entries
-#  lineinfile:
-#    dest={{ nsswitch_conf }}
-#    regexp="^{{ item }}{{ ":" }}"
-#    line="{{ item }}{{ ":" }} ldap files"
-#  with_items:
-#    - passwd
-#    - group
+- name: Create slapd.conf file
+  template:
+    src=slapd.conf.j2
+    dest="{{ slapd_config }}"
+    owner=root
+    group=wheel
+    mode=644
 
-# Set up a cron job to periodically refresh the nslcd user's
-# Kerberos credentials
+# Enable slapd is enabled in rc.conf and ensure the daemon is running.
 
-- name: Add cron job to refresh ldap user's credentials
-  cron:
-    name="Refresh nslcd Kerberos credentials"
-    minute="0"
-    hour="*/6"
-    user="ldap"
-    job="{{ kinit }} -k -t {{ slapd_keytab }} {{ slapd_principal }}"
+- name: Enable slapd in rc.conf
+  lineinfile:
+    dest="{{ rc_conf }}"
+    regexp="^slapd_enable="
+    line="slapd_enable=YES"
 
-# Enable nslcd in LDAP and ensure the daemon is running.
+- name: Set slapd kerberos keytab
+  lineinfile:
+    dest="{{ rc_conf }}"
+    regexp="^slapd_krb5_ktname"
+    line="slapd_krb5_ktname={{ slapd_keytab }}"
 
-#- name: Enable nslcd in rc.conf
-#  lineinfile:
-#    dest="{{ rc_conf }}"
-#    regexp="^nslcd_enable="
-#    line="nslcd_enable=YES"
+- name: Set slapd flags
+  lineinfile:
+    dest="{{ rc_conf }}"
+    regexp="^slapd_flags="
+    line="slapd_flags=\"-h 'ldapi:/// ldap:/// ldaps:///'\""
 
-#- name: Ensure ldap is running
-#  service:
-#    name=nslcd
-#    state=started
+- name: Ensure slapd is running
+  service:
+    name=slapd
+    state=started
