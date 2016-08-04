@@ -1,0 +1,2 @@
+---
+torrc: "{{ tor_config_dir }}/torrc"
