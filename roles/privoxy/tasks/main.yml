@@ -1,0 +1,39 @@
+# Ensure that privoxy user and group exist
+
+- name: Create prioxy group
+  group:
+    name="{{ privoxy_group }}"
+    gid=256
+
+- name: Create privoxy user
+  user:
+    name="{{ privoxy_user }}"
+    group="{{ privoxy_group }}"
+    comment="Privoxy proxy user"
+    uid=256
+    home="{{ nonexistent_dir }}"
+    shell="{{ nologin_class }}"
+    system=yes
+
+# Set up the config files
+
+- name: Create config file
+  template:
+    src=config.j2
+    dest="{{ privoxy_config }}"
+    owner=root
+    group=wheel
+    mode=644
+
+# Enable privoxy in rc.conf and ensure the daemon is running.
+
+- name: Enable privoxy in rc.conf
+  lineinfile:
+    dest="{{ rc_conf }}"
+    regexp="^privoxy_enable="
+    line="privoxy_enable=YES"
+
+- name: Ensure privoxy is running
+  service:
+    name=privoxy
+    state=started

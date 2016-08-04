@@ -44,6 +44,10 @@ tor_config_dir: "{{ local_config_dir }}/tor"
 tor_data_dir: /var/db/tor
 tor_group: _tor
 tor_user: _tor
+privoxy_group: privoxy
+privoxy_user: privoxy
+privoxy_config_dir: "{{ local_config_dir }}/privoxy"
+privoxy_doc_dir: "/usr/local/share/doc/privoxy"
 nsswitch_conf: "/etc/nsswitch.conf"
 kinit: /usr/bin/kinit
 ansible_python_interpreter: /usr/local/bin/python

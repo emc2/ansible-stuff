@@ -1,3 +1,4 @@
 ---
 tor_nickname: metricspace
 torrc: "{{ tor_config_dir }}/torrc"
+privoxy_config: "{{ privoxy_config_dir }}/config"

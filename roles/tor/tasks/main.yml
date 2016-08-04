@@ -1,6 +1,6 @@
 # Ensure that tor user and group exist
 
-- name: Create postgres group
+- name: Create tor group
   group:
     name="{{ tor_group }}"
     gid=256
@@ -25,7 +25,7 @@
     group=wheel
     mode=644
 
-# Enable postgresql is enabled in rc.conf and ensure the daemon is running.
+# Enable tor in rc.conf and ensure the daemon is running.
 
 - name: Enable tor in rc.conf
   lineinfile:

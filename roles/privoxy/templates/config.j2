@@ -1,0 +1,21 @@
+user-manual {{ privoxy_doc_dir }}/user-manual
+
+logdir /var/log/privoxy
+logfile logfile
+
+confdir {{ privoxy_config_dir }}
+actionsfile default.action
+filterfile default.filter
+
+enable-remote-toggle 0
+enable-edit-actions 0
+
+debug 1024
+debug 4096
+debug 8192
+
+listen-address 	:8118
+listen-address 	[::]:8118
+
+forward 	.i2p	localhost:4444
+forward-socks5	/	localhost:9050 .
