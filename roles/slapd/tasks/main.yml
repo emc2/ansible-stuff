@@ -2,15 +2,15 @@
 
 - name: Create ldap group
   group:
-    name=ldap
+    name="{{ slapd_group }}"
     gid=389
 
 - name: Create ldap user
   user:
-    name=ldap
+    name="{{ slapd_user }}"
     uid=389
-    group=ldap
-    groups=mail
+    group="{{ slapd_group }}"
+    groups="{{ sasl_group }}"
     comment="OpenLDAP daemon"
     home="{{ nonexistent_home }}"
     login_class="daemon"
@@ -32,14 +32,14 @@
     src="/etc/ssl/CA/private/{{ slapd_key_filename }}"
     dest="{{ slapd_key }}"
     owner=root
-    group=ldap
+    group="{{ slapd_group }}"
     mode=640
 
 - name: Check slapd keytab
   file:
     path="{{ slapd_keytab }}"
     owner=root
-    group=ldap
+    group="{{ slapd_group }}"
     mode=640
 
 # Set up the slapd SASL config file.  This tells SASL to use saslauthd, where to

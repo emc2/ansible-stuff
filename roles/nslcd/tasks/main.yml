@@ -2,14 +2,14 @@
 
 - name: Create nslcd group
   group:
-    name=nslcd
+    name="{{ nslcd_group }}"
     gid=928
 
 - name: Create nslcd user
   user:
-    name=nslcd
+    name="{{ nslcd_user }}"
     uid=928
-    group=nslcd
+    group="{{ nslcd_group }}"
     comment="nslcd daemon"
     home="{{ nonexistent_home }}"
     login_class="daemon"
@@ -31,14 +31,14 @@
     src="/etc/ssl/CA/private/{{ nslcd_key_filename }}"
     dest="{{ nslcd_key }}"
     owner=root
-    group=nslcd
+    group="{{ nslcd_group }}"
     mode=640
 
 - name: Check nslcd keytab
   file:
     path="{{ nslcd_keytab }}"
     owner=root
-    group=nslcd
+    group="{{ nslcd_group }}"
     mode=640
 
 # Set up the nslcd configuration file and nsswitch.conf files.
@@ -68,7 +68,7 @@
     name="Refresh nslcd Kerberos credentials"
     minute="0"
     hour="*/6"
-    user="nslcd"
+    user="{{ nslcd_user }}"
     job="{{ kinit }} -k -t {{ nslcd_keytab }} {{ nslcd_principal }}"
 
 # Enable nslcd in LDAP and ensure the daemon is running.
