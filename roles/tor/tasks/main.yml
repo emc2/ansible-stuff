@@ -11,7 +11,7 @@
     group="{{ tor_group }}"
     comment="Tor anonymizing router"
     uid=256
-    home="{{ tor_data }}"
+    home="{{ tor_data_dir }}"
     shell="{{ nologin_class }}"
     system=yes
 
