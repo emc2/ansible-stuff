@@ -31,16 +31,8 @@ nslcd_user: nslcd
 nslcd_group: nslcd
 slapd_user=ldap
 slapd_group=ldap
-slapd_cert_filename: "{{ ansible_hostname }}-slapd-cert.pem"
-slapd_cert: "{{ ssl_certs_dir }}/{{ slapd_cert_filename }}"
-slapd_key_filename: "{{ ansible_hostname }}-slapd-key.pem"
-slapd_key: "{{ ssl_keys_dir }}/{{ slapd_key_filename }}"
-slapd_keytab: "{{ keytabs_dir }}/ldap.keytab"
-slapd_access: "{{ ldap_config_dir }}/slapd.access"
-slapd_config: "{{ ldap_config_dir }}/slapd.conf"
 slapd_run: /var/run/openldap
 slapd_data: /var/db/openldap-data
-slapd_modules: "{{ local_libexec_dir }}/openldap"
 sasl_conf_dir: "/usr/local/lib/sasl2"
 sasl_mux: /var/run/saslauthd/mux
 sasl_group: mail
