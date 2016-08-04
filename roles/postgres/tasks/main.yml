@@ -68,7 +68,7 @@
 
 - name: Create postgresql.conf file
   template:
-    src=postgres.conf.j2
+    src=postgresql.conf.j2
     dest="{{ postgres_conf }}"
     owner=root
     group=wheel
