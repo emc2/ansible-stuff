@@ -3,14 +3,14 @@
 - name: Create postgres group
   group:
     name="{{ postgres_group }}"
-    gid=389
+    gid=70
 
 - name: Create postgres user
   user:
     name="{{ postgres_user }}"
-    uid=389
     group="{{ postgres_group }}"
     comment="PostgreSQL pseudo-user"
+    uid=70
     home="{{ postgres_home }}"
     shell="/bin/sh"
     system=yes
