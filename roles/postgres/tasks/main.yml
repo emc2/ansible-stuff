@@ -33,7 +33,7 @@
     group=wheel
     mode=644
 
-- name: Install postgres client certificate
+- name: Install postgres certificate
   copy:
     src="/etc/ssl/CA/certs/{{ ansible_hostname }}-postgresql-cert.pem"
     dest="{{ postgres_cert }}"
@@ -41,13 +41,13 @@
     group=wheel
     mode=644
 
-- name: Install postgres client key
+- name: Install postgres key
   copy:
     src="/etc/ssl/CA/private/{{ ansible_hostname }}-postgresql-key.pem"
     dest="{{ postgres_key }}"
-    owner=root
+    owner="{{ postgres_user }}"
     group="{{ postgres_group }}"
-    mode=640
+    mode=600
 
 - name: Check postgres keytab
   file:
