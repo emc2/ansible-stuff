@@ -1,0 +1,7 @@
+- name: Proxy machines
+  hosts:
+    - proxy
+  become: yes
+  roles:
+    - tor
+
