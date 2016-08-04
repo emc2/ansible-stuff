@@ -1,0 +1,39 @@
+# Ensure that tor user and group exist
+
+- name: Create postgres group
+  group:
+    name="{{ tor_group }}"
+    gid=256
+
+- name: Create tor user
+  user:
+    name="{{ tor_user }}"
+    group="{{ tor_group }}"
+    comment="Tor anonymizing router"
+    uid=256
+    home="{{ tor_data }}"
+    shell="{{ nologin_class }}"
+    system=yes
+
+# Set up the torrc files
+
+- name: Create torrc file
+  template:
+    src=torrc.j2
+    dest="{{ torrc }}"
+    owner=root
+    group=wheel
+    mode=644
+
+# Enable postgresql is enabled in rc.conf and ensure the daemon is running.
+
+- name: Enable tor in rc.conf
+  lineinfile:
+    dest="{{ rc_conf }}"
+    regexp="^tor_enable="
+    line="tor_enable=YES"
+
+- name: Ensure tor is running
+  service:
+    name=tor
+    state=started

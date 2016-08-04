@@ -40,6 +40,10 @@ postgres_user: pgsql
 postgres_group: pgsql
 postgres_data: /var/db/pgsql
 postgres_home: /usr/local/pgsql
+tor_config_dir: "{{ local_config_dir }}/tor"
+tor_data_dir: /var/db/tor
+tor_group: _tor
+tor_user: _tor
 nsswitch_conf: "/etc/nsswitch.conf"
 kinit: /usr/bin/kinit
 ansible_python_interpreter: /usr/local/bin/python
