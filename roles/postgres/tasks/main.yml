@@ -69,7 +69,7 @@
 - name: Create postgresql.conf file
   template:
     src=postgres.conf.j2
-    dest="{{ postgres_config }}"
+    dest="{{ postgres_conf }}"
     owner=root
     group=wheel
     mode=644
