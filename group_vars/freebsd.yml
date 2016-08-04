@@ -29,8 +29,8 @@ nslcd_key: "{{ ssl_keys_dir }}/{{ nslcd_key_filename }}"
 nslcd_keytab: "{{ keytabs_dir }}/nss.keytab"
 nslcd_user: nslcd
 nslcd_group: nslcd
-slapd_user=ldap
-slapd_group=ldap
+slapd_user: ldap
+slapd_group: ldap
 slapd_run: /var/run/openldap
 slapd_data: /var/db/openldap-data
 sasl_conf_dir: "/usr/local/lib/sasl2"
