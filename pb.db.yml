@@ -1,0 +1,7 @@
+- name: PostgreSQL server machines
+  hosts:
+    - db
+  become: yes
+  roles:
+    - postgres
+
