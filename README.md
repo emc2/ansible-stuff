@@ -160,6 +160,78 @@ A cron job will be set up to refresh the kerberos credentials every 6 hours.
 This ensures that the nslcd user always has a valid ticket for accessing the
 LDAP database.
 
+### LDAP Server
+
+An OpenLDAP server instance is created on any machine in the `ldap` group.  An
+SSL certificate and key must be created for the server by the local CA, and
+the `ldap/<fqhn` service credential must be stored in the server's keytab
+(`/etc/keytabs/ldap.keytab`)
+
+This server instance currently allows four modes of authentication: SASL,
+GSSAPI, and certificate authentication.  To facilitate the configuration of
+authentication and authorization, some assumptions are made about the structure
+of the LDAP database.  Users are assumed to be stored in
+`cn=<name>,ou=people,<basedn>`, hosts are assumed to be stored under
+`cn=<fqhn>,ou=hosts,<basedn>`, and the administrator is assumed to be
+`cn=admin,<basedn>`.
+
+Authentication and mapping to entries takes place as follows:
+
+* Kerberos-based authentication can be performed for SASL authentication by
+  placing `{SASL}<kerberos principal>` in the `userPassword` field for any entry
+  with the `shadowAccount` type.  This is the recommended way of doing
+  authentication.
+* GSSAPI host principals (of the form `host/<fqhn>`) are mapped to
+  `cn=<hostname>,ou=hosts,<basedn>`.
+* GSSAPI service principals (of the form `<service>/<fqhn>`) are also mapped to
+  the host entry for now.
+* All other GSSAPI principals are mapped to `cn=<principal>,ou=people,<basedn>`.
+* Certificates with a subject of `cn=<fqhn>,ou=hosts,o=<network name>` are
+  mapped to `cn=<hostname>,ou=hosts,<basedn>`
+* Certificates with a subject of `cn=<name>,ou=users,o=<networ name>` are mapped
+  to `cn=<name>,ou=people,<basedn>`.
+
+The server is currently configured to request and verify client certificates,
+but to allow connections without a client certificate.  The server is also
+currently configured to allow plaintext as well as SSL connections.  All
+services using the LDAP database should be issued machine-specific Kerberos
+service credentials and client certificates.
+
+#### TODOs
+
+The following are goals for this configuration, and will be implemented as soon
+as other configurations are updated:
+
+* Add host service entries, such as `cn=nslcd,cn=myhost,ou=hosts,<basedn>`,
+  configure GSSAPI authentication accordingly.
+* Finer-grained access permissions.
+* Disable certificate authentication.
+* Require client certificates for all connections.
+* Allow only SSL connections.
+* Replication across multiple machines.
+
+### PostgreSQL Servers
+
+A PostgreSQL server will be installed on any machine in the `db` group.  An SSL
+certificate and key must be created for the PostgreSQL server, and the Kerberos
+service principal must be stored in the keytab `postgres.keytab` in the server's
+data directory.
+
+The PostgreSQL server is configured to only allow SSL remote connections, and to
+authenticate with GSSAPI.  Note that database users must be created explicitly
+for any user wishing to authenticate, in addition to the Kerberos principal for
+that user.
+
+PostgreSQL conninfo strings can generally be used to supply the necessary
+arguments for proper SSL and authentication.
+
+#### TODOs
+
+The following are goals to be implemented:
+
+* Demand and verify client certificates for all SSL connections.
+* Disable certificate authentication.
+
 ## Personal Machines
 
 This section describes the configurations that take place on personal machines.
