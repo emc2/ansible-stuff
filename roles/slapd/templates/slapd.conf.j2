@@ -7,15 +7,15 @@ include         {{ ldap_config_dir }}/schema/postfix.schema
 include         {{ ldap_config_dir }}/schema/dnszone.schema
 include         {{ ldap_config_dir }}/schema/automount.schema
 
-pidfile         /var/run/openldap/slapd.pid
-argsfile        /var/run/openldap/slapd.args
+pidfile         {{ slapd_run }}/slapd.pid
+argsfile        {{ slapd_run }}/slapd.args
 
-modulepath      /usr/local/libexec/openldap
+modulepath      {{ slapd_modules }}
 moduleload      back_mdb
 
 database        mdb
 suffix          "{{ ldap_base_dn }}"
-directory       /var/db/openldap-data
+directory       {{ slapd_data }}
 
 index           objectClass             eq
 index           uid                     eq
@@ -38,16 +38,34 @@ TLSCACertificateFile    {{ ssl_ca_cert }}
 
 include {{ slapd_access }}
 
+# Translate authentication into LDAP users
+
 authz-policy from
+
+# Translate admin/admin into the LDAP admin user
+
 authz-regexp "uid=admin/admin,cn={{ kerberos_realm }},cn=gssapi,cn=auth" "cn=admin,{{ ldap_base_dn }}"
 authz-regexp "uid=admin/admin,cn={{ kerberos_realm }},cn=gss-spnego,cn=auth" "cn=admin,{{ ldap_base_dn }}"
+
+# Translate host and service credentials into entries in hosts
+
 authz-regexp "uid=host/([^,]+).{{ kerberos_realm }},cn={{ network_name }},cn=gssapi,cn=auth" "cn=$1.{{ network_name }},ou=hosts,{{ ldap_base_dn }}"
 authz-regexp "uid=host/([^,]+).{{ kerberos_realm }},cn={{ network_name }},cn=gss-spnego,cn=auth" "cn=$1.{{ network_name }},ou=hosts,{{ ldap_base_dn }}"
 authz-regexp "uid=([^/,]+)/([^/\.,]+).{{ kerberos_realm }},cn={{ network_name}},cn=gssapi,cn=auth" "cn=$1,cn=$2.{{ network_name }},ou=hosts,{{ ldap_base_dn }}"
 authz-regexp "uid=([^/,]+)/([^/\.,]+).{{ kerberos_realm }},cn={{ network_name }},cn=gss-spnego,cn=auth" "cn=$1,cn=$2.{{ network_name }},ou=hosts,{{ ldap_base_dn }}"
+
+# Translate users into entries in people
+
 authz-regexp "uid=([^/.,]+),cn={{ kerberos_realm }},cn=gssapi,cn=auth" "cn=$1,ou=people,{{ ldap_base_dn }}"
 authz-regexp "uid=([^/.,]+),cn={{ kerberos_realm }},cn=gss-spnego,cn=auth" "cn=$1,ou=people,{{ ldap_base_dn }}"
-authz-regexp "cn=([^/\.]+).{{ network_name }},ou=hosts,o={{ network_name }}" "cn=$1.{{ network_name }},ou=hosts,{{ ldap_base_dn }}"
+
+# Translate host certs into entries in hosts
+
+authz-regexp "cn=([^/\.,]+).{{ network_name }},ou=hosts,o={{ network_name }}" "cn=$1.{{ network_name }},ou=hosts,{{ ldap_base_dn }}"
+
+# Translate user certs into entries in people
+
+authz-regexp "cn=([^/,]+),ou=users,o={{ network_name }}" "cn=$1,ou=people,{{ ldap_base_dn }}"
 
 sasl-host       {{ ansible_fqdn }}
 sasl-realm      {{ kerberos_realm }}

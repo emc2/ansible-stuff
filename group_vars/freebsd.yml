@@ -6,6 +6,7 @@ keytabs_dir: /etc/keytabs
 nonexistent_home: /nonexistent
 nologin_class: /usr/sbin/nologin
 local_config_dir: /usr/local/etc
+local_libexec_dir: /usr/local/libexec
 local_rc_dir: "{{ local_config_dir }}/rc.d"
 fontconfig_dir: "{{ local_config_dir }}/fonts"
 ssl_dir: "/etc/ssl"
@@ -33,6 +34,9 @@ slapd_key: "{{ ssl_keys_dir }}/{{ slapd_key_filename }}"
 slapd_keytab: "{{ keytabs_dir }}/ldap.keytab"
 slapd_access: "{{ ldap_config_dir }}/slapd.access"
 slapd_config: "{{ ldap_config_dir }}/slapd.conf"
+slapd_run: /var/run/openldap
+slapd_data: /var/db/openldap-data
+slapd_modules: "{{ local_libexec_dir }}/openldap"
 sasl_conf_dir: "/usr/local/lib/sasl2"
 sasl_mux: /var/run/saslauthd/mux
 nsswitch_conf: "/etc/nsswitch.conf"
