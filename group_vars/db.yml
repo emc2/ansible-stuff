@@ -1,0 +1,9 @@
+---
+postgres_ca_cert: "{{ postgres_data }}/root.crt"
+postgres_ca_crl: "{{ postgres_data }}/root.crl"
+postgres_cert: "{{ postgres_data }}/server.crt"
+postgres_key: "{{ postgres_data }}/server.key"
+postgres_hba: "{{ postgres_data }}/pg_hba.conf"
+postgres_keytab: "{{ postgres_data }}/postgres.keytab"
+postgres_conf: "{{ postgres_data }}/postgresql.conf"
+

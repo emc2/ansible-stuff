@@ -1,0 +1,92 @@
+# Ensure that postgres user and group exist
+
+- name: Create postgres group
+  group:
+    name="{{ postgres_group }}"
+    gid=389
+
+- name: Create postgres user
+  user:
+    name="{{ postgres_user }}"
+    uid=389
+    group="{{ postgres_group }}"
+    comment="PostgreSQL pseudo-user"
+    home="{{ postgres_home }}"
+    shell="/bin/sh"
+    system=yes
+
+# Copy certificate and key into place
+
+- name: Install CA cert
+    src=/etc/ssl/CA/certs/ca-cert.pem
+    dest="{{ postgres_ca_cert }}"
+    owner=root
+    group=wheel
+    mode=644
+
+- name: Install CA CRL
+    src=/etc/ssl/CA/crl/crl.pem
+    dest="{{ postgres_ca_crl }}"
+    owner=root
+    group=wheel
+    mode=644
+
+- name: Install postgres client certificate
+  copy:
+    src="/etc/ssl/CA/certs/{{ ansible_hostname }}-postgresql-cert.pem"
+    dest="{{ slapd_cert }}"
+    owner=root
+    group=wheel
+    mode=644
+
+- name: Install postgres client key
+  copy:
+    src="/etc/ssl/CA/private/{{ ansible_hostname }}-postgresql-key.pem"
+    dest="{{ slapd_key }}"
+    owner=root
+    group="{{ slapd_group }}"
+    mode=640
+
+- name: Check postgres keytab
+  file:
+    path="{{ postgres_keytab }}"
+    owner=root
+    group="{{ postgres_group }}"
+    mode=640
+
+# Set up the pg_hba.conf and postgresql.conf files
+
+- name: Create pg_hba.conf file
+  copy:
+    src=pg_hba.conf
+    dest="{{ postgres_hba }}"
+    owner=root
+    group=wheel
+    mode=644
+
+- name: Create postgresql.conf file
+  template:
+    src=postgres.conf.j2
+    dest="{{ postgres_config }}"
+    owner=root
+    group=wheel
+    mode=644
+
+# Enable postgresql is enabled in rc.conf and ensure the daemon is running.
+
+- name: Enable postgresql in rc.conf
+  lineinfile:
+    dest="{{ rc_conf }}"
+    regexp="^postgresql_enable="
+    line="postgresql_enable=YES"
+
+- name: Set postgresql_data
+  lineinfile:
+    dest="{{ rc_conf }}"
+    regexp="^postgresql_data="
+    line="postgresql_data={{ postgres_data }}"
+
+- name: Ensure postgresql is running
+  service:
+    name=postgresql
+    state=started
