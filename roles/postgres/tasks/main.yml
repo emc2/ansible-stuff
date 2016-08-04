@@ -36,7 +36,7 @@
 - name: Install postgres client certificate
   copy:
     src="/etc/ssl/CA/certs/{{ ansible_hostname }}-postgresql-cert.pem"
-    dest="{{ slapd_cert }}"
+    dest="{{ postgres_cert }}"
     owner=root
     group=wheel
     mode=644
@@ -44,9 +44,9 @@
 - name: Install postgres client key
   copy:
     src="/etc/ssl/CA/private/{{ ansible_hostname }}-postgresql-key.pem"
-    dest="{{ slapd_key }}"
+    dest="{{ postgres_key }}"
     owner=root
-    group="{{ slapd_group }}"
+    group="{{ postgres_group }}"
     mode=640
 
 - name: Check postgres keytab
