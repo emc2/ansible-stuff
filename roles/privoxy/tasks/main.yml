@@ -3,14 +3,14 @@
 - name: Create prioxy group
   group:
     name="{{ privoxy_group }}"
-    gid=256
+    gid=201
 
 - name: Create privoxy user
   user:
     name="{{ privoxy_user }}"
     group="{{ privoxy_group }}"
     comment="Privoxy proxy user"
-    uid=256
+    uid=201
     home="{{ nonexistent_home }}"
     shell="{{ nologin_class }}"
     system=yes
