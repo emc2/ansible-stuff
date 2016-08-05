@@ -11,7 +11,7 @@
     group="{{ privoxy_group }}"
     comment="Privoxy proxy user"
     uid=256
-    home="{{ nonexistent_dir }}"
+    home="{{ nonexistent_home }}"
     shell="{{ nologin_class }}"
     system=yes
 
