@@ -254,3 +254,18 @@ directory.  This file does a number of things:
 * Enable the autocomplete package
 * Enable and configure Haskell mode
 * Set up autocomplete for Haskell
+
+### X11 Configuration
+
+X11 configuration tends to be too highly system-dependent for any sort of
+universal configuration to be worthwhile.
+
+Some font configuration can be done, however.  The X11 task adds a few font
+configurations by symlinking from `fonts/conf.d` to `fonts/conf.avail`.  The
+following items are set up:
+
+* Turn on autohinting
+* Turn on subpixel rendering
+* Turn on LCD filtering (almost every monitor is LCD these days)
+* Enable Unicode fonts
+* Disable bitmap fonts
