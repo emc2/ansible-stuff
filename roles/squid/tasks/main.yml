@@ -3,12 +3,12 @@
 - name: Create squid group
   group:
     name="{{ squid_group }}"
-    gid=389
+    gid=100
 
 - name: Create squid user
   user:
     name="{{ squid_user }}"
-    uid=389
+    uid=100
     group="{{ squid_group }}"
     groups="{{ sasl_group }}"
     comment="squid caching proxy pseudo-user"
