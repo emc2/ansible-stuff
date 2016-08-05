@@ -1,6 +1,6 @@
 # enable kerberos authentication
-#auth_param negotiate program {{ squid_modules_dir }}/negotiate_kerberos_auth -s {{ squid_kerberos_principal }}
-auth_param basic program {{ squid_modules_dir }}/basic_sasl_auth
+#auth_param negotiate program {{ squid_modules }}/negotiate_kerberos_auth -s {{ squid_kerberos_principal }}
+auth_param basic program {{ squid_modules }}/basic_sasl_auth
 auth_param negotiate children 20 startup=0 idle=1
 auth_param negotiate keep_alive off
 
