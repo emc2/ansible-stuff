@@ -10,7 +10,7 @@ tls_key         {{ nslcd_key }}
 sasl_mech       GSSAPI
 sasl_realm      {{ kerberos_realm }}
 base            {{ ldap_base_dn }}
-base passwd     ou=people,{{ ldap_base_dn }}
-base group      ou=groups,{{ ldap_base_dn }}
-base hosts      ou=hosts,{{ ldap_base_dn }}
-base ethers     ou=hosts,{{ ldap_base_dn }}
+base passwd     {{ ldap_users_dn }}
+base group      {{ ldap_groups_dn }}
+base hosts      {{ ldap_hosts_dn }}
+base ethers     {{ ldap_hosts_dn }}

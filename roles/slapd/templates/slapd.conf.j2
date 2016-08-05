@@ -49,23 +49,23 @@ authz-regexp "uid=admin/admin,cn={{ kerberos_realm }},cn=gss-spnego,cn=auth" "cn
 
 # Translate host and service credentials into entries in hosts
 
-authz-regexp "uid=host/([^,]+).{{ kerberos_realm }},cn={{ network_name }},cn=gssapi,cn=auth" "cn=$1.{{ network_name }},ou=hosts,{{ ldap_base_dn }}"
-authz-regexp "uid=host/([^,]+).{{ kerberos_realm }},cn={{ network_name }},cn=gss-spnego,cn=auth" "cn=$1.{{ network_name }},ou=hosts,{{ ldap_base_dn }}"
-authz-regexp "uid=([^/,]+)/([^/\.,]+).{{ kerberos_realm }},cn={{ network_name}},cn=gssapi,cn=auth" "cn=$1,cn=$2.{{ network_name }},ou=hosts,{{ ldap_base_dn }}"
-authz-regexp "uid=([^/,]+)/([^/\.,]+).{{ kerberos_realm }},cn={{ network_name }},cn=gss-spnego,cn=auth" "cn=$1,cn=$2.{{ network_name }},ou=hosts,{{ ldap_base_dn }}"
+authz-regexp "uid=host/([^,]+).{{ kerberos_realm }},cn={{ network_name }},cn=gssapi,cn=auth" "cn=$1.{{ network_name }},{{ ldap_hosts_dn }}"
+authz-regexp "uid=host/([^,]+).{{ kerberos_realm }},cn={{ network_name }},cn=gss-spnego,cn=auth" "cn=$1.{{ network_name }},{{ ldap_hosts_dn }}"
+authz-regexp "uid=([^/,]+)/([^/\.,]+).{{ kerberos_realm }},cn={{ network_name}},cn=gssapi,cn=auth" "cn=$1,cn=$2.{{ network_name }},{{ ldap_hosts_dn }}"
+authz-regexp "uid=([^/,]+)/([^/\.,]+).{{ kerberos_realm }},cn={{ network_name }},cn=gss-spnego,cn=auth" "cn=$1,cn=$2.{{ network_name }},{{ ldap_hosts_dn }}"
 
 # Translate users into entries in people
 
-authz-regexp "uid=([^/.,]+),cn={{ kerberos_realm }},cn=gssapi,cn=auth" "cn=$1,ou=people,{{ ldap_base_dn }}"
-authz-regexp "uid=([^/.,]+),cn={{ kerberos_realm }},cn=gss-spnego,cn=auth" "cn=$1,ou=people,{{ ldap_base_dn }}"
+authz-regexp "uid=([^/.,]+),cn={{ kerberos_realm }},cn=gssapi,cn=auth" "cn=$1,{{ ldap_users_dn }}"
+authz-regexp "uid=([^/.,]+),cn={{ kerberos_realm }},cn=gss-spnego,cn=auth" "cn=$1,{{ ldap_users_dn }}"
 
 # Translate host certs into entries in hosts
 
-authz-regexp "cn=([^/\.,]+).{{ network_name }},ou=hosts,o={{ network_name }}" "cn=$1.{{ network_name }},ou=hosts,{{ ldap_base_dn }}"
+authz-regexp "cn=([^/\.,]+).{{ network_name }},ou=hosts,o={{ network_name }}" "cn=$1.{{ network_name }},{{ ldap_hosts_dn }}"
 
 # Translate user certs into entries in people
 
-authz-regexp "cn=([^/,]+),ou=users,o={{ network_name }}" "cn=$1,ou=people,{{ ldap_base_dn }}"
+authz-regexp "cn=([^/,]+),ou=people,o={{ network_name }}" "cn=$1,{{ ldap_users_dn }}"
 
 sasl-host       {{ ansible_fqdn }}
 sasl-realm      {{ kerberos_realm }}

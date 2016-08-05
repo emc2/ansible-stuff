@@ -188,8 +188,8 @@ Authentication and mapping to entries takes place as follows:
 * All other GSSAPI principals are mapped to `cn=<principal>,ou=people,<basedn>`.
 * Certificates with a subject of `cn=<fqhn>,ou=hosts,o=<network name>` are
   mapped to `cn=<hostname>,ou=hosts,<basedn>`
-* Certificates with a subject of `cn=<name>,ou=users,o=<networ name>` are mapped
-  to `cn=<name>,ou=people,<basedn>`.
+* Certificates with a subject of `cn=<name>,ou=people,o=<network name>` are
+  mapped to `cn=<name>,ou=people,<basedn>`.
 
 The server is currently configured to request and verify client certificates,
 but to allow connections without a client certificate.  The server is also
