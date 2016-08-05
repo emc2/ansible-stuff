@@ -5,3 +5,5 @@
   roles:
     - tor
     - privoxy
+    - saslauthd
+    - squid
