@@ -52,7 +52,30 @@ squid_group: squid
 squid_user: squid
 squid_config_dir: "{{ local_config_dir }}/squid"
 squid_data: /var/squid
+letsencrypt_cert_filename: "letsencrypt-cert.pem"
+letsencrypt_cert: "{{ ssl_certs_dir }}/{{ letsencrypt_cert_filename }}"
+letsencrypt_key_filename: "letsencrypt-key.pem"
+letsencrypt_key: "{{ ssl_keys_dir }}/{{ letsencrypt_key_filename }}"
+dovecot_group: dovecot
+dovecot_user: dovecot
+dovecot_login_group: dovenull
+dovecot_login_user: dovenull
+dovecot_ldap_cert_filename: "{{ ansible_hostname }}-dovecot-ldap-cert.pem"
+dovecot_ldap_cert: "{{ ssl_certs_dir }}/{{ dovecot_ldap_cert_filename }}"
+dovecot_ldap_key_filename: "{{ ansible_hostname }}-dovecot_ldap-key.pem"
+dovecot_ldap_key: "{{ ssl_keys_dir }}/{{ dovecot_ldap_key_filename }}"
+dovecot_mail_cert: "{{ ssl_certs_dir }}/imap-cert.pem"
+dovecot_mail_key: "{{ ssl_keys_dir }}/imap-key.pem"
+dovecot_config_dir: "{{ local_config_dir }}/dovecot"
+dovecot_config: "{{ dovecot_config_dir }}/dovecot.conf"
+dovecot_ldap_config: "{{ dovecot_config_dir }}/dovecot-ldap.conf"
+dovecot_run_dir: /var/run/dovecot
+dovecot_auth_socket: /var/spool/postfix/private/auth
+postfix_group: postfix
+postfix_user: postfix
+sendmain_bin: /usr/local/bin/sendmail
 nsswitch_conf: "/etc/nsswitch.conf"
+empty_dir: "/var/empty"
 kinit: /usr/bin/kinit
 ansible_python_interpreter: /usr/local/bin/python
 ansible_become_method: su

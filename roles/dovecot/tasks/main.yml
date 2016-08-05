@@ -1,0 +1,126 @@
+# Ensure that dovecot and dovenull users and groups exist
+
+- name: Create dovecot group
+  group:
+    name="{{ dovecot_group }}"
+    gid=143
+
+- name: Create dovecot user
+  user:
+    name="{{ dovecot_user }}"
+    uid=143
+    group="{{ dovecot_group }}"
+    comment="Dovecot user"
+    home="{{ empty_dir }}"
+    login_class="daemon"
+    shell="{{ nologin_class }}"
+    system=yes
+
+- name: Create dovenull group
+  group:
+    name="{{ dovecot_login_group }}"
+    gid=144
+
+- name: Create dovenull user
+  user:
+    name="{{ dovecot_login_user }}"
+    uid=144
+    group="{{ dovecot_login_group }}"
+    comment="Dovecot login user"
+    home="{{ empty_dir }}"
+    login_class="daemon"
+    shell="{{ nologin_class }}"
+    system=yes
+
+# Copy certificates and keys into place
+
+- name: Install ldap client certificate
+  copy:
+    src="/etc/ssl/CA/certs/{{ dovecot_ldap_cert_filename }}"
+    dest="{{ dovecot_ldap_cert }}"
+    owner=root
+    group=wheel
+    mode=644
+
+- name: Install ldap client key
+  copy:
+    src="/etc/ssl/CA/private/{{ dovecot_ldap_key_filename }}"
+    dest="{{ dovecol_ldap_key }}"
+    owner=root
+    group="{{ dovecot_group }}"
+    mode=640
+
+- name: Install mail certificate
+  copy:
+    src="/etc/ssl/CA/certs/{{ letsencrypt_cert_filename }}"
+    dest="{{ dovecot_cert }}"
+    owner=root
+    group=wheel
+    mode=644
+
+- name: Install mail key
+  copy:
+    src="/etc/ssl/CA/private/{{ letsencrypt_key_filename }}"
+    dest="{{ dovecol_key }}"
+    owner=root
+    group="{{ dovecot_group }}"
+    mode=640
+
+- name: Check dovecot keytab
+  file:
+    path="{{ dovecot_keytab }}"
+    owner=root
+    group="{{ dovecot_group }}"
+    mode=640
+
+# Set up the dovecot.conf and dovecot-ldap.conf files
+
+- name: Create dovecot-ldap.conf file
+  template:
+    src=dovecot-ldap.conf.j2
+    dest="{{ dovecot_ldap_config }}"
+    owner=root
+    group=wheel
+    mode=644
+
+- name: Create dovecot.conf file
+  template:
+    src=dovecot.conf.j2
+    dest="{{ dovecot_config }}"
+    owner=root
+    group=wheel
+    mode=644
+
+# Set up a cron job to periodically refresh the dovecot user's
+# Kerberos credentials
+
+- name: Add cron job to refresh nslcd user's credentials
+  cron:
+    name="Refresh dovecot Kerberos credentials"
+    minute="0"
+    hour="*/6"
+    user="{{ dovecot_user }}"
+    job="{{ kinit }} -k -t {{ dovecot_keytab }} {{ dovecot_principal }}"
+
+# Install a PAM configuration file identical to that of system for IMAP
+
+- name: Install IMAP PAM configuration
+  copy:
+    src=imap.pam
+    dest="{{ pam_dir }}/imap"
+    owner=root
+    group=wheel
+    mode=644
+
+# Enable dovecot is enabled in rc.conf and ensure the daemon is running.
+
+- name: Enable dovecot in rc.conf
+  lineinfile:
+    dest="{{ rc_conf }}"
+    regexp="^dovecot_enable="
+    line="dovecot_enable=YES"
+
+- name: Ensure dovecot is running
+  service:
+    name=dovecot
+    state=started

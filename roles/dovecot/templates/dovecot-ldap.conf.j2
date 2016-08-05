@@ -1,0 +1,11 @@
+uris = {{ ldap_server_uri }}
+sasl_bind = yes
+sasl_mech = GSSAPI
+tls_ca_cert_file = {{ ssl_ca_cert }}
+tls_cert_file = {{ dovecot_ldap_cert }}
+tls_key_file = {{ dovecot_ldap_key }}
+tls_require_cert = demand
+ldap_version = 3
+base = {{ ldap_users_dn }}
+user_attrs = homeDirectory=home,uidNumber=uid,gidNumber=gid
+user_filter = (&(objectClass=mailUser)(cn=%u))
