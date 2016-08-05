@@ -2,3 +2,8 @@
 tor_nickname: metricspace
 torrc: "{{ tor_config_dir }}/torrc"
 privoxy_config: "{{ privoxy_config_dir }}/config"
+squid_sasl_file: "{{ sasl_conf_dir }}/basic_sasl_auth.conf"
+squid_config: "{{ squid_config_dir }}/squid.conf"
+squid_kerberos_principal: "HTTP/{{ ansible_fqdn }}@{{ kerberos_realm }}"
+squid_keytab: "{{ keytabs_dir }}/squid.keytab"
+squid_modules: "{{ local_libexec_dir }}/squid"

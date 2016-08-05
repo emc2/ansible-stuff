@@ -48,6 +48,10 @@ privoxy_group: privoxy
 privoxy_user: privoxy
 privoxy_config_dir: "{{ local_config_dir }}/privoxy"
 privoxy_doc_dir: "/usr/local/share/doc/privoxy"
+squid_group: squid
+squid_user: squid
+squid_config_dir: "{{ local_config_dir }}/squid"
+squid_data: /var/squid
 nsswitch_conf: "/etc/nsswitch.conf"
 kinit: /usr/bin/kinit
 ansible_python_interpreter: /usr/local/bin/python
