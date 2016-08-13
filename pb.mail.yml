@@ -1,0 +1,7 @@
+- name: Mail server machines
+  hosts:
+    - mail
+  become: yes
+  roles:
+    - dovecot
+

@@ -1,69 +1,37 @@
-# Ensure that dovecot and dovenull users and groups exist
+# Ensure that maia user and group exist
 
-- name: Create dovecot group
+- name: Create maia group
   group:
-    name="{{ dovecot_group }}"
-    gid=143
+    name="{{ maia_group }}"
+    gid=110
 
-- name: Create dovecot user
+- name: Create maia user
   user:
-    name="{{ dovecot_user }}"
-    uid=143
-    group="{{ dovecot_group }}"
-    comment="Dovecot user"
-    home="{{ empty_dir }}"
+    name="{{ maia_user }}"
+    uid=110
+    group="{{ maia_group }}"
+    comment="Scanning Virus Account"
+    home="{{ maia_homedir }}"
     login_class="daemon"
-    shell="{{ nologin_class }}"
-    system=yes
-
-- name: Create dovenull group
-  group:
-    name="{{ dovecot_login_group }}"
-    gid=144
-
-- name: Create dovenull user
-  user:
-    name="{{ dovecot_login_user }}"
-    uid=144
-    group="{{ dovecot_login_group }}"
-    comment="Dovecot login user"
-    home="{{ empty_dir }}"
-    login_class="daemon"
-    shell="{{ nologin_class }}"
+    shell="/bin/sh"
     system=yes
 
 # Copy certificates and keys into place
 
-- name: Install ldap client certificate
+- name: Install postgres client certificate
   copy:
-    src="/etc/ssl/CA/certs/{{ dovecot_ldap_cert_filename }}"
-    dest="{{ dovecot_ldap_cert }}"
+    src="/etc/ssl/CA/certs/{{ maia_postgres_cert_filename }}"
+    dest="{{ maia_postgres_cert }}"
     owner=root
     group=wheel
     mode=644
 
-- name: Install ldap client key
+- name: Install postgres client key
   copy:
-    src="/etc/ssl/CA/private/{{ dovecot_ldap_key_filename }}"
-    dest="{{ dovecot_ldap_key }}"
+    src="/etc/ssl/CA/private/{{ maia_postgres_key_filename }}"
+    dest="{{ maia_postgres_key }}"
     owner=root
-    group="{{ dovecot_group }}"
-    mode=640
-
-- name: Install mail certificate
-  copy:
-    src="/etc/ssl/CA/certs/{{ letsencrypt_cert_filename }}"
-    dest="{{ dovecot_cert }}"
-    owner=root
-    group=wheel
-    mode=644
-
-- name: Install mail key
-  copy:
-    src="/etc/ssl/CA/private/{{ letsencrypt_key_filename }}"
-    dest="{{ dovecol_key }}"
-    owner=root
-    group="{{ dovecot_group }}"
+    group="{{ maia_group }}"
     mode=640
 
 - name: Check dovecot keytab
