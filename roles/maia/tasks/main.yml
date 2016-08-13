@@ -86,7 +86,7 @@
 
 - name: Enable clamav-clamd in rc.conf
   lineinfile:
-    dest="{{ rc.conf }}"
+    dest="{{ rc_conf }}"
     regexp="^clamav_clamd_enable="
     line="clamav_clamd_enable=YES"
 
