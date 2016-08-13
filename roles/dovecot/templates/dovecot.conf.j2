@@ -15,8 +15,8 @@ protocols = imap pop3 sieve
 ssl = required
 ssl_ca = <{{ ssl_ca_cert }}
 #ssl_crl = <{{ ssl_ca_crl }}
-ssl_cert = <{{ dovecot_cert }}
-ssl_key = <{{ dovecot_key }}
+ssl_cert = <{{ dovecot_mail_cert }}
+ssl_key = <{{ dovecot_mail_key }}
 verbose_proctitle = yes
 
 passdb {
