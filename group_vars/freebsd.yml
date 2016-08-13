@@ -76,10 +76,18 @@ maia_group: vscan
 maia_user: vscan
 maia_database_user: maia
 maia_homedir: /var/maiad
+maia_config_dir: "{{ local_config_dir }}/maia"
 maia_postgres_cert_filename: "{{ ansible_hostname }}-postgres-cert.pem"
 maia_postgres_cert: "{{ ssl_certs_dir }}/{{ maia_postgres_cert_filename }}"
 maia_postgres_key_filename: "{{ ansible_hostname }}-postgres-key.pem"
 maia_postgres_key: "{{ ssl_certs_dir }}/{{ maia_postgres_key_filename }}"
+maia_salearn: "/usr/local/bin/sa-learn"
+maia_local_cf_dir: "{{ local_config_dir }}/mail/spamassassin"
+maia_rules_dir: "/var/db/spamassassin"
+maia_scripts_dir: "/usr/local/share/maia/scripts"
+maia_run_dir: "/var/run/maia"
+maia_log_dir: "/var/log/maia"
+maia_keytab: "{{ keytabs_dir }}/maia.keytab"
 www_group: www
 www_user: www
 www_cert: "{{ ssl_certs_dir }}/https-cert.pem"

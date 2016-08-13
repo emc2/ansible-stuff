@@ -1,0 +1,170 @@
+use strict;
+$max_servers = 2;
+$daemon_user  = '{{ maia_user }}';
+$daemon_group = '{{ maia_group }}';
+$MYHOME = '/var/maiad';
+$daemon_chroot_dir = undef;
+$X_HEADER_TAG = 'X-Virus-Scanned';
+$X_HEADER_LINE = "Maia Mailguard";
+$mydomain = '{{ network_name }}';
+$myhostname = '{{ ansible_fqdn }}';
+$inet_socket_bind = '127.0.0.1'; 
+$inet_socket_port = 10024;
+@inet_acl = qw( 127.0.0.1 ::1 {{ maia_ipv4_addr }} {{ maia_ipv6_addr }} );
+$forward_method = 'smtp:[127.0.0.1]:10025';
+$log_level = 0;
+$DO_SYSLOG = 1;
+$SYSLOG_LEVEL = 'mail.debug';
+$LOGFILE = "/var/log/maia/maiad.log";
+@lookup_sql_dsn = ( ['DBI:Pg:dbname=maia;host={{ maia_db_host }}',
+                     '{{ maia_database_user }}', ''] );
+$enable_db = 1;
+$enable_global_cache = 1;
+$path = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/sbin:/usr/bin:/bin';
+$file        = '/usr/bin/file';   # file(1) utility; use recent versions
+$gzip        = 'gzip';
+$bzip2       = 'bzip2';
+$lzop        = 'lzop';
+$rpm2cpio    = ['rpm2cpio.pl','rpm2cpio'];
+$cabextract  = 'cabextract';
+$uncompress  = ['uncompress', 'gzip -d', 'zcat'];
+$unfreeze    = ['unfreeze', 'freeze -d', 'melt', 'fcat'];
+$arc         = ['nomarch', 'arc'];
+$unarj       = ['arj', 'unarj'];
+$unrar      = ['rar', 'unrar'];
+$zoo         = 'zoo';
+$lha         = 'lha';
+$cpio        = ['gcpio','cpio'];
+$ar          = 'ar';
+$dspam       = 'dspam';
+$pax         = 'pax';
+$ripole      = 'ripole';
+$MAXLEVELS = 14;
+$MAXFILES = 1500;
+$MIN_EXPANSION_QUOTA =      100*1024;
+$MAX_EXPANSION_QUOTA = 300*1024*1024;
+$defang_virus  = 1;
+$defang_banned = 1;
+$sa_spam_subject_tag = '[SPAM]';
+$sa_mail_body_size_limit = 512*1024;
+$sa_local_tests_only = 0;
+$sa_timeout = 60;
+$banned_filename_re = new_RE(
+# qr'^UNDECIPHERABLE$',  # is or contains any undecipherable components
+  qr'\.[^./]*\.(exe|vbs|pif|scr|bat|cmd|com|cpl|dll)\.?$'i,
+
+# qr'[{}]',      # curly braces in names (serve as Class ID extensions - CLSID)
+
+  qr'^application/x-msdownload$'i,                  # block these MIME types
+  qr'^application/x-msdos-program$'i,
+  qr'^application/hta$'i,
+  qr'^message/partial$'i, qr'^message/external-body$'i, # rfc2046 MIME types
+
+# [ qr'^\.(Z|gz|bz2)$'           => 0 ],  # allow any type in Unix-compressed
+# [ qr'^\.(rpm|cpio|tar)$'       => 0 ],  # allow any type in Unix archives
+# [ qr'^\.(zip|rar|arc|arj|zoo)$'=> 0 ],  # allow any type within such archives
+
+# qr'.\.(exe|vbs|pif|scr|bat|cmd|com|cpl)$'i, # banned extension - basic
+  qr'.\.(ade|adp|app|bas|bat|chm|cmd|com|cpl|crt|exe|fxp|hlp|hta|inf|ins|isp|
+         js|jse|lnk|mda|mdb|mde|mdw|mdt|mdz|msc|msi|msp|mst|ops|pcd|pif|prg|
+         reg|scr|sct|shb|shs|vb|vbe|vbs|wsc|wsf|wsh)$'ix,  # banned ext - long
+
+# qr'.\.(mim|b64|bhx|hqx|xxe|uu|uue)$'i,  # banned extension - WinZip vulnerab.
+
+  qr'^\.(exe-ms)$',                       # banned file(1) types
+  qr'^\.(exe|lha|cab|dll)$',              # banned file(1) types
+);
+@av_scanners = (
+
+# Clam Antivirus Daemon (clamd)
+['ClamAV-clamd',
+   \&ask_daemon, ["CONTSCAN {}\n", "/var/run/clamav/clamd.sock"],
+   qr/\bOK$/m, qr/\bFOUND$/m,
+   qr/^.*?: (?!Infected Archive)(.*) FOUND$/m ],
+# NOTE: run clamd under the same user as maiad, or run it under its own
+#       uid such as clamav, add user clamav to the maia group, and then
+#       add AllowSupplementaryGroups to clamd.conf;
+# NOTE: match the socket name (LocalSocket) in clamd.conf to the socket
+#       name in this entry;
+# NOTE: when running chrooted one may prefer socket "$MYHOME/clamd".
+
+);
+@av_scanners_backup = (
+
+# Clam Antivirus Command-Line Scanner (clamscan)
+['ClamAV-clamscan', 'clamscan',
+  "--stdout --no-summary -r --tempdir=$TEMPBASE {}",
+  [0], qr/:.*\sFOUND$/m, qr/^.*?: (?!Infected Archive)(.*) FOUND$/m ],
+
+);
+@viruses_that_fake_sender_maps = (new_RE(
+  [qr'\bEICAR\b'i => 0],  # an exception for the EICAR test 'virus'
+  [qr/.*/ => 1],          # true for everything else
+));
+@keep_decoded_original_maps = (new_RE(
+#  qr'^MAIL$',                # always scan the raw mail
+  qr'^MAIL-UNDECIPHERABLE$', # only if it contains undecipherables
+  qr'^(ASCII(?! cpio)|text|uuencoded|xxencoded|binhex)'i,
+));
+@non_malware_viruses_maps = (new_RE(
+
+   # ClamAV: main.cld, daily.cld
+   qr'^(Email|E-Mail)\.(Ecard|Faketube|FreeGame|PornTeaser)',
+   qr'^(Email|E-Mail)\.(Hoax|Phishing)\.',
+   qr'^(HTML|Heuristics)\.Phishing\.',
+
+   # Sanesecurity: junk.ndb
+   qr'^Sanesecurity\.Junk\.',
+
+   # Sanesecurity: jurlbl.ndb
+   qr'^Sanesecurity\.Jurlbl\.',
+
+   # Sanesecurity: jurlbla.ndb
+   qr'^Sanesecurity\.Jurlbl\.Auto\.',
+
+   # Sanesecurity: lott.ndb
+   qr'^Sanesecurity\.Lott\.',
+
+   # Sanesecurity: phish.ndb
+   qr'^Sanesecurity\.(Auction|Casino|Doc|Phishing)\.',
+   qr'^Sanesecurity\.(PhishingTestSig|TestSig_Type3_Bdy|TestSig_Type4_Bdy|TestSig_Type4_Hdr)',
+
+   # Sanesecurity: scam.ndb
+   qr'^Sanesecurity\.(Casino|Cred|Dipl|Hdr|Img|Img0|Job|Loan|Porn|Scam|Scam4|ScamL|Spam|Spam4|SpamL|Stk)\.',
+   qr'^Sanesecurity\.TestSig',
+
+   # Sanesecurity: spam.ldb
+   qr'^Sanesecurity\.Spam\.',
+
+   # Sanesecurity: spamattach.hdb
+   qr'^Sanesecurity\.SpamAttach\.',
+
+   # Sanesecurity: spamimg.hdb
+   qr'^Sanesecurity\.SpamImg\.',
+
+   # Sanesecurity: spear.ndb
+   qr'^Sanesecurity\.Spear\.',
+
+   # Sanesecurity: spearl.ndb
+   qr'^Sanesecurity\.SpearL\.',
+
+   # MSRBL: MSRBL-Images.hdb
+   qr'^MSRBL-Images\.[0-5,S]-',
+   qr'^MSRBL-Images.Test-',
+
+   # MSRBL: MSRBL-SPAM.hdb
+   qr'^MSRBL-SPAM\.',
+
+   # SecuriteInfo: securiteinfo.hdb
+   qr'^Email\.Spam\d+-SecuriteInfo\.com',
+
+   # Doppelstern: doppelstern.hdb
+   qr'^Doppelstern\.Attachment\.',
+
+   # Winnow: winnow_phish_complete_url.ndb
+   qr'^winnow\.(phish|scam)\.',
+));
+
+###########################################################################
+
+1;  # ensure a defined return

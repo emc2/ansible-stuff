@@ -43,18 +43,18 @@
 
 # Set up the dovecot.conf and dovecot-ldap.conf files
 
-- name: Create dovecot-ldap.conf file
+- name: Create maia.conf file
   template:
-    src=dovecot-ldap.conf.j2
-    dest="{{ dovecot_ldap_config }}"
+    src=maia.conf.j2
+    dest="{{ maia_config_dir }}/maia.conf"
     owner=root
     group=wheel
     mode=644
 
-- name: Create dovecot.conf file
+- name: Create maiad.conf file
   template:
-    src=dovecot.conf.j2
-    dest="{{ dovecot_config }}"
+    src=maiad.conf.j2
+    dest="{{ maia_config_dir }}/maiad.conf"
     owner=root
     group=wheel
     mode=644
@@ -62,33 +62,45 @@
 # Set up a cron job to periodically refresh the dovecot user's
 # Kerberos credentials
 
-- name: Add cron job to refresh nslcd user's credentials
+- name: Add cron job to refresh maiad user's credentials
   cron:
-    name="Refresh dovecot Kerberos credentials"
+    name="Refresh maia Kerberos credentials"
     minute="0"
     hour="*/6"
     user="{{ dovecot_user }}"
-    job="{{ kinit }} -k -t {{ dovecot_keytab }} {{ dovecot_principal }}"
+    job="{{ kinit }} -k -t {{ maia_keytab }} {{ maia_principal }}"
 
-# Install a PAM configuration file identical to that of system for IMAP
+# Enable maiad is enabled in rc.conf and ensure the daemon is running.
 
-- name: Install IMAP PAM configuration
-  copy:
-    src=imap.pam
-    dest="{{ pam_dir }}/imap"
-    owner=root
-    group=wheel
-    mode=644
-
-# Enable dovecot is enabled in rc.conf and ensure the daemon is running.
-
-- name: Enable dovecot in rc.conf
+- name: Enable maiad in rc.conf
   lineinfile:
     dest="{{ rc_conf }}"
-    regexp="^dovecot_enable="
-    line="dovecot_enable=YES"
+    regexp="^maiad_enable="
+    line="maiad_enable=YES"
 
-- name: Ensure dovecot is running
+- name: Enable clamav-freshclam in rc.conf
+  lineinfile:
+    dest="{{ rc_conf }}"
+    regexp="^clamav_freshclam_enable="
+    line="clamav_freshclam_enable=YES"
+
+- name: Enable clamav-clamd in rc.conf
+  lineinfile:
+    dest="{{ rc.conf }}"
+    regexp="^clamav_clamd_enable="
+    line="clamav_clamd_enable=YES"
+
+- name: Ensure maiad is running
   service:
-    name=dovecot
+    name=maiad
+    state=started
+
+- name: Ensure clamav-freshclam is running
+  service:
+    name=clamav-freshclam
+    state=started
+
+- name: Ensure clamav-clamd
+  service:
+    name=clamav-clamd
     state=started

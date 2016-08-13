@@ -1,0 +1,40 @@
+$dsn = 'DBI:Pg:dbname=maia;host={{ maia_db_host }};sslmode=verify-full;sslrootcert={{ ssl_ca_cert }};sslcrl={{ ssl_ca_crl }};sslcert={{ maia_postgres_cert }};sslkey={{ maia_postgres_key }}';
+$username = '{{ maia_database_user }}';
+$password = '';
+$script_dir = '{{ maia_scripts_dir }}';
+$sa_learn = '{{ maia_salearn }}';
+$address_rewriting_type = 0;
+$routing_domain = '{{ network_name }}';
+$auth_method = 'internal';
+$preserve_case = 0;
+$local_cf_dir = '{{ maia_local_cf_dir }}';
+$system_rules_dir = '{{ maia_rules_dir }}';
+$user_rules_dir = '{{ maia_homedir }}/.spamassassin';
+$pid_dir = '{{ maia_run_dir }}';
+$pq_log_level = 'info';
+$log_dir = '{{ maia_log_dir }}';
+$workers = 10;
+$key_file = undef;
+$default_max_size = 512*1024;
+$learning_options = 1;
+$autolearn_ham_threshold = undef;   # e.g. -5
+$autolearn_spam_threshold = undef;  # e.g. 10
+$autoreport_spam_threshold = undef; # e.g. 20
+$report_options = 1 + 2 + 4 + 8;
+$mail_types = 1 + 2 + 4 + 8 + 16;
+$base_url = '{{ maia_url }}';
+$template_dir = '{{ maia_config_dir }}/templates/';
+%sort = (
+            'ham'   => "score DESC",  # puts the high scores at the top
+            'spam'  => "score ASC",   # puts the low scores at the top
+            'virus' => "received_date DESC",
+            'attachment' => "received_date DESC",
+            'header'  => "received_date DESC",
+);
+$titles = { 'spam'        =>  "Spam Quarantine",
+            'virus'       =>  "Virus Quarantine",
+            'attachment' =>  "Banned File Attachments",
+            'header'  =>  "Invalid Email Headers",
+            'ham'         =>  "Delivered Email"
+};
+@report_order = ('spam','ham','virus','attachment','header');
