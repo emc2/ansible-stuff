@@ -62,7 +62,7 @@ dovecot_login_group: dovenull
 dovecot_login_user: dovenull
 dovecot_ldap_cert_filename: "{{ ansible_hostname }}-dovecot-ldap-cert.pem"
 dovecot_ldap_cert: "{{ ssl_certs_dir }}/{{ dovecot_ldap_cert_filename }}"
-dovecot_ldap_key_filename: "{{ ansible_hostname }}-dovecot_ldap-key.pem"
+dovecot_ldap_key_filename: "{{ ansible_hostname }}-dovecot-ldap-key.pem"
 dovecot_ldap_key: "{{ ssl_keys_dir }}/{{ dovecot_ldap_key_filename }}"
 dovecot_mail_cert: "{{ ssl_certs_dir }}/imap-cert.pem"
 dovecot_mail_key: "{{ ssl_keys_dir }}/imap-key.pem"
