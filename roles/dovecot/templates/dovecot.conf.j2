@@ -84,7 +84,7 @@ protocol pop3 {
 protocol lda {
   mail_plugins = sieve
   postmaster_address = postmaster@{{ network_name }}
-  sendmail_path = {{ sendmail-bin }}
+  sendmail_path = {{ sendmail_bin }}
 }
 
 protocol lmtp {
