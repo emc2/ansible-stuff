@@ -52,7 +52,7 @@
 
 - name: Install mail certificate
   copy:
-    src="/etc/ssl/CA/certs/{{ letsencrypt_cert_filename }}"
+    src="{{ letsencrypt_cert }}"
     dest="{{ dovecot_mail_cert }}"
     owner=root
     group=wheel
@@ -60,7 +60,7 @@
 
 - name: Install mail key
   copy:
-    src="/etc/ssl/CA/private/{{ letsencrypt_key_filename }}"
+    src="{{ letsencrypt_key }}"
     dest="{{ dovecot_mail_key }}"
     owner=root
     group="{{ dovecot_group }}"
