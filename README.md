@@ -232,6 +232,35 @@ The following are goals to be implemented:
 * Demand and verify client certificates for all SSL connections.
 * Disable certificate authentication.
 
+### Dovecot IMAP Servers
+
+A Dovecot IMAP server will be installed on any machine in the `mail` group.  The
+present configuration requires postfix servers to run on a machine alongside a
+Dovecot instance, so these are grouped into the same group for now (this can be
+changed without too much trouble, though).
+
+Dovecot will listen for both imaps and pop3s (both over SSL) as well as sieve
+connections.  Unencrypted connections are not allowed at all.  It supports
+authentication through GSSAPI, client certificates (though this is currently
+untested), and SASL for regular passwords.  SASL authentication uses PAM as its
+backend.  When combined with the Kerberos-based PAM configuration in this
+suite, this provides full support for a Kerberos/LDAP
+authentication/authorization scheme.
+
+Dovecot uses LDAP for authorization.  Usernames are mapped to LDAP entries of
+the form `cn=<name>,ou=people,<basedn>` of the object class `mailUser`.  These
+are expected to contain `uidNumber`, `gidNumber`, and `homeDirectory` attributes
+which tell Dovecot the corresponding user's user ID, primary group ID, and
+home directory respectively.
+
+*Note that Dovecot must have access to users' home directories in order to
+function!*  This is fundamental to the way Dovecot (and most other mail servers)
+work.  In a network setting, this is most easily achieved through NFS.
+
+#### TODOs
+
+* Test and possibly fix client certificate authentication settings.
+
 ## Personal Machines
 
 This section describes the configurations that take place on personal machines.
