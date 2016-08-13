@@ -94,7 +94,7 @@
 # Set up a cron job to periodically refresh the dovecot user's
 # Kerberos credentials
 
-- name: Add cron job to refresh nslcd user's credentials
+- name: Add cron job to refresh dovecot user's credentials
   cron:
     name="Refresh dovecot Kerberos credentials"
     minute="0"
