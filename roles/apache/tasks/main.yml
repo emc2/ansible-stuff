@@ -1,0 +1,65 @@
+;# Ensure that www user and group exist
+
+- name: Create www group
+  group:
+    name="{{ www_group }}"
+    gid=80
+
+- name: Create www user
+  user:
+    name="{{ www_user }}"
+    uid=80
+    group="{{ www_group }}"
+    comment="Dovecot user"
+    home="{{ nonexistent_home }}"
+    login_class="daemon"
+    shell="{{ nologin_class }}"
+    system=yes
+
+# Copy certificates and keys into place
+
+- name: Install https certificate
+  copy:
+    src="/etc/ssl/CA/certs/{{ letsencrypt_cert_filename }}"
+    dest="{{ www_cert }}"
+    owner=root
+    group=wheel
+    mode=644
+
+- name: Install https key
+  copy:
+    src="/etc/ssl/CA/private/{{ letsencrypt_key_filename }}"
+    dest="{{ www_key }}"
+    owner=root
+    group="{{ www_group }}"
+    mode=640
+
+- name: Check https keytab
+  file:
+    path="{{ www_keytab }}"
+    owner=root
+    group="{{ www_group }}"
+    mode=640
+
+# Set up the dovecot.conf and dovecot-ldap.conf files
+
+- name: Create httpd.conf file
+  template:
+    src=httpd.conf.j2
+    dest="{{ www_config }}"
+    owner=root
+    group=wheel
+    mode=644
+
+# Enable apache is enabled in rc.conf and ensure the daemon is running.
+
+- name: Enable apache in rc.conf
+  lineinfile:
+    dest="{{ rc_conf }}"
+    regexp="^apache_enable="
+    line="apache_enable=YES"
+
+- name: Ensure dovecot is running
+  service:
+    name=apache
+    state=started

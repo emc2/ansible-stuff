@@ -1,0 +1,329 @@
+ServerRoot "{{ www_prefix }}"
+
+LoadModule authn_core_module libexec/apache24/mod_authn_core.so
+LoadModule authz_host_module libexec/apache24/mod_authz_host.so
+LoadModule authz_user_module libexec/apache24/mod_authz_user.so
+LoadModule authz_core_module libexec/apache24/mod_authz_core.so
+LoadModule access_compat_module libexec/apache24/mod_access_compat.so
+LoadModule auth_basic_module libexec/apache24/mod_auth_basic.so
+LoadModule reqtimeout_module libexec/apache24/mod_reqtimeout.so
+LoadModule filter_module libexec/apache24/mod_filter.so
+LoadModule mime_module libexec/apache24/mod_mime.so
+LoadModule log_config_module libexec/apache24/mod_log_config.so
+LoadModule env_module libexec/apache24/mod_env.so
+LoadModule headers_module libexec/apache24/mod_headers.so
+LoadModule setenvif_module libexec/apache24/mod_setenvif.so
+LoadModule version_module libexec/apache24/mod_version.so
+LoadModule mpm_prefork_module libexec/apache24/mod_mpm_prefork.so
+LoadModule unixd_module libexec/apache24/mod_unixd.so
+LoadModule status_module libexec/apache24/mod_status.so
+LoadModule autoindex_module libexec/apache24/mod_autoindex.so
+LoadModule cgid_module libexec/apache24/mod_cgid.so
+LoadModule dir_module libexec/apache24/mod_dir.so
+LoadModule alias_module libexec/apache24/mod_alias.so
+LoadModule rewrite_module libexec/apache24/mod_rewrite.so
+LoadModule auth_kerb_module libexec/apache24/mod_auth_kerb.so
+LoadModule ssl_module libexec/apache24/mod_ssl.so
+LoadModule jk_module libexec/apache24/mod_jk.so
+LoadModule socache_shmcb_module libexec/apache24/mod_socache_shmcb.so
+LoadModule php5_module        libexec/apache24/libphp5.so
+
+# Third party modules
+IncludeOptional etc/apache24/modules.d/[0-9][0-9][0-9]_*.conf
+ 
+<IfModule unixd_module>
+User {{ www_user }}
+Group {{ www_user }}
+</IfModule>
+
+Listen 80
+Listen 443
+
+JkWorkersFile   {{ www_config_dir }}/workers.properties
+JkShmFile       /var/run/mod_jk.shm
+JkLogFile       /var/log/httpd-mod_jk.log
+JkLogLevel      info
+JkLogStampFormat "[%a %b %d %H:%M:%S %Y] "
+
+ServerAdmin admin@{{ network_name }}
+
+Include etc/apache24/Includes/*.conf
+
+<Directory />
+    AllowOverride None
+    Order deny,allow
+    Require all denied
+    Deny from all
+</Directory>
+
+<Directory {{ www_virtual_host_dir }}/{{ network_name }}/>
+    Options Indexes FollowSymLinks
+    AllowOverride None
+    Order allow,deny
+    Require all granted
+    Allow from all
+</Directory>
+
+<Files ".ht*">
+    Require all denied
+</Files>
+
+<FilesMatch "^\.ht">
+    Order allow,deny
+    Deny from all
+    Satisfy All
+</FilesMatch>
+
+<FilesMatch "\.php$">
+    SetHandler application/x-httpd-php
+</FilesMatch>
+
+<FilesMatch "\.phps$">
+     SetHandler application/x-httpd-php-source
+</FilesMatch>
+
+<VirtualHost *:80>
+  ServerAdmin admin@{{ network_name }}
+  ServerName {{ ansible_fqdn }}
+  ServerAlias {{ ansible_fqdn }}
+  RewriteEngine On
+  RewriteCond %{HTTPS} off
+  RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+  DocumentRoot "{{ www_virtual_host_dir }}/{{ network_name }}/"
+</VirtualHost>
+
+<VirtualHost _default_:443>
+    DocumentRoot "{{ www_virtual_host_dir }}/{{ network_name }}/"
+    ServerName {{ ansible_fqhn }}:443
+    ServerAdmin admin@{{ network_name }}
+    ErrorLog "/var/log/httpd-error.log"
+    TransferLog "/var/log/httpd-access.log"
+#    JkMount /wiki/public/* publicwiki
+#    JkMount /wiki/private/* privatewiki
+#    JkMount /jenkins/* jenkins
+    SSLEngine on
+    SSLProtocol all -SSLv2
+    SSLCipherSuite HIGH
+    SSLCertificateFile "{{ www_cert }}"
+    SSLCertificateKeyFile "{{ www_key }}"
+    SSLCACertificateFile "{{ ssl_ca_cert }}"
+    SSLCARevocationFile "{{ ssl_ca_crl }}"
+    SSLCARevocationCheck chain
+    SSLVerifyClient optional
+    BrowserMatch "MSIE [2-5]" nokeepalive ssl-unclean-shutdown downgrade-1.0 force-response-1.0
+    Header always set Strict-Transport-Security "max-age=15768000"
+
+#    <Location /wiki/>
+#        AuthType Kerberos
+#        AuthName "Please enter your Kerberos password"
+#        KrbAuthRealms {{ kerberos_realm }}
+#        Krb5Keytab "{{ www_keytab }}"
+#        KrbMethodK5Passwd on
+#        KrbMethodNegotiate on
+#        KrbSaveCredentials on
+#        KrbLocalUserMapping on
+#        KrbAuthoritative on
+#        KrbVerifyKDC on
+#        KrbServiceName apache
+#        Require valid-user
+#    </Location>
+
+#    <Location /jenkins/>
+#        AuthType Kerberos
+#        AuthName "Please enter your Kerberos password"
+#        KrbAuthRealms {{ kerberos_realm }}
+#        Krb5Keytab "{{ www_keytab }}"
+#        KrbMethodK5Passwd on
+#        KrbMethodNegotiate on
+#        KrbSaveCredentials on
+#        KrbLocalUserMapping on
+#        KrbAuthoritative on
+#        KrbVerifyKDC on
+#        KrbServiceName apache
+#        Require valid-user
+#    </Location>
+
+#    <Location /jenkins/buildStatus/>
+#      Satisfy Any
+#      Allow from all
+#    </Location>
+
+#    <Location /jenkins/cli/>
+#      Satisfy Any
+#      Allow from all
+#    </Location>
+
+#    <Location /jenkins/ghprbhook/>
+#      Satisfy Any
+#      Allow from all
+#    </Location>
+
+#    <Location /jenkins/git/>
+#      Satisfy Any
+#      Allow from all
+#    </Location>
+
+#    <Location /jenkins/github-webhook/>
+#      Satisfy Any
+#      Allow from all
+#    </Location>
+
+#    <Location /jenkins/jnlpJars/>
+#      Satisfy Any
+#      Allow from all
+#    </Location>
+
+#    <Location /jenkins/whoAmI/>
+#      Satisfy Any
+#      Allow from all
+#    </Location>
+
+    <FilesMatch "\.(cgi|shtml|phtml|php)$">
+        SSLOptions +StdEnvVars
+    </FilesMatch>
+
+    <Directory "{{ www_prefix }}/www/apache24/cgi-bin">
+        SSLOptions +StdEnvVars
+    </Directory>
+    CustomLog "/var/log/httpd-ssl_request.log" "%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \"%r\" %b"
+
+</VirtualHost>
+
+ErrorLog "/var/log/httpd-error.log"
+
+<IfModule log_config_module>
+    LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
+    LogFormat "%h %l %u %t \"%r\" %>s %b" common
+
+    <IfModule logio_module>
+      # You need to enable mod_logio.c to use %I and %O
+      LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %I %O" combinedio
+    </IfModule>
+
+    CustomLog "/var/log/httpd-access.log" combined
+</IfModule>
+
+<IfModule mime_module>
+    TypesConfig etc/apache24/mime.types
+
+    AddEncoding         x-compress              .Z
+    AddEncoding         x-gzip                  .gz .tgz
+    AddType     application/x-gzip              .tgz
+    AddType     application/x-compress          .Z
+    AddType     application/x-gzip              .gz .tgz
+    AddType     application/x-x509-ca-cert      .crt
+    AddType     application/x-pkcs7-crl         .crl
+
+</IfModule>
+
+<IfModule ssl_module>
+    SSLRandomSeed startup builtin
+    SSLRandomSeed connect builtin
+    SSLPassPhraseDialog  builtin
+    SSLSessionCache        "shmcb:/var/run/ssl_scache(512000)"
+    SSLSessionCacheTimeout  300
+#    SSLMutex  "file:/var/run/ssl_mutex"
+    SSLProtocol             all -SSLv3 -TLSv1
+    SSLCipherSuite          ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!3DES:!MD5:!PSK
+    SSLHonorCipherOrder     on
+    SSLCompression          off
+    SSLSessionTickets       off
+
+    # OCSP Stapling, only in httpd 2.3.3 and later
+    SSLUseStapling          on
+    SSLStaplingResponderTimeout 5
+    SSLStaplingReturnResponderErrors off
+    SSLStaplingCache        shmcb:/var/run/ocsp(128000)
+
+</IfModule>
+
+DirectoryIndex index.html index.htm index.php
+
+<IfModule log_config_module>
+    #
+    # The following directives define some format nicknames for use with
+    # a CustomLog directive (see below).
+    #
+    LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
+    LogFormat "%h %l %u %t \"%r\" %>s %b" common
+
+    <IfModule logio_module>
+      # You need to enable mod_logio.c to use %I and %O
+      LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %I %O" combinedio
+    </IfModule>
+
+    #
+    # The location and format of the access logfile (Common Logfile Format).
+    # If you do not define any access logfiles within a <VirtualHost>
+    # container, they will be logged here.  Contrariwise, if you *do*
+    # define per-<VirtualHost> access logfiles, transactions will be
+    # logged therein and *not* in this file.
+    #
+    CustomLog "/var/log/httpd-access.log" common
+
+    #
+    # If you prefer a logfile with access, agent, and referer information
+    # (Combined Logfile Format) you can use the following directive.
+    #
+    #CustomLog "/var/log/httpd-access.log" combined
+</IfModule>
+
+<IfModule alias_module>
+    #
+    # Redirect: Allows you to tell clients about documents that used to 
+    # exist in your server's namespace, but do not anymore. The client 
+    # will make a new request for the document at its new location.
+    # Example:
+    # Redirect permanent /foo http://www.example.com/bar
+
+    #
+    # Alias: Maps web paths into filesystem paths and is used to
+    # access content that does not live under the DocumentRoot.
+    # Example:
+    # Alias /webpath /full/filesystem/path
+    #
+    # If you include a trailing / on /webpath then the server will
+    # require it to be present in the URL.  You will also likely
+    # need to provide a <Directory> section to allow access to
+    # the filesystem path.
+
+    #
+    # ScriptAlias: This controls which directories contain server scripts. 
+    # ScriptAliases are essentially the same as Aliases, except that
+    # documents in the target directory are treated as applications and
+    # run by the server when requested rather than as documents sent to the
+    # client.  The same rules about trailing "/" apply to ScriptAlias
+    # directives as to Alias.
+    #
+    ScriptAlias /cgi-bin/ "{{ www_prefix }}/www/apache24/cgi-bin/"
+
+</IfModule>
+
+<IfModule cgid_module>
+    #
+    # ScriptSock: On threaded servers, designate the path to the UNIX
+    # socket used to communicate with the CGI daemon of mod_cgid.
+    #
+    #Scriptsock cgisock
+</IfModule>
+
+#
+# "/usr/local/www/apache24/cgi-bin" should be changed to whatever your ScriptAliased
+# CGI directory exists, if you have that configured.
+#
+<Directory "{{ www_prefix }}/www/apache24/cgi-bin">
+    AllowOverride None
+    Options None
+    Require all granted
+</Directory>
+
+<IfModule setenvif_module>
+BrowserMatch "MSIE 10.0;" bad_DNT
+</IfModule>
+
+<IfModule headers_module>
+RequestHeader unset DNT env=bad_DNT
+</IfModule>
+
+Include etc/apache24/Includes/*.conf
+
