@@ -71,7 +71,7 @@ dovecot_config: "{{ dovecot_config_dir }}/dovecot.conf"
 dovecot_ldap_config: "{{ dovecot_config_dir }}/dovecot-ldap.conf"
 dovecot_run_dir: /var/run/dovecot
 dovecot_auth_socket: /var/spool/postfix/private/auth
-dovecot_keytab: "{{ keytabs_dir }}/imap.keytab"
+dovecot_keytab: "{{ keytabs_dir }}/dovecot.keytab"
 maia_group: vscan
 maia_user: vscan
 maia_database_user: maia
