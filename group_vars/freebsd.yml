@@ -105,7 +105,7 @@ www_prefix: "/usr/local"
 postfix_group: postfix
 postfix_user: postfix
 postfix_ldap_cert_filename: "{{ ansible_hostname }}-postfix-ldap-cert.pem"
-postfix_ldap_cert: "{[ ssl_certs_dir }}/{{ postfix_ldap_cert_filename }}"
+postfix_ldap_cert: "{{ ssl_certs_dir }}/{{ postfix_ldap_cert_filename }}"
 postfix_ldap_key_filename: "{{ ansible_hostname }}-postfix-ldap-key.pem"
 postfix_ldap_key: "{{ ssl_keys_dir }}/{{ postfix_ldap_key_filename }}"
 postfix_mail_cert: "{{ ssl_certs_dir }}/smtp-cert.pem"
