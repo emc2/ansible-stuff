@@ -99,7 +99,7 @@ www_config: "{{ www_config_dir }}/httpd.conf"
 www_prefix: "/usr/local"
 postfix_group: postfix
 postfix_user: postfix
-sendmail_bin: /usr/local/bin/sendmail
+sendmail_bin: /usr/local/sbin/sendmail
 nsswitch_conf: "/etc/nsswitch.conf"
 empty_dir: "/var/empty"
 kinit: /usr/bin/kinit
