@@ -260,6 +260,68 @@ work.  In a network setting, this is most easily achieved through NFS.
 #### TODOs
 
 * Test and possibly fix client certificate authentication settings.
+* Cipher suite configurations
+
+### Spamassassin/ClamAV/Maia
+
+The mail server compontents of the Maia mailguard system will be installed on
+any machine in the `mail` group.  This is very strongly coupled with the postfix
+server configuration, but is independent of the dovecot configuration.
+
+The clamav virus scanner will be set up with freshclam to periodically download
+new signatures.  The `maiad` daemon is also configured to run on the machine,
+and is connected to the postfix installation in the usual amavisd-style setup.
+The Maia components are configured to use the PostgreSQL database as their
+storage mechanism.  This allows the web frontend of the Maia system to live
+on a separate machine.
+
+The Maia components are configured to authenticate to the PostgreSQL database
+using the kerberos principal `maia`.  Client certificates must also be issued
+to communicate with the PostgreSQL database.
+
+*Note that Maia, clamav, and spamassassin require additional setup!*  The
+database user and database must be created, and other installation tasks must
+be performed (such as loading the spamassassin rules into the database).  Also
+note that the `maiad` perl script requires patching in order to work properly
+on FreeBSD.
+
+#### TODOs
+
+The following are remaining tasks on this configuration:
+
+* Extract patches against the FreeBSD port, and apply them automatically
+* Add some data to the PostgreSQL conninfo strings (notably CRLs)
+* See if the postfix/maia communications can be moved to UNIX sockets
+* Greylisting configuration
+
+### Postfix Mail System
+
+The postfix mail system will be installed on any machine in the `mail` group.
+This setup is strongly coupled to the Maia/Spamassassin/ClamAV setup, and is
+also coupled to the dovecot installation, though not as strongly.
+
+The postfix setup is configured with the usual three modes of authentication:
+GSSAPI, client certificates, and password authentication.  Password
+authentication uses dovecot as a backend, meaning that it ultimately checks
+against PAM, and therefore, Kerberos.  Authorization is done through LDAP,
+which searches for the user in `ou=people,<base dn>`.  Email addresses for
+a user are stored in the `mail` attribute (of which there can be any number),
+with the `maildrop` attribute denoting the user's "real" address.  This is
+used as a virtual alias map and an address canonicalization map by postfix.
+
+Postfix is configured to run mail through a local maiad instance, thereby
+performing spam filtering and virus checking on all incoming mail.  This is done
+through an amavisd-style setup, with a second smtpd instance that allows
+connections only from maiad.  The delivery agent uses dovecot's lda program to
+actually deliver mail.
+
+#### TODOs
+
+The following are remaining tasks on this configuration:
+
+* The configuration currently produces warnings about using legacy features.
+* See if the postfix/maia connections can be converted to use UNIX sockets
+* Cipher suite configurations
 
 ## Personal Machines
 
