@@ -1,6 +1,6 @@
 - name: Other non-server machines
   hosts:
-    - dns
+    - others
   become: yes
   roles:
     - ssh
