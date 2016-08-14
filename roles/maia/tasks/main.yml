@@ -66,16 +66,16 @@
     - setup
     - ssl
 
-- name: Check dovecot keytab
+- name: Check maia keytab
   file:
-    path="{{ dovecot_keytab }}"
+    path="{{ maia_keytab }}"
     owner=root
-    group="{{ dovecot_group }}"
+    group="{{ maia_group }}"
     mode=640
   tags:
     - setup
 
-# Set up the dovecot.conf and dovecot-ldap.conf files
+# Set up the maia.conf and maiad.conf files
 
 - name: Create maia.conf file
   template:
@@ -99,7 +99,7 @@
     - setup
     - config
 
-# Set up a cron job to periodically refresh the dovecot user's
+# Set up a cron job to periodically refresh the maia user's
 # Kerberos credentials
 
 - name: Add cron job to refresh maiad user's credentials
@@ -107,7 +107,7 @@
     name="Refresh maia Kerberos credentials"
     minute="0"
     hour="*/6"
-    user="{{ dovecot_user }}"
+    user="{{ maia_user }}"
     job="{{ kinit }} -k -t {{ maia_keytab }} {{ maia_principal }}"
   tags:
     - setup
