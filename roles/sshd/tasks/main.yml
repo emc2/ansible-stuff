@@ -5,4 +5,19 @@
     owner=root
     group=wheel
     mode=644
+  tags:
+    - setup
+    - config
+
+- name: Ensure sshd is running
+  service:
+    name=sshd
+    state=started
+
+- name: Restart sshd
+  service:
+    name=sshd
+    state=restart
+  tags:
+    - config
 

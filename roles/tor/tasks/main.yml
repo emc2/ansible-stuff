@@ -29,6 +29,7 @@
     group=wheel
     mode=644
   tags:
+    - setup
     - config
 
 # Enable tor in rc.conf and ensure the daemon is running.

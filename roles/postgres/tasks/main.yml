@@ -4,6 +4,8 @@
   group:
     name="{{ postgres_group }}"
     gid=70
+  tags:
+    - setup
 
 - name: Create postgres user
   user:
@@ -14,6 +16,8 @@
     home="{{ postgres_home }}"
     shell="/bin/sh"
     system=yes
+  tags:
+    - setup
 
 # Copy certificate and key into place
 
@@ -24,6 +28,9 @@
     owner=root
     group=wheel
     mode=644
+  tags:
+    - setup
+    - ssl
 
 - name: Install CA CRL
   copy:
@@ -32,6 +39,9 @@
     owner=root
     group=wheel
     mode=644
+  tags:
+    - setup
+    - ssl
 
 - name: Install postgres certificate
   copy:
@@ -40,6 +50,9 @@
     owner=root
     group=wheel
     mode=644
+  tags:
+    - setup
+    - ssl
 
 - name: Install postgres key
   copy:
@@ -48,6 +61,9 @@
     owner="{{ postgres_user }}"
     group="{{ postgres_group }}"
     mode=600
+  tags:
+    - setup
+    - ssl
 
 - name: Check postgres keytab
   file:
@@ -55,6 +71,8 @@
     owner=root
     group="{{ postgres_group }}"
     mode=640
+  tags:
+    - setup
 
 # Set up the pg_hba.conf and postgresql.conf files
 
@@ -65,6 +83,9 @@
     owner=root
     group=wheel
     mode=644
+  tags:
+    - setup
+    - config
 
 - name: Create postgresql.conf file
   template:
@@ -73,6 +94,9 @@
     owner=root
     group=wheel
     mode=644
+  tags:
+    - setup
+    - config
 
 # Enable postgresql is enabled in rc.conf and ensure the daemon is running.
 
@@ -81,14 +105,26 @@
     dest="{{ rc_conf }}"
     regexp="^postgresql_enable="
     line="postgresql_enable=YES"
+  tags:
+    - setup
 
 - name: Set postgresql_data
   lineinfile:
     dest="{{ rc_conf }}"
     regexp="^postgresql_data="
     line="postgresql_data={{ postgres_data }}"
+  tags:
+    - setup
 
 - name: Ensure postgresql is running
   service:
     name=postgresql
     state=started
+
+- name: Restart postresql
+  service:
+    name=postgresql
+    state=restart
+  tags:
+    - config
+    - ssl

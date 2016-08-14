@@ -1,9 +1,11 @@
 # Ensure that maia and clamav user and group exist
 
 - name: Create clamav group
-  group: 
+  group:
     name="{{ clamav_group }}"
     gid=106
+  tags:
+    - setup
 
 - name: Create clamav user
   user:
@@ -16,11 +18,15 @@
     login_class="daemon"
     shell="{{ nologin_class }}"
     system=yes
+  tags:
+    - setup
 
 - name: Create maia group
   group:
     name="{{ maia_group }}"
     gid=110
+  tags:
+    - setup
 
 - name: Create maia user
   user:
@@ -33,6 +39,8 @@
     login_class="daemon"
     shell="/bin/sh"
     system=yes
+  tags:
+    - setup
 
 # Copy certificates and keys into place
 
@@ -43,6 +51,9 @@
     owner=root
     group=wheel
     mode=644
+  tags:
+    - setup
+    - ssl
 
 - name: Install postgres client key
   copy:
@@ -51,6 +62,9 @@
     owner=root
     group="{{ maia_group }}"
     mode=640
+  tags:
+    - setup
+    - ssl
 
 - name: Check dovecot keytab
   file:
@@ -58,6 +72,8 @@
     owner=root
     group="{{ dovecot_group }}"
     mode=640
+  tags:
+    - setup
 
 # Set up the dovecot.conf and dovecot-ldap.conf files
 
@@ -68,6 +84,9 @@
     owner=root
     group=wheel
     mode=644
+  tags:
+    - setup
+    - config
 
 - name: Create maiad.conf file
   template:
@@ -76,6 +95,9 @@
     owner=root
     group=wheel
     mode=644
+  tags:
+    - setup
+    - config
 
 # Set up a cron job to periodically refresh the dovecot user's
 # Kerberos credentials
@@ -87,6 +109,8 @@
     hour="*/6"
     user="{{ dovecot_user }}"
     job="{{ kinit }} -k -t {{ maia_keytab }} {{ maia_principal }}"
+  tags:
+    - setup
 
 # Enable maiad is enabled in rc.conf and ensure the daemon is running.
 
@@ -95,30 +119,60 @@
     dest="{{ rc_conf }}"
     regexp="^maiad_enable="
     line="maiad_enable=YES"
+  tags:
+    - setup
 
 - name: Enable clamav-freshclam in rc.conf
   lineinfile:
     dest="{{ rc_conf }}"
     regexp="^clamav_freshclam_enable="
     line="clamav_freshclam_enable=YES"
+  tags:
+    - setup
 
 - name: Enable clamav-clamd in rc.conf
   lineinfile:
     dest="{{ rc_conf }}"
     regexp="^clamav_clamd_enable="
     line="clamav_clamd_enable=YES"
+  tags:
+    - setup
 
 - name: Ensure maiad is running
   service:
     name=maiad
     state=started
 
+- name: Restart maiad
+  service:
+    name=maiad
+    state=restart
+  tags:
+    - ssl
+    - config
+
 - name: Ensure clamav-freshclam is running
   service:
     name=clamav-freshclam
     state=started
 
-- name: Ensure clamav-clamd
+- name: Restart clamav-freshclam
+  service:
+    name=clamav-freshclam
+    state=restart
+  tags:
+    - ssl
+    - config
+
+- name: Ensure clamav-clamd is running
   service:
     name=clamav-clamd
     state=started
+
+- name: Restart clamav-clamd
+  service:
+    name=clamav-clamd
+    state=restart
+  tags:
+    - ssl
+    - config

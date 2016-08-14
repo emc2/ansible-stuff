@@ -7,6 +7,9 @@
     owner=root
     group=wheel
     mode=644
+  tags:
+    - setup
+    - config
 
 
 # Set up PAM to first authenticate against Kerberos, then the local UNIX
@@ -27,6 +30,9 @@
   with_items:
     - system
     - other
+  tags:
+    - setup
+    - config
 
 
 # Set up PAM to have su do Kerberos authentication.  This will allow any user
@@ -44,4 +50,6 @@
     owner=root
     group=wheel
     mode=644
-
+  tags:
+    - setup
+    - config

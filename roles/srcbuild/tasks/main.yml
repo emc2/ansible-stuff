@@ -7,6 +7,8 @@
     group=wheel
     mode=644
     state=touch
+  tags:
+    - setup
 
 - name: Ensure src.conf exists
   file:
@@ -15,6 +17,8 @@
     group=wheel
     mode=644
     state=touch
+  tags:
+    - setup
 
 # Have all builds use the -march=native option for building everything.
 
@@ -23,6 +27,8 @@
     dest=/etc/make.conf
     regexp="^CPUTYPE\?="
     line="CPUTYPE?=native"
+  tags:
+    - setup
 
 # Set up port builds to use LibreSSL instead of OpenSSL.  LibreSSL has a better
 # track record in terms of security, and it provides some better crypto options
@@ -74,3 +80,5 @@
     - WITHOUT_TALK
     - WITHOUT_TELNET
     - WITHOUT_VI
+  tags:
+    - setup

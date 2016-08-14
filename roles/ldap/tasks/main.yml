@@ -7,6 +7,9 @@
     owner=root
     group=wheel
     mode=644
+  tags:
+    - setup
+    - ssl
 
 - name: Install LDAP client key
   copy:
@@ -15,6 +18,9 @@
     owner=root
     group=wheel
     mode=640
+  tags:
+    - setup
+    - ssl
 
 - name: Install LDAP conifiguration file
   template:
@@ -23,3 +29,6 @@
     owner: root
     group: wheel
     mode: 644
+  tags:
+    - setup
+    - config

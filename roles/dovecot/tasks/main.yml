@@ -4,6 +4,8 @@
   group:
     name="{{ dovecot_group }}"
     gid=143
+  tags:
+    - setup
 
 - name: Create dovecot user
   user:
@@ -15,11 +17,15 @@
     login_class="daemon"
     shell="{{ nologin_class }}"
     system=yes
+  tags:
+    - setup
 
 - name: Create dovenull group
   group:
     name="{{ dovecot_login_group }}"
     gid=144
+  tags:
+    - setup
 
 - name: Create dovenull user
   user:
@@ -31,6 +37,8 @@
     login_class="daemon"
     shell="{{ nologin_class }}"
     system=yes
+  tags:
+    - setup
 
 # Copy certificates and keys into place
 
@@ -41,6 +49,9 @@
     owner=root
     group=wheel
     mode=644
+  tags:
+    - setup
+    - ssl
 
 - name: Install ldap client key
   copy:
@@ -49,6 +60,9 @@
     owner=root
     group="{{ dovecot_group }}"
     mode=640
+  tags:
+    - setup
+    - ssl
 
 - name: Install mail certificate
   copy:
@@ -57,6 +71,9 @@
     owner=root
     group=wheel
     mode=644
+  tags:
+    - setup
+    - ssl
 
 - name: Install mail key
   copy:
@@ -65,6 +82,9 @@
     owner=root
     group="{{ dovecot_group }}"
     mode=640
+  tags:
+    - setup
+    - ssl
 
 - name: Check dovecot keytab
   file:
@@ -72,6 +92,8 @@
     owner=root
     group="{{ dovecot_group }}"
     mode=640
+  tags:
+    - setup
 
 # Set up the dovecot.conf and dovecot-ldap.conf files
 
@@ -82,6 +104,9 @@
     owner=root
     group=wheel
     mode=644
+  tags:
+    - setup
+    - config
 
 - name: Create dovecot.conf file
   template:
@@ -90,6 +115,9 @@
     owner=root
     group=wheel
     mode=644
+  tags:
+    - setup
+    - config
 
 # Set up a cron job to periodically refresh the dovecot user's
 # Kerberos credentials
@@ -101,6 +129,8 @@
     hour="*/6"
     user="{{ dovecot_user }}"
     job="{{ kinit }} -k -t {{ dovecot_keytab }} {{ dovecot_principal }}"
+  tags:
+    - setup
 
 # Install a PAM configuration file identical to that of system for IMAP
 
@@ -111,6 +141,9 @@
     owner=root
     group=wheel
     mode=644
+  tags:
+    - setup
+    - config
 
 # Enable dovecot is enabled in rc.conf and ensure the daemon is running.
 
@@ -119,8 +152,18 @@
     dest="{{ rc_conf }}"
     regexp="^dovecot_enable="
     line="dovecot_enable=YES"
+  tags:
+    - setup
 
 - name: Ensure dovecot is running
   service:
     name=dovecot
     state=started
+
+- name: Restart dovecot
+  service:
+    name=dovecot
+    state=restart
+  tags:
+    - ssl
+    - config

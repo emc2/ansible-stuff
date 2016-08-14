@@ -3,6 +3,8 @@
     dest="{{ rc_conf }}"
     regexp="^saslauthd_enable="
     line="saslauthd_enable=YES"
+  tags:
+    - setup
 
 - name: Ensure saslauthd is running
   service:

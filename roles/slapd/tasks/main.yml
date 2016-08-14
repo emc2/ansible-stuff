@@ -4,6 +4,8 @@
   group:
     name="{{ slapd_group }}"
     gid=389
+  tags:
+    - setup
 
 - name: Create ldap user
   user:
@@ -16,6 +18,8 @@
     login_class="daemon"
     shell="{{ nologin_class }}"
     system=yes
+  tags:
+    - setup
 
 # Copy certificate and key into place
 
@@ -26,6 +30,9 @@
     owner=root
     group=wheel
     mode=644
+  tags:
+    - setup
+    - ssl
 
 - name: Install ldap client key
   copy:
@@ -34,6 +41,9 @@
     owner=root
     group="{{ slapd_group }}"
     mode=640
+  tags:
+    - setup
+    - ssl
 
 - name: Check slapd keytab
   file:
@@ -41,6 +51,8 @@
     owner=root
     group="{{ slapd_group }}"
     mode=640
+  tags:
+    - setup
 
 # Set up the slapd SASL config file.  This tells SASL to use saslauthd, where to
 # find the keytab, and where to find the mux.
@@ -52,6 +64,9 @@
     owner=root
     group=wheel
     mode=644
+  tags:
+    - setup
+    - config
 
 # Set up the slapd.conf and slapd.access files
 
@@ -62,6 +77,9 @@
     owner=root
     group=wheel
     mode=644
+  tags:
+    - setup
+    - config
 
 - name: Create slapd.conf file
   template:
@@ -70,6 +88,9 @@
     owner=root
     group=wheel
     mode=644
+  tags:
+    - setup
+    - config
 
 # Enable slapd is enabled in rc.conf and ensure the daemon is running.
 
@@ -78,20 +99,34 @@
     dest="{{ rc_conf }}"
     regexp="^slapd_enable="
     line="slapd_enable=YES"
+  tags:
+    - setup
 
 - name: Set slapd kerberos keytab
   lineinfile:
     dest="{{ rc_conf }}"
     regexp="^slapd_krb5_ktname"
     line="slapd_krb5_ktname={{ slapd_keytab }}"
+  tags:
+    - setup
 
 - name: Set slapd flags
   lineinfile:
     dest="{{ rc_conf }}"
     regexp="^slapd_flags="
     line="slapd_flags=\"-h 'ldapi:/// ldap:/// ldaps:///'\""
+  tags:
+    - setup
 
 - name: Ensure slapd is running
   service:
     name=slapd
     state=started
+
+- name: Restart slapd
+  service:
+    name=slapd
+    state=restart
+  tags:
+    - config
+    - ssl

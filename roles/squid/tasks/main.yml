@@ -4,6 +4,8 @@
   group:
     name="{{ squid_group }}"
     gid=100
+  tags:
+    - setup
 
 - name: Create squid user
   user:
@@ -16,6 +18,8 @@
     login_class="daemon"
     shell="{{ nologin_class }}"
     system=yes
+   tags:
+     - setup
 
 # Copy certificate and key into place
 
@@ -26,6 +30,9 @@
 #    owner=root
 #    group=wheel
 #    mode=644
+#  tags:
+#    - setup
+#    - ssl
 
 #- name: Install squid key
 #  copy:
@@ -34,6 +41,9 @@
 #    owner=root
 #    group="{{ squid_group }}"
 #    mode=640
+#  tags:
+#    - setup
+#    - ssl
 
 - name: Check squid keytab
   file:
@@ -41,6 +51,8 @@
     owner=root
     group="{{ squid_group }}"
     mode=640
+  tags:
+    - setup
 
 # Set up the squid SASL config file.  This tells SASL to use saslauthd, where to
 # find the keytab, and where to find the mux.
@@ -52,6 +64,9 @@
     owner=root
     group=wheel
     mode=644
+  tags:
+    - setup
+    - config
 
 # Set up the squid.conf file
 
@@ -62,6 +77,9 @@
     owner=root
     group=wheel
     mode=644
+  tags:
+    - setup
+    - config
 
 # Enable squid is enabled in rc.conf and ensure the daemon is running.
 
@@ -70,14 +88,26 @@
     dest="{{ rc_conf }}"
     regexp="^squid_enable="
     line="squid_enable=YES"
+  tags:
+    - setup
 
 - name: Set squid kerberos keytab
   lineinfile:
     dest="{{ rc_conf }}"
     regexp="^squid_krb5_ktname"
     line="squid_krb5_ktname={{ squid_keytab }}"
+  tags:
+    - setup
 
 - name: Ensure squid is running
   service:
     name=squid
     state=started
+
+- name: Restart squid
+  service:
+    name=squid
+    state=restart
+  tags:
+    - config
+    - ssl

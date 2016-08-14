@@ -5,4 +5,6 @@
     owner=root
     group=wheel
     mode=644
-
+  tags:
+    - config
+    - setup

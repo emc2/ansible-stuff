@@ -4,6 +4,8 @@
   group:
     name="{{ nslcd_group }}"
     gid=928
+  tags:
+    - setup
 
 - name: Create nslcd user
   user:
@@ -15,6 +17,8 @@
     login_class="daemon"
     shell="{{ nologin_class }}"
     system=yes
+  tags:
+    - setup
 
 # Copy certificate and key into place
 
@@ -25,6 +29,9 @@
     owner=root
     group=wheel
     mode=644
+  tags:
+    - setup
+    - ssl
 
 - name: Install nslcd client key
   copy:
@@ -33,6 +40,9 @@
     owner=root
     group="{{ nslcd_group }}"
     mode=640
+  tags:
+    - setup
+    - ssl
 
 - name: Check nslcd keytab
   file:
@@ -40,6 +50,8 @@
     owner=root
     group="{{ nslcd_group }}"
     mode=640
+  tags:
+    - setup
 
 # Set up the nslcd configuration file and nsswitch.conf files.
 
@@ -50,6 +62,9 @@
     owner=root
     group=wheel
     mode=644
+  tags:
+    - config
+    - setup
 
 - name: Add nsswitch.conf entries
   lineinfile:
@@ -59,6 +74,9 @@
   with_items:
     - passwd
     - group
+  tags:
+    - setup
+    - config
 
 # Set up a cron job to periodically refresh the nslcd user's
 # Kerberos credentials
@@ -70,6 +88,8 @@
     hour="*/6"
     user="{{ nslcd_user }}"
     job="{{ kinit }} -k -t {{ nslcd_keytab }} {{ nslcd_principal }}"
+  tags:
+    - setup
 
 # Enable nslcd in LDAP and ensure the daemon is running.
 
@@ -78,8 +98,18 @@
     dest="{{ rc_conf }}"
     regexp="^nslcd_enable="
     line="nslcd_enable=YES"
+  tags:
+    - setup
 
 - name: Ensure nslcd is running
   service:
     name=nslcd
     state=started
+
+- name: Restart nslcd
+  service:
+    name=nslcd
+    state=restart
+  tags:
+    - config
+    - ssl

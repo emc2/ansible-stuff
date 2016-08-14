@@ -4,6 +4,8 @@
   group:
     name="{{ privoxy_group }}"
     gid=201
+  tags:
+    - setup
 
 - name: Create privoxy user
   user:
@@ -14,6 +16,8 @@
     home="{{ nonexistent_home }}"
     shell="{{ nologin_class }}"
     system=yes
+  tags:
+    - setup
 
 # Set up the config files
 
@@ -24,6 +28,9 @@
     owner=root
     group=wheel
     mode=644
+  tags:
+    - config
+    - setup
 
 # Enable privoxy in rc.conf and ensure the daemon is running.
 
@@ -32,8 +39,17 @@
     dest="{{ rc_conf }}"
     regexp="^privoxy_enable="
     line="privoxy_enable=YES"
+  tags:
+    - setup
 
 - name: Ensure privoxy is running
   service:
     name=privoxy
     state=started
+
+- name: Restart privoxy
+  service:
+    name=privoxy
+    state=restart
+  tags:
+    - config

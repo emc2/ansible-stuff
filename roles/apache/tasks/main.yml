@@ -4,6 +4,8 @@
   group:
     name="{{ www_group }}"
     gid=80
+  tags:
+    - setup
 
 - name: Create www user
   user:
@@ -15,6 +17,8 @@
     login_class="daemon"
     shell="{{ nologin_class }}"
     system=yes
+  tags:
+    - setup
 
 # Copy certificates and keys into place
 
@@ -25,6 +29,9 @@
     owner=root
     group=wheel
     mode=644
+  tags:
+    - setup
+    - ssl
 
 - name: Install https key
   copy:
@@ -33,6 +40,9 @@
     owner=root
     group="{{ www_group }}"
     mode=640
+  tags:
+    - setup
+    - ssl
 
 - name: Check https keytab
   file:
@@ -40,6 +50,8 @@
     owner=root
     group="{{ www_group }}"
     mode=640
+  tags:
+    - setup
 
 # Set up the dovecot.conf and dovecot-ldap.conf files
 
@@ -50,6 +62,9 @@
     owner=root
     group=wheel
     mode=644
+  tags:
+    - config
+    - setup
 
 # Enable apache is enabled in rc.conf and ensure the daemon is running.
 
@@ -58,8 +73,18 @@
     dest="{{ rc_conf }}"
     regexp="^apache_enable="
     line="apache_enable=YES"
+  tags:
+    - setup
 
-- name: Ensure dovecot is running
+- name: Ensure apache is running
   service:
     name=apache
     state=started
+
+- name: Restart apache
+  service:
+    name=apache
+    state=restart
+  tags:
+    - config
+    - ssl
