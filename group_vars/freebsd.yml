@@ -37,7 +37,7 @@ slapd_run: /var/run/openldap
 slapd_data: /var/db/openldap-data
 sasl_conf_dir: "/usr/local/lib/sasl2"
 sasl_mux: /var/run/saslauthd/mux
-sasl_group: {{ mail_group }}
+sasl_group: "{{ mail_group }}"
 postgres_user: pgsql
 postgres_group: pgsql
 postgres_data: /var/db/pgsql
