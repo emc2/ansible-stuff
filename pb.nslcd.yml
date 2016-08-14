@@ -1,8 +1,0 @@
-- name: Machines with LDAP account information
-  hosts:
-    - mail
-    - www
-    - others
-  become: yes
-  roles:
-    - nslcd

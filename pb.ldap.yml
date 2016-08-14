@@ -3,16 +3,10 @@
     - ldap
   become: yes
   roles:
+    - ssh
+    - sshd
+    - kerberos
+    - ssl
     - saslauthd
+    - ldap
     - slapd
-
-- name: LDAP client machines
-  hosts:
-    - ldap
-    - mail
-    - www
-    - others
-  become: yes
-  roles:
-    - ldap
-

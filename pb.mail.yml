@@ -3,6 +3,12 @@
     - mail
   become: yes
   roles:
+    - ssh
+    - sshd
+    - kerberos
+    - ssl
+    - ldap
+    - nslcd
     - dovecot
     - maia
     - postfix

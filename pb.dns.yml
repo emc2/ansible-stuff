@@ -1,10 +1,9 @@
-- name: PostgreSQL server machines
+- name: DNS server machines
   hosts:
-    - db
+    - dns
   become: yes
   roles:
     - ssh
     - sshd
     - kerberos
     - ssl
-    - postgres

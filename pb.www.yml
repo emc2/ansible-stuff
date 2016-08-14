@@ -1,10 +1,12 @@
-- name: PostgreSQL server machines
+- name: Apache server machines
   hosts:
-    - db
+    - www
   become: yes
   roles:
     - ssh
     - sshd
     - kerberos
     - ssl
-    - postgres
+    - ldap
+    - nslcd
+    - apache

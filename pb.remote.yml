@@ -1,9 +1,9 @@
-- name: Basic machine setup
-  hosts: remote
-  become: yes
-  roles:
-    - ssh
-    - sshd
-    - kerberos
-    - ssl
-
+---
+- include: pb.kdc.yml
+- include: pb.ldap.yml
+- include: pb.dns.yml
+- include: pb.db.yml
+- include: pb.mail.yml
+- include: pb.www.yml
+- include: pb.proxy.yml
+- include: pb.others.yml

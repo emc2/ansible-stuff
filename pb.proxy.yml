@@ -3,6 +3,10 @@
     - proxy
   become: yes
   roles:
+    - ssh
+    - sshd
+    - kerberos
+    - ssl
     - tor
     - privoxy
     - saslauthd

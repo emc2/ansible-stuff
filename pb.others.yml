@@ -1,10 +1,11 @@
-- name: PostgreSQL server machines
+- name: Other non-server machines
   hosts:
-    - db
+    - dns
   become: yes
   roles:
     - ssh
     - sshd
     - kerberos
     - ssl
-    - postgres
+    - ldap
+    - nslcd
