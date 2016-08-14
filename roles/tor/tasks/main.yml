@@ -4,6 +4,8 @@
   group:
     name="{{ tor_group }}"
     gid=256
+  tags:
+    - setup
 
 - name: Create tor user
   user:
@@ -14,6 +16,8 @@
     home="{{ tor_data_dir }}"
     shell="{{ nologin_class }}"
     system=yes
+  tags:
+    - setup
 
 # Set up the torrc files
 
@@ -24,6 +28,8 @@
     owner=root
     group=wheel
     mode=644
+  tags:
+    - config
 
 # Enable tor in rc.conf and ensure the daemon is running.
 
@@ -32,8 +38,17 @@
     dest="{{ rc_conf }}"
     regexp="^tor_enable="
     line="tor_enable=YES"
+  tags:
+    - setup
 
 - name: Ensure tor is running
   service:
     name=tor
     state=started
+
+- name: Restart tor
+  service:
+    name=tor
+    state=restarted
+  tags:
+    - config
