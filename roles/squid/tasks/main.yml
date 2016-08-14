@@ -18,7 +18,7 @@
     login_class="daemon"
     shell="{{ nologin_class }}"
     system=yes
-   tags:
+  tags:
      - setup
 
 # Copy certificate and key into place
