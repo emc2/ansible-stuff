@@ -1,0 +1,48 @@
+queue_directory = {{ postfix_queue_dir }}
+command_directory = {{ local_sbin_dir }}
+daemon_directory = {{ postfix_daemon_dir }}
+data_directory = {{ postfix_data_dir }}
+mail_owner = {{ postfix_user }}
+myhostname = {{ ansible_fqhn }}
+mydomain = {{ network_name }}
+myorigin = {{ network_name }}
+mydestination = $myhostname, $mydomain, localhost.$mydomain, localhost, shadowsun.net
+unknown_local_recipient_reject_code = 550
+
+soft_bounce = no
+mynetworks_style = host
+in_flow_delay = 1s
+
+mailbox_command = {{ dovecot_libexec_dir }}/dovecot-lda -f "$SENDER" -a "$RECIPIENT"
+sendmail_path = {{ sendmail_bin }}
+newaliases_path = {{ sendmail_bin }}
+mailq_path = {{ sendmail_bin }}
+setgid_group = maildrop
+inet_protocols = all
+virtual_alias_maps = ldap:{{ postfix_ldap_config }}
+alias_maps = ldap:{{ postfix_ldap_config }}
+local_recipient_maps = ldap:{{ postfix_ldap_config }}
+masquerade_domains = {{ network_name }}
+
+smtpd_sender_restrictions = permit_sasl_authenticated, permit_mynetworks
+smtpd_recipient_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_non_fqdn_hostname, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unauth_destination, reject_unauth_pipelining, reject_invalid_hostname
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_security_options = noanonymous
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = private/auth
+smtpd_sasl_authenticated_header = yes
+smtpd_sasl_local_domain = {{ kerberos_realm }}
+broken_sasl_auth_clients = yes
+
+smtpd_use_tls = yes
+smtpd_tls_CAfile = {{ ssl_ca_cert }}
+smtpd_tls_key_file = {{ postfix_mail_key }}
+smtpd_tls_cert_file = {{ postfix_mail_cert }}
+smtpd_tls_ask_ccert = yes
+smtpd_tls_auth_only = yes
+smtpd_tls_loglevel = 0
+smtpd_tls_received_header = yes
+smtpd_tls_session_cache_timeout = 3600s
+tls_random_source = dev:/dev/urandom
+
+smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination

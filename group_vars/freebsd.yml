@@ -6,6 +6,7 @@ keytabs_dir: /etc/keytabs
 nonexistent_home: /nonexistent
 nologin_class: /usr/sbin/nologin
 local_config_dir: /usr/local/etc
+local_sbin_dir: /usr/local/sbin
 local_libexec_dir: /usr/local/libexec
 local_rc_dir: "{{ local_config_dir }}/rc.d"
 fontconfig_dir: "{{ local_config_dir }}/fonts"
@@ -15,6 +16,7 @@ ssl_keys_dir: "{{ ssl_dir }}/private"
 ssl_crl_dir: "{{ ssl_dir }}/crl"
 ssl_ca_cert: "{{ ssl_certs_dir}}/ca-cert.pem"
 ssl_ca_crl: "{{ ssl_crl_dir }}/crl.pem"
+mail_group: mail
 ldap_config_dir: "{{ local_config_dir }}/openldap"
 ldap_config_file: "{{ ldap_config_dir }}/ldap.conf"
 ldap_client_cert_filename: "{{ ansible_hostname }}-ldap-cert.pem"
@@ -35,7 +37,7 @@ slapd_run: /var/run/openldap
 slapd_data: /var/db/openldap-data
 sasl_conf_dir: "/usr/local/lib/sasl2"
 sasl_mux: /var/run/saslauthd/mux
-sasl_group: mail
+sasl_group: {{ mail_group }}
 postgres_user: pgsql
 postgres_group: pgsql
 postgres_data: /var/db/pgsql
@@ -72,6 +74,7 @@ dovecot_ldap_config: "{{ dovecot_config_dir }}/dovecot-ldap.conf"
 dovecot_run_dir: /var/run/dovecot
 dovecot_auth_socket: /var/spool/postfix/private/auth
 dovecot_keytab: "{{ keytabs_dir }}/dovecot.keytab"
+dovecot_libexec_dir: "{{ local_libexec_dir }}/dovecot"
 maia_group: vscan
 maia_user: vscan
 maia_database_user: maia
@@ -88,6 +91,8 @@ maia_scripts_dir: "/usr/local/share/maia/scripts"
 maia_run_dir: "/var/run/maia"
 maia_log_dir: "/var/log/maia"
 maia_keytab: "{{ keytabs_dir }}/maia.keytab"
+clamav_group: clamav
+clamav_user: clamav
 www_group: www
 www_user: www
 www_cert: "{{ ssl_certs_dir }}/https-cert.pem"
@@ -99,6 +104,22 @@ www_config: "{{ www_config_dir }}/httpd.conf"
 www_prefix: "/usr/local"
 postfix_group: postfix
 postfix_user: postfix
+postfix_ldap_cert_filename: "{{ ansible_hostname }}-postfix-ldap-cert.pem"
+postfix_ldap_cert: "{[ ssl_certs_dir }}/{{ postfix_ldap_cert_filename }}"
+postfix_ldap_key_filename: "{{ ansible_hostname }}-postfix-ldap-key.pem"
+postfix_ldap_key: "{{ ssl_keys_dir }}/{{ postfix_ldap_key_filename }}"
+postfix_mail_cert: "{{ ssl_certs_dir }}/smtp-cert.pem"
+postfix_mail_key: "{{ ssl_keys_dir }}/smtp-key.pem"
+postfix_config_dir: "{{ local_config_dir }}/postfix"
+postfix_daemon_dir: "{{ local_libexec_dir }}/postfix"
+postfix_queue_dir: /var/spool/postfix
+postfix_data_dir: /var/db/postfix
+postfix_keytab: "{{ keytabs_dir }}/postfix.keytab"
+postfix_config_dir: "{{ local_config_dir }}/postfix"
+postfix_master_config: "{{ postfix_config_dir }}/master.cf"
+postfix_main_config: "{{ postfix_config_dir }}/main.cf"
+postfix_ldap_config: "{{ postfix_config_dir }}/postfix-ldap.cf"
+mailer_config: "/etc/mail/mailer.conf"
 sendmail_bin: /usr/local/sbin/sendmail
 nsswitch_conf: "/etc/nsswitch.conf"
 empty_dir: "/var/empty"

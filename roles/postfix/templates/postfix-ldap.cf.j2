@@ -1,0 +1,13 @@
+server_host = {{ ldap_server_uri }}
+search_base = {{ ldap_users_dn }}
+version = 3
+bind = no
+sasl_mechs = GSSAPI
+sasl_realm = {{ kerberos_realm }}
+scope = sub
+query_filter = mail=%s@{{ network_name }}
+result_attribute = maildrop
+tls_ca_cert_file = {{ ssl_ca_cert }}
+tls_cert = {{ postfix_ldap_cert }}
+tls_key = {{ postfix_ldap_key }}
+tls_require_cert = yes

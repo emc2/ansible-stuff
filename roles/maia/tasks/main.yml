@@ -1,4 +1,21 @@
-# Ensure that maia user and group exist
+# Ensure that maia and clamav user and group exist
+
+- name: Create clamav group
+  group: 
+    name="{{ clamav_group }}"
+    gid=106
+
+- name: Create clamav user
+  user:
+    name="{{ clamav_user }}"
+    uid=106
+    group="{{ clamav_group }}"
+    groups="{{ mail_group }}"
+    comment="Clamav Antivirus"
+    home="{{ nonexistent_home }}"
+    login_class="daemon"
+    shell="{{ nologin_class }}"
+    system=yes
 
 - name: Create maia group
   group:
@@ -10,6 +27,7 @@
     name="{{ maia_user }}"
     uid=110
     group="{{ maia_group }}"
+    groups="{{ clamav_group }},{{ mail_group }}"
     comment="Scanning Virus Account"
     home="{{ maia_homedir }}"
     login_class="daemon"

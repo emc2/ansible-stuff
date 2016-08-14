@@ -1,0 +1,116 @@
+# Ensure that postfix user and group exist
+
+- name: Create postfix group
+  group:
+    name="{{ postfix_group }}"
+    gid=125
+
+- name: Create postfix user
+  user:
+    name="{{ postfix_user }}"
+    uid=125
+    group="{{ postfix_group }}"
+    comment="Postfix Mail System"
+    home="{{ postfix_queue_dir }}"
+    login_class="daemon"
+    shell="{{ nologin_class }}"
+    system=yes
+
+# Copy certificates and keys into place
+
+- name: Install ldap client certificate
+  copy:
+    src="/etc/ssl/CA/certs/{{ postfix_ldap_cert_filename }}"
+    dest="{{ postfix_ldap_cert }}"
+    owner=root
+    group=wheel
+    mode=644
+
+- name: Install ldap client key
+  copy:
+    src="/etc/ssl/CA/private/{{ postfix_ldap_key_filename }}"
+    dest="{{ postfix_ldap_key }}"
+    owner=root
+    group="{{ postfix_group }}"
+    mode=640
+
+- name: Install mail certificate
+  copy:
+    src="{{ letsencrypt_cert }}"
+    dest="{{ postfix_mail_cert }}"
+    owner=root
+    group=wheel
+    mode=644
+
+- name: Install mail key
+  copy:
+    src="{{ letsencrypt_key }}"
+    dest="{{ postfix_mail_key }}"
+    owner=root
+    group="{{ postfix_group }}"
+    mode=640
+
+- name: Check postfix keytab
+  file:
+    path="{{ postfix_keytab }}"
+    owner=root
+    group="{{ postfix_group }}"
+    mode=640
+
+# Set up the dovecot.conf and dovecot-ldap.conf files
+
+- name: Create master.cf file
+  template:
+    src=master.cf.j2
+    dest="{{ postfix_master_config }}"
+    owner=root
+    group=wheel
+    mode=644
+
+- name: Create main.cf
+  template:
+    src=main.cf.j2
+    dest="{{ postfix_main_config }}"
+    owner=root
+    group=wheel
+    mode=644
+
+- name: Create postfix-ldap.cf file
+  template:
+    src=postfix-ldap.cf.j2
+    dest="{{ postfix_ldap_config }}"
+    owner=root
+    group=wheel
+    mode=644
+
+- name: Create mailer.conf file
+  template:
+    src=mailer.conf.j2
+    dest="{{ mailer_config }}"
+    owner=root
+    group=wheel
+    mode=644
+
+# Set up a cron job to periodically refresh the postfix user's
+# Kerberos credentials
+
+- name: Add cron job to refresh postfix user's credentials
+  cron:
+    name="Refresh postfix Kerberos credentials"
+    minute="0"
+    hour="*/6"
+    user="{{ posfix_user }}"
+    job="{{ kinit }} -k -t {{ postfix_keytab }} {{ postfix_principal }}"
+
+# Enable postfix is enabled in rc.conf and ensure the daemon is running.
+
+- name: Enable postfix in rc.conf
+  lineinfile:
+    dest="{{ rc_conf }}"
+    regexp="^postfix_enable="
+    line="postfix_enable=YES"
+
+- name: Ensure postfix is running
+  service:
+    name=postfix
+    state=started
