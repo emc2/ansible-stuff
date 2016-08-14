@@ -115,7 +115,6 @@ postfix_daemon_dir: "{{ local_libexec_dir }}/postfix"
 postfix_queue_dir: /var/spool/postfix
 postfix_data_dir: /var/db/postfix
 postfix_keytab: "{{ keytabs_dir }}/postfix.keytab"
-postfix_config_dir: "{{ local_config_dir }}/postfix"
 postfix_master_config: "{{ postfix_config_dir }}/master.cf"
 postfix_main_config: "{{ postfix_config_dir }}/main.cf"
 postfix_ldap_config: "{{ postfix_config_dir }}/postfix-ldap.cf"
