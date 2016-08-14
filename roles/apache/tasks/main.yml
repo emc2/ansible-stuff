@@ -24,7 +24,7 @@
 
 - name: Install https certificate
   copy:
-    src="/etc/ssl/CA/certs/{{ letsencrypt_cert_filename }}"
+    src="{{ letsencrypt_cert }}"
     dest="{{ www_cert }}"
     owner=root
     group=wheel
@@ -35,7 +35,7 @@
 
 - name: Install https key
   copy:
-    src="/etc/ssl/CA/private/{{ letsencrypt_key_filename }}"
+    src="{{ letsencrypt_key }}"
     dest="{{ www_key }}"
     owner=root
     group="{{ www_group }}"
