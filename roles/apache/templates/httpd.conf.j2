@@ -94,7 +94,7 @@ Include etc/apache24/Includes/*.conf
 
 <VirtualHost _default_:443>
     DocumentRoot "{{ www_virtual_host_dir }}/{{ network_name }}/"
-    ServerName {{ ansible_fqhn }}:443
+    ServerName {{ ansible_fqdn }}:443
     ServerAdmin admin@{{ network_name }}
     ErrorLog "/var/log/httpd-error.log"
     TransferLog "/var/log/httpd-access.log"
