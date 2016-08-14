@@ -1,4 +1,4 @@
-;# Ensure that www user and group exist
+# Ensure that www user and group exist
 
 - name: Create www group
   group:
