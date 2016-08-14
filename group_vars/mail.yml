@@ -1,5 +1,6 @@
 ---
 dovecot_principal: "imap/{{ ansible_fqdn }}@{{ kerberos_realm }}"
+postfix_principal: "smtp/{{ ansible_fqdn }}@{{ kerberos_realm }}"
 maia_db_host: "higgs.metricspace.net"
 maia_url: "https://www.metricspace.net/maia"
 maia_principal: "maia@{{ kerberos_realm }}"
