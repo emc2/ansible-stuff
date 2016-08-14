@@ -107,7 +107,7 @@
 - name: Restart squid
   service:
     name=squid
-    state=restart
+    state=restarted
   tags:
     - config
     - ssl

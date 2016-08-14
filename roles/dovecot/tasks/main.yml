@@ -163,7 +163,7 @@
 - name: Restart dovecot
   service:
     name=dovecot
-    state=restart
+    state=restarted
   tags:
     - ssl
     - config

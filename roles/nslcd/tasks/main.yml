@@ -109,7 +109,7 @@
 - name: Restart nslcd
   service:
     name=nslcd
-    state=restart
+    state=restarted
   tags:
     - config
     - ssl

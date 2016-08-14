@@ -50,6 +50,6 @@
 - name: Restart privoxy
   service:
     name=privoxy
-    state=restart
+    state=restarted
   tags:
     - config

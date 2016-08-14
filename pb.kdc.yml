@@ -1,0 +1,9 @@
+- name: KDC machines
+  hosts:
+    - kdc
+  become: yes
+  roles:
+    - ssh
+    - sshd
+    - kerberos
+    - ssl

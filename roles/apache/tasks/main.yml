@@ -84,7 +84,7 @@
 - name: Restart apache
   service:
     name=apache
-    state=restart
+    state=restarted
   tags:
     - config
     - ssl

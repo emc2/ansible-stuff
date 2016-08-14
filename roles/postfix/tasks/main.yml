@@ -152,7 +152,7 @@
 - name: Restart postfix
   service:
     name=postfix
-    state=restart
+    state=restarted
   tags:
     - ssl
     - config

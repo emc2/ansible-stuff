@@ -124,7 +124,7 @@
 - name: Restart postresql
   service:
     name=postgresql
-    state=restart
+    state=restarted
   tags:
     - config
     - ssl
