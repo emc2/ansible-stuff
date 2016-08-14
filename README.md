@@ -209,6 +209,7 @@ as other configurations are updated:
 * Require client certificates for all connections.
 * Allow only SSL connections.
 * Replication across multiple machines.
+* Store SSH public keys in LDAP
 
 ### PostgreSQL Servers
 
@@ -360,3 +361,15 @@ following items are set up:
 * Turn on LCD filtering (almost every monitor is LCD these days)
 * Enable Unicode fonts
 * Disable bitmap fonts
+
+### General TODOs
+
+The following are components that are planned for the network:
+
+* FreeRADIUS configuration, along with a setup for WPA2 Enterprise
+* Logging to the PostgreSQL database
+* DNS with LDAP-based data
+* Kerberized NFSv4 with autofs
+* Jenkins build master and build agent configurations
+* Gitlab OSS
+
