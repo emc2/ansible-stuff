@@ -71,19 +71,19 @@
 - name: Enable apache in rc.conf
   lineinfile:
     dest="{{ rc_conf }}"
-    regexp="^apache_enable="
-    line="apache_enable=YES"
+    regexp="^apache_enable24="
+    line="apache_enable24=YES"
   tags:
     - setup
 
 - name: Ensure apache is running
   service:
-    name=apache
+    name=apache24
     state=started
 
 - name: Restart apache
   service:
-    name=apache
+    name=apache24
     state=restarted
   tags:
     - config
