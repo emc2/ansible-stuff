@@ -99,7 +99,7 @@
     name="Refresh postfix Kerberos credentials"
     minute="0"
     hour="*/6"
-    user="{{ posfix_user }}"
+    user="{{ postfix_user }}"
     job="{{ kinit }} -k -t {{ postfix_keytab }} {{ postfix_principal }}"
 
 # Enable postfix is enabled in rc.conf and ensure the daemon is running.
