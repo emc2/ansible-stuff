@@ -45,7 +45,7 @@
 
 - name: Install postgres certificate
   copy:
-    src="/etc/ssl/CA/certs/{{ ansible_hostname }}-postgresql-cert.pem"
+    src="/etc/ssl/CA/certs/{{ ansible_hostname }}-postgres-cert.pem"
     dest="{{ postgres_cert }}"
     owner=root
     group=wheel
@@ -56,7 +56,7 @@
 
 - name: Install postgres key
   copy:
-    src="/etc/ssl/CA/private/{{ ansible_hostname }}-postgresql-key.pem"
+    src="/etc/ssl/CA/private/{{ ansible_hostname }}-postgres-key.pem"
     dest="{{ postgres_key }}"
     owner="{{ postgres_user }}"
     group="{{ postgres_group }}"
