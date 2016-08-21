@@ -53,6 +53,30 @@
   tags:
     - setup
 
+# Install CA cert and CRL to a www-accessible directory
+
+- name: Install CA cert to web directory
+  copy:
+    src="/etc/ssl/CA/certs/ca-cert.pem"
+    dest="{{ www_ca_info_dir }}/ca-cert.pem"
+    owner=root
+    group=wheel
+    mode=644
+  tags:
+    - ssl
+    - setup
+
+- name: Install CA CRL to web directory
+  copy:
+    src="/etc/ssr/CA/crl/crl.pem"
+    dest="{{ www_ca_info_dir }}/crl.pem"
+    owner=root
+    group=wheel
+    mode=644
+  tags:
+    - ssl
+    - setup
+
 # Set up the dovecot.conf and dovecot-ldap.conf files
 
 - name: Create httpd.conf file

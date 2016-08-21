@@ -102,6 +102,8 @@ www_user: www
 www_cert: "{{ ssl_certs_dir }}/https-cert.pem"
 www_key: "{{ ssl_keys_dir }}/https-key.pem"
 www_virtual_host_dir: /var/www
+www_network_virtual_host_dir: "{{ www_virtual_host_dir }}/{{ network_name }}"
+www_ca_info_dir: "{{ www_network_virtual_host_dir }}/ca"
 www_keytab: "{{ keytabs_dir }}/apache.keytab"
 www_config_dir: "{{ local_config_dir }}/apache24"
 www_config: "{{ www_config_dir }}/httpd.conf"
