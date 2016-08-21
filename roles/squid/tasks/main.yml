@@ -23,27 +23,27 @@
 
 # Copy certificate and key into place
 
-#- name: Install squid certificate
-#  copy:
-#    src="/etc/ssl/CA/certs/{{ squid_cert_filename }}"
-#    dest="{{ squid_cert }}"
-#    owner=root
-#    group=wheel
-#    mode=644
-#  tags:
-#    - setup
-#    - ssl
+- name: Install squid certificate
+  copy:
+    src="/etc/ssl/CA/certs/{{ squid_cert_filename }}"
+    dest="{{ squid_cert }}"
+    owner=root
+    group=wheel
+    mode=644
+  tags:
+    - setup
+    - ssl
 
-#- name: Install squid key
-#  copy:
-#    src="/etc/ssl/CA/private/{{ squid_key_filename }}"
-#    dest="{{ squid_key }}"
-#    owner=root
-#    group="{{ squid_group }}"
-#    mode=640
-#  tags:
-#    - setup
-#    - ssl
+- name: Install squid key
+  copy:
+    src="/etc/ssl/CA/private/{{ squid_key_filename }}"
+    dest="{{ squid_key }}"
+    owner=root
+    group="{{ squid_group }}"
+    mode=640
+  tags:
+    - setup
+    - ssl
 
 - name: Check squid keytab
   file:

@@ -54,6 +54,10 @@ squid_group: squid
 squid_user: squid
 squid_config_dir: "{{ local_config_dir }}/squid"
 squid_data: /var/squid
+squid_cert_filename: "{{ ansible_hostname }}-squid-cert.pem"
+squid_cert: "{{ ssl_certs_dir }}/{{ squid_cert_filename }}"
+squid_key_filename: "{{ ansible_hostname }}-squid-key.pem"
+squid_key: "{{ ssl_keys_dir }}/{{ squid_key_filename }}"
 letsencrypt_cert_filename: "letsencrypt-cert.pem"
 letsencrypt_cert: "{{ ssl_certs_dir }}/{{ letsencrypt_cert_filename }}"
 letsencrypt_key_filename: "letsencrypt-key.pem"

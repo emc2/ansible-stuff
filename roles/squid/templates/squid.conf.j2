@@ -40,7 +40,7 @@ http_access allow auth
 http_access deny all
 
 # Squid normally listens to port 3128
-https_port 8080
+https_port 8080 key={{ squid_key }} cert={{ squid_cert }}
 
 # Uncomment and adjust the following to add a disk cache directory.
 cache_dir ufs {{ squid_data }}/cache 100 16 256
