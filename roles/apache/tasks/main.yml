@@ -68,7 +68,7 @@
 
 - name: Install CA CRL to web directory
   copy:
-    src="/etc/ssr/CA/crl/crl.pem"
+    src="/etc/ssl/CA/crl/crl.pem"
     dest="{{ www_ca_info_dir }}/crl.pem"
     owner=root
     group=wheel
