@@ -102,7 +102,7 @@ Include etc/apache24/Includes/*.conf
 #    JkMount /wiki/private/* privatewiki
 #    JkMount /jenkins/* jenkins
     SSLEngine on
-    SSLProtocol all -SSLv2 -SSLv3
+    SSLProtocol all -SSLv2 -SSLv3 -TLSv1
     SSLCipherSuite HIGH
     SSLCertificateFile "{{ www_cert }}"
     SSLCertificateKeyFile "{{ www_key }}"
