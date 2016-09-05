@@ -102,7 +102,7 @@ Include etc/apache24/Includes/*.conf
 #    JkMount /wiki/private/* privatewiki
 #    JkMount /jenkins/* jenkins
     SSLEngine on
-    SSLProtocol all -SSLv2
+    SSLProtocol all -SSLv2 -SSLv3
     SSLCipherSuite HIGH
     SSLCertificateFile "{{ www_cert }}"
     SSLCertificateKeyFile "{{ www_key }}"
@@ -223,7 +223,7 @@ ErrorLog "/var/log/httpd-error.log"
     SSLSessionCache        "shmcb:/var/run/ssl_scache(512000)"
     SSLSessionCacheTimeout  300
 #    SSLMutex  "file:/var/run/ssl_mutex"
-    SSLProtocol             all -SSLv3 -TLSv1
+    SSLProtocol             all -SSLv3 -SSLv2 -TLSv1
     SSLCipherSuite          ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!3DES:!MD5:!PSK
     SSLHonorCipherOrder     on
     SSLCompression          off
