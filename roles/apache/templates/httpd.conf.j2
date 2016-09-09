@@ -102,7 +102,7 @@ Include etc/apache24/Includes/*.conf
 #    JkMount /wiki/private/* privatewiki
 #    JkMount /jenkins/* jenkins
     SSLEngine on
-    SSLProtocol all -SSLv2 -SSLv3 -TLSv1
+    SSLProtocol all -SSLv2 -SSLv3
     SSLCipherSuite {{ openssl_ciphers }}
     SSLCertificateFile "{{ www_cert }}"
     SSLCertificateKeyFile "{{ www_key }}"
@@ -223,7 +223,7 @@ ErrorLog "/var/log/httpd-error.log"
     SSLSessionCache        "shmcb:/var/run/ssl_scache(512000)"
     SSLSessionCacheTimeout  300
 #    SSLMutex  "file:/var/run/ssl_mutex"
-    SSLProtocol             all -SSLv3 -SSLv2 -TLSv1
+    SSLProtocol             all -SSLv3 -SSLv2
     SSLCipherSuite          {{ openssl_ciphers }}
     SSLHonorCipherOrder     on
     SSLCompression          off
