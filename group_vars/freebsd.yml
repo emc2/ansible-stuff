@@ -128,7 +128,7 @@ mailer_config: "/etc/mail/mailer.conf"
 sendmail_bin: /usr/local/sbin/sendmail
 nsswitch_conf: "/etc/nsswitch.conf"
 empty_dir: "/var/empty"
-openssl_ciphers: "ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-CBC-SHA256:ECDHE-RSA-AES128-CBC-SHA256"
+openssl_ciphers: "ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES128-SHA"
 kinit: /usr/bin/kinit
 ansible_python_interpreter: /usr/local/bin/python
 ansible_become_method: su
