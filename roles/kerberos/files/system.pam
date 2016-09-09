@@ -7,5 +7,7 @@ account         required        pam_krb5.so
 account         required        pam_login_access.so
 account         required        pam_unix.so
 
+session		required	pam_lastlog.so		no_fail
+
 password        sufficient      pam_krb5.so             no_warn try_first_pass
 password        required        pam_unix.so             no_warn try_first_pass
