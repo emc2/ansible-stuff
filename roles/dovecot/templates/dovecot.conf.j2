@@ -17,6 +17,8 @@ ssl_ca = <{{ ssl_ca_cert }}
 #ssl_crl = <{{ ssl_ca_crl }}
 ssl_cert = <{{ dovecot_mail_cert }}
 ssl_key = <{{ dovecot_mail_key }}
+ssl_dh_parameters_length = 4096
+ssl_cipher_list = {{ openssl_ciphers }}
 verbose_proctitle = yes
 
 passdb {
