@@ -7,7 +7,7 @@ tls_reqcert     hard
 tls_cacertfile  {{ ssl_ca_cert }}
 tls_cert        {{ nslcd_cert }}
 tls_key         {{ nslcd_key }}
-tls_ciphers	{{ openssl_ciphers }}
+#tls_ciphers	{{ openssl_ciphers }}
 sasl_mech       GSSAPI
 sasl_realm      {{ kerberos_realm }}
 base            {{ ldap_base_dn }}
