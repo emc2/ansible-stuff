@@ -58,10 +58,14 @@ squid_cert_filename: "{{ ansible_hostname }}-squid-cert.pem"
 squid_cert: "{{ ssl_certs_dir }}/{{ squid_cert_filename }}"
 squid_key_filename: "{{ ansible_hostname }}-squid-key.pem"
 squid_key: "{{ ssl_keys_dir }}/{{ squid_key_filename }}"
-letsencrypt_cert_filename: "letsencrypt-cert.pem"
-letsencrypt_cert: "{{ ssl_certs_dir }}/{{ letsencrypt_cert_filename }}"
-letsencrypt_key_filename: "letsencrypt-key.pem"
-letsencrypt_key: "{{ ssl_keys_dir }}/{{ letsencrypt_key_filename }}"
+https_cert_filename: "www.{{ network_name }}-cert.pem"
+https_cert: "{{ ssl_certs_dir }}/{{ https_cert_filename }}"
+https_key_filename: "www.{{ network_name }}-key.pem"
+https_key: "{{ ssl_keys_dir }}/{{ https_key_filename }}"
+mail_cert_filename: "mail.{{ network_name }}-cert.pem"
+mail_cert: "{{ ssl_certs_dir }}/{{ mail_cert_filename }}"
+mail_key_filename: "mail.{{ network_name }}-key.pem"
+mail_key: "{{ ssl_keys_dir }}/{{ mail_key_filename }}"
 dovecot_group: dovecot
 dovecot_user: dovecot
 dovecot_login_group: dovenull
