@@ -24,7 +24,7 @@
 
 - name: Install https certificate
   copy:
-    src="{{ letsencrypt_cert }}"
+    src="{{ letsencrypt_www_cert }}"
     dest="{{ www_cert }}"
     owner=root
     group=wheel
@@ -35,7 +35,7 @@
 
 - name: Install https key
   copy:
-    src="{{ letsencrypt_key }}"
+    src="{{ letsencrypt_www_key }}"
     dest="{{ www_key }}"
     owner=root
     group="{{ www_group }}"

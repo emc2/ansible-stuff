@@ -46,7 +46,7 @@
 
 - name: Install mail certificate
   copy:
-    src="{{ letsencrypt_cert }}"
+    src="{{ letsencrypt_mail_cert }}"
     dest="{{ postfix_mail_cert }}"
     owner=root
     group=wheel
@@ -57,7 +57,7 @@
 
 - name: Install mail key
   copy:
-    src="{{ letsencrypt_key }}"
+    src="{{ letsencrypt_mail_key }}"
     dest="{{ postfix_mail_key }}"
     owner=root
     group="{{ postfix_group }}"
