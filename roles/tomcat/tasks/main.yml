@@ -88,12 +88,12 @@
 
 - name: Ensure tomcat is running
   service:
-    name=tomcat
+    name=tomcat8
     state=started
 
 - name: Restart tomcat
   service:
-    name=tomcat
+    name=tomcat8
     state=restarted
   tags:
     - config
