@@ -10,3 +10,4 @@
     - ldap
     - java_truststore
     - tomcat
+    - jenkins
