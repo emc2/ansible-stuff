@@ -24,7 +24,7 @@
   java_cert:
     cert_path: "{{ ssl_ca_cert }}"
     cert_alias: "{{ network_name }}"
-    keystore_path: "{{ ssl_ca_keystore_file }}"
+    keystore_path: "{{ ssl_ca_keystore }}"
     keystore_pass: "{{ ssl_ca_keystore_password }}"
     state: present
   tags:
