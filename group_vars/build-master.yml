@@ -1,0 +1,4 @@
+---
+manager_gui_group: "jenkins-manager-gui"
+manager_script_group: "jenkins-manager-script"
+manager_jmx_group: "jenkins-manager-jmx"
