@@ -20,9 +20,10 @@
     - setup
     - ssl
 
-- name: Import SSL certificate from google.com to a given cacerts keystore
+- name: Import SSL CA certificate into keystore
   java_cert:
     cert_path: "{{ ssl_ca_cert }}"
+    cert_alias: "{{ network_name }}"
     keystore_path: "{{ ssl_ca_keystore_file }}"
     keystore_pass: "{{ ssl_ca_keystore_password }}"
     state: present
