@@ -1,14 +1,14 @@
 com.sun.security.jgss.krb5.accept {
   com.sun.security.auth.module.Krb5LoginModule REQUIRED
     useKeyTab = true
-    keyTab = "{{ tomcat_keytab_path }}"
+    keyTab = "{{ tomcat_keytab }}"
     storeKey = true
     principal = "{{ tomcat_principal }}";
 };
 com.sun.security.jgss.krb5.initiate {
   com.sun.security.auth.module.Krb5LoginModule REQUIRED
     useKeyTab = true
-    keyTab = "{{ tomcat_keytab_path }}"
+    keyTab = "{{ tomcat_keytab }}"
     storeKey = true
     principal = "{{ tomcat_principal }}";
 };
