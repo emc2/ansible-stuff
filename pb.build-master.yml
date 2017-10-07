@@ -9,3 +9,4 @@
     - ssl
     - ldap
     - java_truststore
+    - tomcat
