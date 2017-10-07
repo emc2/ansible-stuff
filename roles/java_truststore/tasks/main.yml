@@ -10,6 +10,16 @@
     - setup
     - ssl
 
+- name: Create SSL directories
+  file:
+    path="{{ ssl_keystores_dir }}"
+    state=directory
+    owner=root
+    group=wheel
+    mode=755
+  tags:
+    - setup
+
 - name: Import SSL certificate from google.com to a given cacerts keystore
   java_cert:
     cert_path: "{{ ssl_ca_cert }}"
