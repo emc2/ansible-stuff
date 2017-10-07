@@ -1,0 +1,22 @@
+# Setup CA keystore for Java
+
+- name: Copying default cacerts keystore
+  copy:
+    src: "{{ openjdk_cacerts_keystore }}"
+    dest: "{{ ssl_ca_keystore }}"
+    remote_src: yes
+  tags:
+    - config
+    - setup
+    - ssl
+
+- name: Import SSL certificate from google.com to a given cacerts keystore
+  java_cert:
+    cert_path: "{{ ssl_ca_cert }}"
+    keystore_path: "{{ ssl_ca_keystore_file }}"
+    keystore_pass: "{{ ssl_ca_keystore_password }}"
+    state: present
+  tags:
+    - config
+    - setup
+    - ssl

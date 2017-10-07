@@ -10,12 +10,16 @@ local_sbin_dir: /usr/local/sbin
 local_libexec_dir: /usr/local/libexec
 local_rc_dir: "{{ local_config_dir }}/rc.d"
 fontconfig_dir: "{{ local_config_dir }}/fonts"
-ssl_dir: "/etc/ssl"
+ssl_dir: /etc/ssl
 ssl_certs_dir: "{{ ssl_dir }}/certs"
 ssl_keys_dir: "{{ ssl_dir }}/private"
+ssl_keystores_dir: "{{ ssl_dir }}/keystores"
 ssl_crl_dir: "{{ ssl_dir }}/crl"
 ssl_ca_cert: "{{ ssl_certs_dir}}/ca-cert.pem"
 ssl_ca_crl: "{{ ssl_crl_dir }}/crl.pem"
+ssl_ca_keystore_file: "ca.keystore"
+ssl_ca_keystore: "{{ ssl_keystores_dir }}/{{ ssl_ca_keystore_file }}"
+ssl_ca_keystore_password: "changeit"
 mail_group: mail
 ldap_config_dir: "{{ local_config_dir }}/openldap"
 ldap_config_file: "{{ ldap_config_dir }}/ldap.conf"
@@ -132,6 +136,14 @@ mailer_config: "/etc/mail/mailer.conf"
 sendmail_bin: /usr/local/sbin/sendmail
 nsswitch_conf: "/etc/nsswitch.conf"
 empty_dir: "/var/empty"
+tomcat_base_dir: "/usr/local/apache-tomcat-8.0"
+tomcat_user: www
+tomcat_group: www
+tomcat_uid: 80
+tomcat_gid: 80
+tomcat_principal: "tomcat/{{ ansible_hostname }}@{{ kerberos_realm }}"
+openjdk_dir: /usr/local/openjdk8
+openjdk_cacerts_keystore: "{{ openjdk_dir }}/jre/lib/security/cacerts"
 openssl_ciphers: "ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES128-SHA"
 kinit: /usr/bin/kinit
 ansible_python_interpreter: /usr/local/bin/python

@@ -1,0 +1,99 @@
+# Ensure that tomcat user and group exist
+
+- name: Create tomcat group
+  group:
+    name="{{ tomcat_group }}"
+    gid="{{ tomcat_gid }}"
+  tags:
+    - setup
+
+- name: Create tomcat user
+  user:
+    name="{{ tomcat_user }}"
+    group="{{ tomcat_group }}"
+    comment="Apache tomcat user"
+    uid="{{ tomcat_uid }}"
+    home="{{ nonexistent_home }}"
+    shell="{{ nologin_class }}"
+    system=yes
+  tags:
+    - setup
+
+# Set up the config files
+
+- name: Install login config file
+  template:
+    src="{{ tomcat_login_conf_template }}"
+    dest="{{ tomcat_login_conf }}"
+    owner=root
+    group=wheel
+    mode=644
+  tags:
+    - config
+    - setup
+
+- name: Install server.xml file
+  template:
+    src="{{ tomcat_server_xml_template }}"
+    dest="{{ tomcat_server_xml }}"
+    owner=root
+    group=wheel
+    mode=644
+  tags:
+    - config
+    - setup
+
+- name: Install context.xml file
+  copy:
+    src="{{ tomcat_context_xml_file }}"
+    dest="{{ tomcat_context_xml }}"
+    owner=root
+    group=wheel
+    mode=644
+  tags:
+    - config
+    - setup
+
+# Setup keystores
+
+- name: Install tomcat keystore file
+  copy:
+    src="{{ tomcat_keystore_file }}"
+    dest="{{ tomcat_keystore }}"
+    owner=root
+    group=wheel
+    mode=644
+  tags:
+    - config
+    - setup
+    - ssl
+
+# Enable tomcat in rc.conf and ensure it is running.
+
+- name: Enable tomcat in rc.conf
+  lineinfile:
+    dest="{{ rc_conf }}"
+    regexp="^tomcat8_enable="
+    line="tomcat8_enable=YES"
+  tags:
+    - setup
+
+- name: Set tomcat java options
+  lineinfile:
+    dest="{{ rc_conf }}"
+    regexp="^tomcat8_java_opts="
+    line="tomcat8_java_opts=\"{{ tomcat_java_opts }}\""
+  tags:
+    - setup
+
+- name: Ensure tomcat is running
+  service:
+    name=tomcat
+    state=started
+
+- name: Restart tomcat
+  service:
+    name=tomcat
+    state=restarted
+  tags:
+    - config

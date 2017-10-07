@@ -1,0 +1,11 @@
+- name: Jenkins master machines
+  hosts:
+    - build-master
+  become: yes
+  roles:
+    - ssh
+    - sshd
+    - kerberos
+    - ssl
+    - ldap
+    - java_truststore
