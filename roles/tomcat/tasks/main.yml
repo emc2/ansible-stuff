@@ -58,7 +58,7 @@
 
 - name: Install tomcat keystore file
   copy:
-    src="/etc/ssl/CA/keystores/{{ ansible_host }}-{{ tomcat_keystore_file }}"
+    src="/etc/ssl/CA/keystores/{{ ansible_hostname }}-{{ tomcat_keystore_file }}"
     dest="{{ tomcat_keystore }}"
     owner=root
     group=wheel
