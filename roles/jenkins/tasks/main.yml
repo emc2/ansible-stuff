@@ -1,0 +1,11 @@
+# Copy the jenkins.war file
+
+- name: Install jenkins.war into webapps dir
+  copy:
+    src: "{{ jenkins_war_install }}"
+    dest: "{{ tomcat_webapps_dir }}/{{ jenkins_war_file }}"
+    remote_src: yes
+  tags:
+    - config
+    - setup
+    - ssl
