@@ -65,6 +65,17 @@
     - config
     - setup
 
+- name: Install host-manager web.xml file
+  template:
+    src="{{ tomcat_host_manager_web_xml_template }}"
+    dest="{{ tomcat_host_manager_web_xml }}"
+    owner=root
+    group=wheel
+    mode=644
+  tags:
+    - config
+    - setup
+
 # Setup keystores
 
 - name: Install tomcat keystore file

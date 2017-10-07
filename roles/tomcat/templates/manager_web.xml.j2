@@ -155,7 +155,7 @@
        <role-name>{{ manager_gui_group }}</role-name>
        <role-name>{{ manager_script_group }}</role-name>
        <role-name>{{ manager_jmx_group }}</role-name>
-       <role-name>manager-status</role-name>
+       <role-name>{{ manager_status_group }}</role-name>
     </auth-constraint>
   </security-constraint>
 
@@ -188,7 +188,7 @@
     <description>
       The role that is required to access to the Manager Status pages
     </description>
-    <role-name>manager-status</role-name>
+    <role-name>{{ manager_status_group }}</role-name>
   </security-role>
 
   <error-page>
