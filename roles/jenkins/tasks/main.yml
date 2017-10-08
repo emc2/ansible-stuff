@@ -1,5 +1,16 @@
 # Copy the jenkins.war file
 
+- name: Install context.xml file
+  copy:
+    src="{{ jenkins_xml_template }}"
+    dest="{{ jenkins_xml }}"
+    owner=root
+    group=wheel
+    mode=644
+  tags:
+    - config
+    - setup
+
 - name: Install jenkins.war into webapps dir
   copy:
     src: "{{ jenkins_war_install }}"

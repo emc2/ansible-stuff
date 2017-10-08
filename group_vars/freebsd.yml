@@ -148,6 +148,7 @@ openjdk_cacerts_keystore: "{{ openjdk_dir }}/jre/lib/security/cacerts"
 openssl_ciphers: "ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES128-SHA"
 jenkins_war_file: "jenkins.war"
 jenkins_war_install: "{{ local_share_dir }}/jenkins/{{ jenkins_war_file }}"
+jenkins_home: "/var/run/jenkins"
 kinit: /usr/bin/kinit
 ansible_python_interpreter: /usr/local/bin/python
 ansible_become_method: su
