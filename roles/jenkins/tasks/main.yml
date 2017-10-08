@@ -1,6 +1,6 @@
 # Copy the jenkins.war file
 
-- name: Install context.xml file
+- name: Install jenkins context.xml file
   template:
     src="{{ jenkins_xml_template }}"
     dest="{{ jenkins_xml }}"
