@@ -105,7 +105,7 @@
 
 - name: Install tomcat https key
   copy:
-    src="/etc/ssl/CA/private/{{ tomcat_proxy_key_filename }}"
+    src="/etc/ssl/CA/private/{{ tomcat_proxy_key_file }}"
     dest="{{ tomcat_proxy_key }}"
     owner=root
     group="{{ tomcat_group }}"
