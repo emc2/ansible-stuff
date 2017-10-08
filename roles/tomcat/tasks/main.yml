@@ -90,6 +90,30 @@
     - setup
     - ssl
 
+# Copy https proxy certificate and key into place
+
+- name: Install tomcat https certificate
+  copy:
+    src="/etc/ssl/CA/certs/{{ tomcat_proxy_cert_file }}"
+    dest="{{ tomcat_proxy_cert }}"
+    owner=root
+    group=wheel
+    mode=644
+  tags:
+    - setup
+    - ssl
+
+- name: Install tomcat https key
+  copy:
+    src="/etc/ssl/CA/private/{{ tomcat_proxy_key_filename }}"
+    dest="{{ tomcat_proxy_key }}"
+    owner=root
+    group="{{ tomcat_group }}"
+    mode=640
+  tags:
+    - setup
+    - ssl
+
 # Enable tomcat in rc.conf and ensure it is running.
 
 - name: Enable tomcat in rc.conf

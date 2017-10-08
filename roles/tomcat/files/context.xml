@@ -1,4 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
 <Context>
-    <WatchedResource>WEB-INF/web.xml</WatchedResource>
+  <Resources cachingAllowed="true" cacheMaxSize="131072"/>
+  <WatchedResource>WEB-INF/web.xml</WatchedResource>
 </Context>
