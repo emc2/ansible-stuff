@@ -14,12 +14,12 @@
   </GlobalNamingResources>
 
   <Service name="Catalina">
-    <Connector port="8080" protocol="HTTP/1.1"
+    <Connector port="8080" protocol="HTTP/1.1" server="Apache"
                connectionTimeout="20000"
                redirectPort="8443" URIEncoding="UTF-8" />
 
     <Connector protocol="org.apache.coyote.http11.Http11AprProtocol"
-               port="8443" maxThreads="200"
+               port="8443" maxThreads="200" server="Apache"
                scheme="https" secure="true" SSLEnabled="true"
                SSLCertificateFile="{{ tomcat_proxy_cert }}"
                SSLCertificateKeyFile="{{ tomcat_proxy_key }}"

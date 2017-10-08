@@ -90,17 +90,6 @@
     - config
     - setup
 
-- name: Create workers.properties file
-  template:
-    src=workers.properties.j2
-    dest="{{ www_workers_properties }}"
-    owner=root
-    group=wheel
-    mode=644
-  tags:
-    - config
-    - setup
-
 # Enable apache is enabled in rc.conf and ensure the daemon is running.
 
 - name: Enable apache in rc.conf

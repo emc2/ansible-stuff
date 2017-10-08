@@ -24,12 +24,18 @@ LoadModule alias_module libexec/apache24/mod_alias.so
 LoadModule rewrite_module libexec/apache24/mod_rewrite.so
 LoadModule auth_kerb_module libexec/apache24/mod_auth_kerb.so
 LoadModule ssl_module libexec/apache24/mod_ssl.so
-LoadModule jk_module libexec/apache24/mod_jk.so
 LoadModule socache_shmcb_module libexec/apache24/mod_socache_shmcb.so
 LoadModule php5_module        libexec/apache24/libphp5.so
+LoadModule xml2enc_module libexec/apache24/mod_xml2enc.so
+LoadModule proxy_module libexec/apache24/mod_proxy.so
+LoadModule proxy_http_module libexec/apache24/mod_proxy_http.so
+LoadModule proxy_html_module libexec/apache24/mod_proxy_html.so
+LoadModule proxy_ajp_module libexec/apache24/mod_proxy_ajp.so
 
 # Third party modules
 IncludeOptional etc/apache24/modules.d/[0-9][0-9][0-9]_*.conf
+
+ServerTokens Prod
 
 <IfModule unixd_module>
 User {{ www_user }}
@@ -38,12 +44,6 @@ Group {{ www_user }}
 
 Listen 80
 Listen 443
-
-JkWorkersFile   {{ www_config_dir }}/workers.properties
-JkShmFile       /var/run/mod_jk.shm
-JkLogFile       /var/log/httpd-mod_jk.log
-JkLogLevel      info
-JkLogStampFormat "[%a %b %d %H:%M:%S %Y] "
 
 ServerAdmin admin@{{ network_name }}
 
@@ -86,10 +86,8 @@ Include etc/apache24/Includes/*.conf
   ServerAdmin admin@{{ network_name }}
   ServerName {{ ansible_fqdn }}
   ServerAlias {{ ansible_fqdn }}
-  RewriteEngine On
-  RewriteCond %{HTTPS} off
-  RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
-  DocumentRoot "{{ www_virtual_host_dir }}/{{ network_name }}/"
+  ProxyRequests Off
+  Redirect permanent / https://{{ ansible_fqdn }}/
 </VirtualHost>
 
 <VirtualHost _default_:443>
@@ -98,12 +96,7 @@ Include etc/apache24/Includes/*.conf
     ServerAdmin admin@{{ network_name }}
     ErrorLog "/var/log/httpd-error.log"
     TransferLog "/var/log/httpd-access.log"
-#    JkMount /wiki/public/* publicwiki
-#    JkMount /wiki/private/* privatewiki
-    JkMount /jenkins/* jenkins
     SSLEngine on
-    SSLProtocol all -SSLv2 -SSLv3
-    SSLCipherSuite {{ openssl_ciphers }}
     SSLCertificateFile "{{ www_cert }}"
     SSLCertificateKeyFile "{{ www_key }}"
     SSLCACertificateFile "{{ ssl_ca_cert }}"
@@ -113,70 +106,12 @@ Include etc/apache24/Includes/*.conf
     BrowserMatch "MSIE [2-5]" nokeepalive ssl-unclean-shutdown downgrade-1.0 force-response-1.0
     Header always set Strict-Transport-Security "max-age=15768000"
 
-#    <Location /wiki/>
-#        AuthType Kerberos
-#        AuthName "Please enter your Kerberos password"
-#        KrbAuthRealms {{ kerberos_realm }}
-#        Krb5Keytab "{{ www_keytab }}"
-#        KrbMethodK5Passwd on
-#        KrbMethodNegotiate on
-#        KrbSaveCredentials on
-#        KrbLocalUserMapping on
-#        KrbAuthoritative on
-#        KrbVerifyKDC on
-#        KrbServiceName apache
-#        Require valid-user
-#    </Location>
-
-#    <Location /jenkins/>
-#        AuthType Kerberos
-#        AuthName "Please enter your Kerberos password"
-#        KrbAuthRealms {{ kerberos_realm }}
-#        Krb5Keytab "{{ www_keytab }}"
-#        KrbMethodK5Passwd on
-#        KrbMethodNegotiate on
-#        KrbSaveCredentials on
-#        KrbLocalUserMapping on
-#        KrbAuthoritative on
-#        KrbVerifyKDC on
-#        KrbServiceName apache
-#        Require valid-user
-#    </Location>
-
-#    <Location /jenkins/buildStatus/>
-#      Satisfy Any
-#      Allow from all
-#    </Location>
-
-#    <Location /jenkins/cli/>
-#      Satisfy Any
-#      Allow from all
-#    </Location>
-
-#    <Location /jenkins/ghprbhook/>
-#      Satisfy Any
-#      Allow from all
-#    </Location>
-
-#    <Location /jenkins/git/>
-#      Satisfy Any
-#      Allow from all
-#    </Location>
-
-#    <Location /jenkins/github-webhook/>
-#      Satisfy Any
-#      Allow from all
-#    </Location>
-
-#    <Location /jenkins/jnlpJars/>
-#      Satisfy Any
-#      Allow from all
-#    </Location>
-
-#    <Location /jenkins/whoAmI/>
-#      Satisfy Any
-#      Allow from all
-#    </Location>
+    AllowEncodedSlashes NoDecode
+    ProxyPreserveHost On
+    ProxyPass        /jenkins http://build-master.metricspace.net:8080/jenkins nocanon
+    ProxyPassReverse /jenkins http://build-master.metricspace.net:8080/jenkins
+    RequestHeader set X-Forwarded-Proto "https"
+    RequestHeader set X-Forwarded-Port "443"
 
     <FilesMatch "\.(cgi|shtml|phtml|php)$">
         SSLOptions +StdEnvVars
@@ -222,7 +157,6 @@ ErrorLog "/var/log/httpd-error.log"
     SSLPassPhraseDialog  builtin
     SSLSessionCache        "shmcb:/var/run/ssl_scache(512000)"
     SSLSessionCacheTimeout  300
-#    SSLMutex  "file:/var/run/ssl_mutex"
     SSLProtocol             all -SSLv3 -SSLv2
     SSLCipherSuite          {{ openssl_ciphers }}
     SSLHonorCipherOrder     on
