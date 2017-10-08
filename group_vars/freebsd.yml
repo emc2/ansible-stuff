@@ -116,6 +116,7 @@ www_ca_info_dir: "{{ www_network_virtual_host_dir }}/ca"
 www_keytab: "{{ keytabs_dir }}/apache.keytab"
 www_config_dir: "{{ local_config_dir }}/apache24"
 www_config: "{{ www_config_dir }}/httpd.conf"
+www_workers_properties: "{{ www_config_dir }}/httpd.conf"
 www_prefix: "/usr/local"
 postfix_group: postfix
 postfix_user: postfix
