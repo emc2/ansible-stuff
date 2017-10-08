@@ -1,7 +1,7 @@
 # Copy the jenkins.war file
 
 - name: Install context.xml file
-  copy:
+  template:
     src="{{ jenkins_xml_template }}"
     dest="{{ jenkins_xml }}"
     owner=root
@@ -14,7 +14,7 @@
 - name: Install jenkins.war into webapps dir
   copy:
     src: "{{ jenkins_war_install }}"
-    dest: "{{ tomcat_webapps_dir }}/{{ jenkins_war_file }}"
+    dest: "{{ jenkins_war_deploy }}"
     remote_src: yes
   tags:
     - config
