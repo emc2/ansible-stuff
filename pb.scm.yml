@@ -1,0 +1,13 @@
+- name: SCM-Manager machines
+  hosts:
+    - scm
+  become: yes
+  roles:
+    - ssh
+    - sshd
+    - kerberos
+    - ssl
+    - ldap
+    - java_truststore
+    - tomcat
+
