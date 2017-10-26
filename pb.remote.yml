@@ -7,3 +7,5 @@
 - include: pb.www.yml
 - include: pb.proxy.yml
 - include: pb.others.yml
+- include: pb.build-master.yml
+- include: pb.scm.yml
