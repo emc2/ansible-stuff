@@ -1,0 +1,10 @@
+---
+manager_gui_group: "scm-tomcat-manager-gui"
+manager_script_group: "scm-tomcat-manager-script"
+manager_jmx_group: "scm-tomcat-manager-jmx"
+manager_status_group: "scm-tomcat-manager-status"
+admin_gui_group: "scm-tomcat-admin-gui"
+admin_script_group: "scm-tomcat-admin-script"
+admin_jmx_group: "scm-tomcat-admin-jmx"
+admin_status_group: "scm-tomcat-admin-status"
+
