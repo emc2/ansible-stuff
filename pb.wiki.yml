@@ -1,6 +1,6 @@
 - name: Wiki machines
   hosts:
-    - scm
+    - wiki
   become: yes
   roles:
     - ssh
