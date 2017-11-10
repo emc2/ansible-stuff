@@ -108,8 +108,8 @@ Include etc/apache24/Includes/*.conf
 
     AllowEncodedSlashes NoDecode
     ProxyPreserveHost On
-    ProxyPass        /jenkins http://build-master.metricspace.net:8080/jenkins nocanon
-    ProxyPassReverse /jenkins http://build-master.metricspace.net:8080/jenkins
+    ProxyPass        /{{ jenkins_path }} {{ jenkins_url }} nocanon
+    ProxyPassReverse /{{ jenkins_path }} {{ jenkins_url }}
     RequestHeader set X-Forwarded-Proto "https"
     RequestHeader set X-Forwarded-Port "443"
 

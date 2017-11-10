@@ -1,9 +1,9 @@
 ---
 ansible_become: true
-network_name: "metricspace.net"
-kerberos_realm: "METRICSPACE.NET"
+network_name: "example.com"
+kerberos_realm: "EXAMPLE.COM"
 primary_kdc: "kdc.{{ network_name }}"
-ldap_base_dn: "dc=metricspace,dc=net"
+ldap_base_dn: "dc=example,dc=com"
 ldap_users_dn: "ou=people,{{ ldap_base_dn }}"
 ldap_groups_dn: "ou=groups,{{ ldap_base_dn }}"
 ldap_hosts_dn: "ou=hosts,{{ ldap_base_dn }}"

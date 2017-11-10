@@ -1,8 +1,8 @@
 ---
 dovecot_principal: "dovecot/{{ ansible_fqdn }}@{{ kerberos_realm }}"
 postfix_principal: "postfix/{{ ansible_fqdn }}@{{ kerberos_realm }}"
-maia_db_host: "higgs.metricspace.net"
-maia_url: "https://www.metricspace.net/maia"
+maia_db_host: "CHANGE_ME.{{ network_name }}"
+maia_url: "https://www.{{ network_name }}/maia"
 maia_principal: "maia@{{ kerberos_realm }}"
 mail_ipv4_addr: ""
 mail_ipv6_addr: ""
