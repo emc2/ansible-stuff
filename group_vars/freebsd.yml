@@ -145,6 +145,10 @@ tomcat_group: www
 tomcat_uid: 80
 tomcat_gid: 80
 tomcat_principal: "tomcat/{{ ansible_hostname }}@{{ kerberos_realm }}"
+artifactory_dir: "{{ local_dir }}/artifactory"
+artifactory_install_war: "{{ artifactory_dir }}/webapps/{{ artifactory_war }}"
+artifactory_user: "{{ tomcat_user }}"
+artifactory_home: "/var/artifactory"
 openjdk_dir: /usr/local/openjdk8
 openjdk_cacerts_keystore: "{{ openjdk_dir }}/jre/lib/security/cacerts"
 openssl_ciphers: "ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES128-SHA"
@@ -154,6 +158,3 @@ jenkins_home: "/var/run/jenkins"
 kinit: /usr/bin/kinit
 ansible_python_interpreter: /usr/local/bin/python
 ansible_become_method: su
-artifactory_dir: "{{ local_dir }}/artifactory"
-artifactory_install_war: "{{ artifactory_dir }}/webapps/{{ artifactory_war }}"
-artifactory_user: "{{ tomcat_user }}"
