@@ -11,8 +11,8 @@
 
 - name: Install artifactory.war into webapps dir
   copy:
-    src: "{{ artifactory_war_install }}"
-    dest: "{{ artifactory_war_deploy }}"
+    src: "{{ artifactory_install_war }}"
+    dest: "{{ artifactory_deploy_war }}"
     remote_src: yes
   tags:
     - config
