@@ -10,4 +10,4 @@
     - ldap
     - java_truststore
     - tomcat
-
+    - artifactory
