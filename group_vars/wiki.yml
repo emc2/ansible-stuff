@@ -1,0 +1,10 @@
+---
+manager_gui_group: "wiki-tomcat-manager-gui"
+manager_script_group: "wiki-tomcat-manager-script"
+manager_jmx_group: "wiki-tomcat-manager-jmx"
+manager_status_group: "wiki-tomcat-manager-status"
+admin_gui_group: "wiki-tomcat-admin-gui"
+admin_script_group: "wiki-tomcat-admin-script"
+admin_jmx_group: "wiki-tomcat-admin-jmx"
+admin_status_group: "wiki-tomcat-admin-status"
+

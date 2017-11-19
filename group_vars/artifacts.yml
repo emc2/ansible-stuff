@@ -1,0 +1,10 @@
+---
+manager_gui_group: "artifacts-tomcat-manager-gui"
+manager_script_group: "artifacts-tomcat-manager-script"
+manager_jmx_group: "artifacts-tomcat-manager-jmx"
+manager_status_group: "artifacts-tomcat-manager-status"
+admin_gui_group: "artifacts-tomcat-admin-gui"
+admin_script_group: "artifacts-tomcat-admin-script"
+admin_jmx_group: "artifacts-tomcat-admin-jmx"
+admin_status_group: "artifacts-tomcat-admin-status"
+
