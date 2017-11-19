@@ -1,0 +1,13 @@
+- name: Artifactory machines
+  hosts:
+    - artifacts
+  become: yes
+  roles:
+    - ssh
+    - sshd
+    - kerberos
+    - ssl
+    - ldap
+    - java_truststore
+    - tomcat
+
