@@ -5,10 +5,11 @@ pam_dir: /etc/pam.d
 keytabs_dir: /etc/keytabs
 nonexistent_home: /nonexistent
 nologin_class: /usr/sbin/nologin
-local_config_dir: /usr/local/etc
-local_sbin_dir: /usr/local/sbin
-local_libexec_dir: /usr/local/libexec
-local_share_dir: /usr/local/share
+local_dir: /usr/local
+local_config_dir: "{{ local_dir }}/etc"
+local_sbin_dir: "{{ local_dir }}/sbin"
+local_libexec_dir: "{{ local_dir }}/libexec"
+local_share_dir: "{{ local_dir }}/share"
 local_rc_dir: "{{ local_config_dir }}/rc.d"
 fontconfig_dir: "{{ local_config_dir }}/fonts"
 ssl_dir: /etc/ssl
@@ -153,3 +154,6 @@ jenkins_home: "/var/run/jenkins"
 kinit: /usr/bin/kinit
 ansible_python_interpreter: /usr/local/bin/python
 ansible_become_method: su
+artifactory_dir: "{{ local_dir }}/artifactory"
+artifactory_install_war: "{{ artifactory_dir }}/webapps/{{ artifactory_war }}"
+artifactory_user: "{{ tomcat_user }}"

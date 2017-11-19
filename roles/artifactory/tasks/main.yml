@@ -1,0 +1,8 @@
+- name: Deploy artifactory
+  copy:
+    src: "{{ artifactory_install_war }}"
+    dest: "{{ artifactory_deploy_war }}"
+    remote_src: yes
+  tags:
+    - setup
+

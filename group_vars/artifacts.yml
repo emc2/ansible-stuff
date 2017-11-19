@@ -7,4 +7,5 @@ admin_gui_group: "artifacts-tomcat-admin-gui"
 admin_script_group: "artifacts-tomcat-admin-script"
 admin_jmx_group: "artifacts-tomcat-admin-jmx"
 admin_status_group: "artifacts-tomcat-admin-status"
-
+artifactory_war: artifactory.war
+artifactory_deploy_war: "{{ tomcat_webapps_dir }}/{{ artifactory_war }}"
