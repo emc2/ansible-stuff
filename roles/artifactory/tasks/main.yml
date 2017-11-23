@@ -9,6 +9,15 @@
     - config
     - setup
 
+- name: Install derby JAR into tomcat lib dir
+  copy:
+    src: "{{ artifactory_install_derby_jar }}"
+    dest: "{{ artifactory_deploy_derby_jar }}"
+    remote_src: yes
+  tags:
+    - config
+    - setup
+
 - name: Install artifactory.war into webapps dir
   copy:
     src: "{{ artifactory_install_war }}"

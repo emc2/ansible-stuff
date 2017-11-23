@@ -145,8 +145,13 @@ tomcat_group: www
 tomcat_uid: 80
 tomcat_gid: 80
 tomcat_principal: "tomcat/{{ ansible_hostname }}@{{ kerberos_realm }}"
+tomcat_lib_dir: "{{ tomcat_base_dir }}/lib"
 artifactory_dir: "{{ local_dir }}/artifactory"
 artifactory_install_war: "{{ artifactory_dir }}/webapps/{{ artifactory_war }}"
+artifactory_install_tomcat: "{{ artifactory_dir }}/tomcat/"
+artifactory_install_tomcat_lib: "{{ artifactory_install_tomcat }}/lib"
+artifactory_install_tomcat_derby_jar: "{{ artifactory_install_tomcat_lib }}/{{ artifactory_derby_jar }}"
+artifactory_deploy_derby_jar: "{{ tomcat_lib_dir }}/{{ artifactory_derby_jar }}"
 artifactory_user: "{{ tomcat_user }}"
 artifactory_home: "/var/artifactory"
 openjdk_dir: /usr/local/openjdk8

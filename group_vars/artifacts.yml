@@ -7,6 +7,8 @@ admin_gui_group: "artifacts-tomcat-admin-gui"
 admin_script_group: "artifacts-tomcat-admin-script"
 admin_jmx_group: "artifacts-tomcat-admin-jmx"
 admin_status_group: "artifacts-tomcat-admin-status"
+artifactory_derby_version: 10.11.1.1
+artifactory_derby_jar: "derby-{{ artifactory_derby_version }}.jar"
 artifactory_war: artifactory.war
 artifactory_deploy_war: "{{ tomcat_webapps_dir }}/{{ artifactory_war }}"
 artifactory_xml_file: "artifactory.xml"
