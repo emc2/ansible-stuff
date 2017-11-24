@@ -144,7 +144,7 @@ tomcat_user: www
 tomcat_group: www
 tomcat_uid: 80
 tomcat_gid: 80
-tomcat_principal: "tomcat/{{ ansible_hostname }}@{{ kerberos_realm }}"
+tomcat_principal: "tomcat/{{ ansible_fqdn }}@{{ kerberos_realm }}"
 tomcat_lib_dir: "{{ tomcat_base_dir }}/lib"
 artifactory_dir: "{{ local_dir }}/artifactory"
 artifactory_install_war: "{{ artifactory_dir }}/webapps/{{ artifactory_war }}"
