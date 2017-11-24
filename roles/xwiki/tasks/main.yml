@@ -30,3 +30,19 @@
   tags:
     - setup
 
+- name: Copying private wiki cache config
+  copy:
+    src: "{{ cache_config_xml }}"
+    dest: "{{ private_wiki_cache_config }}"
+  tags:
+    - setup
+    - config
+
+- name: Copying public wiki cache config
+  copy:
+    src: "{{ cache_config_xml }}"
+    dest: "{{ public_wiki_cache_config }}"
+  tags:
+    - setup
+    - config
+

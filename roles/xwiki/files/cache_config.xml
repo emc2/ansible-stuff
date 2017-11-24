@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<infinispan
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="urn:infinispan:config:7.0 http://www.infinispan.org/schemas/infinispan-config-7.0.xsd"
+      xmlns="urn:infinispan:config:7.0">
+
+   <cache-container name="xwiki" statistics="true"  default-cache="the-default-cache" shutdown-hook="DEFAULT">
+
+     <jmx domain="org.xwiki.infinispan" duplicate-domains="true"/>
+
+     <!--
+        The default cache.
+     -->
+     <local-cache name="the-default-cache" statistics="true">
+        <eviction
+           max-entries="10000"
+           strategy="LRU"
+        />
+     </local-cache>
+
+     <!--
+         ******************************************************************************************************************
+         XWiki
+         ******************************************************************************************************************
+     -->
+
+     <!-- Formula Renderer cache -->
+     <local-cache name="xwiki.plugin.formula">
+        <persistence>
+           <file-store purge="true">
+              <!-- Let XWiki cache module set the proper location -->
+           </file-store>
+        </persistence>
+     </local-cache>
+
+     <!-- LESS CSS cache -->
+     <local-cache name="lesscss.skinfiles.cache">
+        <persistence>
+           <file-store purge="false">
+              <!-- Let XWiki cache module set the proper location -->
+           </file-store>
+        </persistence>
+     </local-cache>
+
+   </cache-container>
+</infinispan>
+
