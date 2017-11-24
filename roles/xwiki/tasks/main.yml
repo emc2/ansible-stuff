@@ -22,3 +22,11 @@
     - config
     - setup
 
+- name: Copying default cacerts keystore
+  copy:
+    src: "{{ postgres_jar_install }}"
+    dest: "{{ tomcat_lib_dir }}/{{ postgres_jar }}"
+    remote_src: yes
+  tags:
+    - setup
+
