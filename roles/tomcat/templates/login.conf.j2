@@ -12,3 +12,21 @@ com.sun.security.jgss.krb5.initiate {
     storeKey = true
     principal = "{{ tomcat_principal }}";
 };
+{% if 'wiki' in group_names %}
+public_wiki {
+  com.sun.security.auth.module.Krb5LoginModule REQUIRED
+    useKeyTab = true
+    keyTab = "{{ tomcat_keytab }}"
+    principal = "{{ tomcat_principal }}";
+    storeKey = true
+    doNotPrompt = true;
+};
+private_wiki {
+  com.sun.security.auth.module.Krb5LoginModule REQUIRED
+    useKeyTab = true
+    keyTab = "{{ tomcat_keytab }}"
+    principal = "{{ tomcat_principal }}";
+    storeKey = true
+    doNotPrompt = true;
+};
+{% endif %}
