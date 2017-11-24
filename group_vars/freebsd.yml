@@ -11,7 +11,7 @@ local_sbin_dir: "{{ local_dir }}/sbin"
 local_libexec_dir: "{{ local_dir }}/libexec"
 local_share_dir: "{{ local_dir }}/share"
 local_rc_dir: "{{ local_config_dir }}/rc.d"
-local_jars_dir: "{{ local_share_dir }}/classes"
+local_jars_dir: "{{ local_share_dir }}/java/classes"
 fontconfig_dir: "{{ local_config_dir }}/fonts"
 ssl_dir: /etc/ssl
 ssl_certs_dir: "{{ ssl_dir }}/certs"
