@@ -33,8 +33,9 @@
              you will also have to set the property xwiki.db in xwiki.cfg file
     -->
     <property name="connection.url">
-      jdbc:postgresql://{{ public_wiki_db_host }}/{{ public_wiki_db_name }}?user={{ public_wiki_db_username }}&amp;ssl=true&amp;jaasApplicationName=public_wiki
+      jdbc:postgresql://{{ public_wiki_db_host }}/{{ public_wiki_db_name }}?ssl=true&amp;jaasApplicationName=public_wiki
     </property>
+    <property name="connection.username">{{ public_wiki_db_username }}</property>
     <property name="connection.driver_class">org.postgresql.Driver</property>
     <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
     <property name="jdbc.use_streams_for_binary">false</property>
