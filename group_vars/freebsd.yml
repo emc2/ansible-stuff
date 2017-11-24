@@ -50,7 +50,7 @@ postgres_group: pgsql
 postgres_data: /var/db/pgsql
 postgres_home: /usr/local/pgsql
 postgres_jar: "postgresql.jar"
-postgres_jar_install: "{{ local_share_dir }}/{{ postgres_jar }}"
+postgres_jar_install: "{{ local_jars_dir }}/{{ postgres_jar }}"
 tor_config_dir: "{{ local_config_dir }}/tor"
 tor_data_dir: /var/db/tor
 tor_group: _tor

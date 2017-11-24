@@ -22,7 +22,7 @@
     - config
     - setup
 
-- name: Copying default cacerts keystore
+- name: Copying postgresql JDBC driver jar
   copy:
     src: "{{ postgres_jar_install }}"
     dest: "{{ tomcat_lib_dir }}/{{ postgres_jar }}"
