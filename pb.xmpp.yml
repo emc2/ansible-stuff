@@ -1,0 +1,13 @@
+- name: Openfire XMPP server
+  hosts:
+    - xmpp
+  become: yes
+  roles:
+    - ssh
+    - sshd
+    - kerberos
+    - ssl
+    - ldap
+    - java_truststore
+    - tomcat
+
