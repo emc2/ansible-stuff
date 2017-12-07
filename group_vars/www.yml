@@ -2,4 +2,4 @@
 jenkins_path: "jenkins"
 jenkins_url: "http://build-master.{{ network_name }}:8080/{{ jenkins_path }}"
 scm_path: "scm"
-scm_url: "http://scm.{{ network_name }}:8080/{{ scm_path }}"
+scm_url: "http://scm.{{ network_name }}:8080/scm-webapp"
