@@ -1,0 +1,8 @@
+- name: Copying postgresql JDBC driver jar
+  copy:
+    src: "{{ postgres_jar_install }}"
+    dest: "{{ tomcat_lib_dir }}/{{ postgres_jar }}"
+    remote_src: yes
+  tags:
+    - setup
+

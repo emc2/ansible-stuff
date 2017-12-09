@@ -9,5 +9,6 @@
     - ssl
     - ldap
     - java_truststore
+    - postgres_jdbc
     - artifactory
     - tomcat
