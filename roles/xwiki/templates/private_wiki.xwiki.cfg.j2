@@ -1,0 +1,58 @@
+xwiki.encoding=UTF-8
+xwiki.section.edit=1
+xwiki.section.depth=2
+xwiki.backlinks=1
+xwiki.tags=1
+xwiki.store.migration=1
+xwiki.inactiveuser.allowedpages=
+xwiki.authentication.validationKey=REPLACE WITH openssl rand -base64 24
+xwiki.authentication.encryptionKey=REPLACE WITH openssl rand -base64 24
+xwiki.authentication.cookiedomains=
+xwiki.authentication.logoutpage=(/|/[^/]+/|/wiki/[^/]+/)logout/*
+xwiki.authentication.authclass=org.xwiki.contrib.ldap.XWikiLDAPAuthServiceImpl
+xwiki.authentication.ldap=1
+xwiki.authentication.ldap.server={{ ldap_server_name }}
+xwiki.authentication.ldap.port=636
+xwiki.authentication.ldap.bind_DN=cn={0},ou=people,{{ ldap_base_dn }}
+xwiki.authentication.ldap.bind_pass={1}
+xwiki.authentication.ldap.validate_password=0
+xwiki.authentication.ldap.base_DN={{ ldap_base_dn }}
+xwiki.authentication.ldap.update_user=1
+xwiki.authentication.ldap.ssl=1
+xwiki.authentication.ldap.fields_mapping=last_name=sn,first_name=givenName,email=maildrop
+xwiki.authentication.ldap.user_group=cn=private-wiki-users,ou=groups,{{ ldap_base_dn }}
+xwiki.authentication.ldap.group_mapping=XWiki.XWikiAdminGroup=cn=private-wiki-admin,ou=groups,{{ ldap_base_dn }}
+xwiki.authentication.ldap.mode_group_sync=always
+xwiki.authentication.ldap.trylocal=0
+xwiki.authentication.unauthorized_code=200
+xwiki.editcomment=1
+xwiki.editcomment.mandatory=0
+xwiki.defaultskin=flamingo
+xwiki.defaultbaseskin=flamingo
+xwiki.plugins=\
+  com.xpn.xwiki.monitor.api.MonitorPlugin,\
+  com.xpn.xwiki.plugin.skinx.JsSkinExtensionPlugin,\
+  com.xpn.xwiki.plugin.skinx.JsSkinFileExtensionPlugin,\
+  com.xpn.xwiki.plugin.skinx.JsResourceSkinExtensionPlugin,\
+  com.xpn.xwiki.plugin.skinx.CssSkinExtensionPlugin,\
+  com.xpn.xwiki.plugin.skinx.CssSkinFileExtensionPlugin,\
+  com.xpn.xwiki.plugin.skinx.CssResourceSkinExtensionPlugin,\
+  com.xpn.xwiki.plugin.skinx.LinkExtensionPlugin,\
+  com.xpn.xwiki.plugin.feed.FeedPlugin,\
+  com.xpn.xwiki.plugin.mail.MailPlugin,\
+  com.xpn.xwiki.plugin.packaging.PackagePlugin,\
+  com.xpn.xwiki.plugin.svg.SVGPlugin,\
+  com.xpn.xwiki.plugin.fileupload.FileUploadPlugin,\
+  com.xpn.xwiki.plugin.image.ImagePlugin,\
+  com.xpn.xwiki.plugin.diff.DiffPlugin,\
+  com.xpn.xwiki.plugin.rightsmanager.RightsManagerPlugin,\
+  com.xpn.xwiki.plugin.jodatime.JodaTimePlugin,\
+  com.xpn.xwiki.plugin.scheduler.SchedulerPlugin,\
+  com.xpn.xwiki.plugin.mailsender.MailSenderPlugin,\
+  com.xpn.xwiki.plugin.activitystream.plugin.ActivityStreamPlugin, \
+  com.xpn.xwiki.plugin.tag.TagPlugin,\
+  com.xpn.xwiki.plugin.zipexplorer.ZipExplorerPlugin,\
+  com.xpn.xwiki.plugin.watchlist.WatchListPlugin
+xwiki.plugin.image.cache.capacity=30
+xwiki.stats.default=0
+

@@ -1,5 +1,27 @@
 # Set up the config files
 
+- name: Install public wiki config file
+  template:
+    src="{{ public_wiki_xwiki_cfg_template }}"
+    dest="{{ public_wiki_xwiki_cfg }}"
+    owner=root
+    group=wheel
+    mode=644
+  tags:
+    - config
+    - setup
+
+- name: Install private wiki config file
+  template:
+    src="{{ private_wiki_xwiki_cfg_template }}"
+    dest="{{ private_wiki_xwiki_cfg }}"
+    owner=root
+    group=wheel
+    mode=644
+  tags:
+    - config
+    - setup
+
 - name: Install public wiki hibernate config file
   template:
     src="{{ public_wiki_hibernate_template }}"
