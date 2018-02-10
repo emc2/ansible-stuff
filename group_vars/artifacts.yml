@@ -15,3 +15,8 @@ artifactory_xml_file: "artifactory.xml"
 artifactory_xml_template: "{{ artifactory_xml_file }}.j2"
 artifactory_xml: "{{ tomcat_localhost_conf_dir }}/{{ artifactory_xml_file }}"
 artifactory_principal: "artifactory/{{ ansible_fqdn }}@{{ kerberos_realm }}"
+artifactory_db_host: "db.example.com"
+access_war: access.war
+access_deploy_war: "{{ tomcat_webapps_dir }}/{{ access_war }}"
+access_xml_file: "access.xml"
+access_xml: "{{ tomcat_localhost_conf_dir }}/{{ artifactory_xml_file }}"

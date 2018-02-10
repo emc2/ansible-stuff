@@ -9,11 +9,35 @@
     - config
     - setup
 
-- name: Install derby JAR into tomcat lib dir
-  copy:
-    src: "{{ artifactory_install_derby_jar }}"
-    dest: "{{ artifactory_deploy_derby_jar }}"
-    remote_src: yes
+- name: Install access context.xml file
+  template:
+    src="{{ artifactory_xml_file }}"
+    dest="{{ artifactory_xml }}"
+    owner=root
+    group=wheel
+    mode=644
+  tags:
+    - config
+    - setup
+
+- name: Install artifactory db.properties file
+  template:
+    src="{{ artifactory_db_properties_template }}"
+    dest="{{ artifactory_db_properties }}"
+    owner=root
+    group=wheel
+    mode=644
+  tags:
+    - config
+    - setup
+
+- name: Install access db.properties file
+  template:
+    src="{{ access_db_properties_template }}"
+    dest="{{ access_db_properties }}"
+    owner=root
+    group=wheel
+    mode=644
   tags:
     - config
     - setup
@@ -22,6 +46,15 @@
   copy:
     src: "{{ artifactory_install_war }}"
     dest: "{{ artifactory_deploy_war }}"
+    remote_src: yes
+  tags:
+    - config
+    - setup
+
+- name: Install access.war into webapps dir
+  copy:
+    src: "{{ access_install_war }}"
+    dest: "{{ access_deploy_war }}"
     remote_src: yes
   tags:
     - config

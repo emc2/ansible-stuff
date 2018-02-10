@@ -1,0 +1,4 @@
+type=postgresql
+driver=org.postgresql.Driver
+url=jdbc:postgresql://{{ artifactory_db_host }}/artifactory?ssl=true&jaasApplicationName=artifactory
+username={{ artifactory_principal }}

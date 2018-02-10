@@ -2,4 +2,7 @@
 <Context path="/artifactory">
   <Parameter name="artifactory.home" value="{{ artifactory_home }}"
              override="false"/>
+  <Parameter name="artifactory.access.client.serverUrl.override"
+             value="https://{{ artifactory_host }}:8443/access"
+             override="false"/>
 </Context>
