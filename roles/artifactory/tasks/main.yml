@@ -10,7 +10,7 @@
     - setup
 
 - name: Install access context.xml file
-  template:
+  copy:
     src="{{ access_xml_file }}"
     dest="{{ access_xml }}"
     owner=root
