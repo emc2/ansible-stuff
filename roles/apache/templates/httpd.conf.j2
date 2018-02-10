@@ -112,6 +112,11 @@ Include etc/apache24/Includes/*.conf
     ProxyPassReverse /{{ jenkins_path }} {{ jenkins_url }}
     ProxyPass        /{{ scm_path }} {{ scm_url }} nocanon
     ProxyPassReverse /{{ scm_path }} {{ scm_url }}
+    ProxyPass        /{{ private_wiki_path }} {{ private_wiki_url }} nocanon
+    ProxyPassReverse /{{ private_wiki_path }} {{ private_wiki_url }}
+#    ProxyPass        /{{ public_wiki_path }} {{ public_wiki_url }} nocanon
+#    ProxyPassReverse /{{ public_wiki_path }} {{ public_wiki_url }}
+
     RequestHeader set X-Forwarded-Proto "https"
     RequestHeader set X-Forwarded-Port "443"
 

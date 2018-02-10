@@ -18,6 +18,10 @@
                connectionTimeout="20000"
                redirectPort="8443" URIEncoding="UTF-8" />
 
+    <Connector port="8009" protocol="AJP/1.3" redirectPort="8443"
+                           tomcatAuthentication="false"
+                           URIEncoding="UTF-8" secure="true" />
+
     <Connector protocol="org.apache.coyote.http11.Http11AprProtocol"
                port="8443" maxThreads="200" server="Apache"
                scheme="https" secure="true" SSLEnabled="true"
