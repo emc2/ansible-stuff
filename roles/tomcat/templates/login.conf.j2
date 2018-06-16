@@ -40,4 +40,14 @@ artifactory {
     doNotPrompt = true;
 };
 {% endif %}
+{% if 'scm' in group_names %}
+gitbucket {
+  com.sun.security.auth.module.Krb5LoginModule REQUIRED
+    useKeyTab = true
+    keyTab = "{{ tomcat_keytab }}"
+    principal = "{{ gitbucket_principal }}"
+    storeKey = true
+    doNotPrompt = true;
+};
+{% endif %}
 

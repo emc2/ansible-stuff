@@ -1,0 +1,21 @@
+notification=false
+ldap.port=636
+ldap.ssl=true
+allow_account_registration=false
+ldap.host={{ ldap_server_name }}
+ldap.mail_attribute=maildrop
+base_url=https://www.{{ network_name }}/gitbucket
+skinName=skin-blue
+is_create_repository_option_public=false
+ssh.port=29418
+ssh=true
+ldap.baseDN={{ ldap_base_dn }}
+ssh.host={{ ansible_fqdn }}
+ldap_authentication=true
+ldap.fullname_attribute=displayName
+ldap.username_attribute=cn
+allow_anonymous_access=true
+useSMTP=false
+gravatar=false
+oidc_authentication=false
+

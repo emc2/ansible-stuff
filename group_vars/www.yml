@@ -1,8 +1,8 @@
 ---
 jenkins_path: "jenkins"
 jenkins_url: "http://build-master.{{ network_name }}:8080/{{ jenkins_path }}"
-scm_path: "scm"
-scm_url: "http://scm.{{ network_name }}:8080/scm-webapp"
+scm_path: "gitbucket"
+scm_url: "ajp://scm.{{ network_name }}:8009/gitbucket"
 private_wiki_path: "private_wiki"
 private_wiki_url: "ajp://{{ wiki_host }}:8009/private_wiki"
 public_wiki_path: "public_wiki"

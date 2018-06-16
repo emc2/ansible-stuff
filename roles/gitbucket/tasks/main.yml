@@ -1,0 +1,36 @@
+# Set up the config files
+
+- name: Install gitbucket context.xml file
+  template:
+    src="{{ gitbucket_xml_template }}"
+    dest="{{ gitbucket_xml }}"
+    owner=root
+    group=wheel
+    mode=644
+  tags:
+    - config
+    - setup
+
+- name: Install database.conf file
+  template:
+    src="{{ database_conf_template }}"
+    dest="{{ gitbucket_database_conf }}"
+    owner=root
+    group=wheel
+    mode=644
+  tags:
+    - config
+    - setup
+
+- name: Install gitbucket.conf file
+  template:
+    src="{{ gitbucket_conf_template }}"
+    dest="{{ gitbucket_gitbucket_conf }}"
+    owner=root
+    group=wheel
+    mode=644
+  tags:
+    - config
+    - setup
+
+

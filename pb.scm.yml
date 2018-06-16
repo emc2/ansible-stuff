@@ -9,5 +9,6 @@
     - ssl
     - ldap
     - java_truststore
+    - gitbucket
     - tomcat
 
