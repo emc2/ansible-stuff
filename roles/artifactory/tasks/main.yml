@@ -10,8 +10,8 @@
     - setup
 
 - name: Install access context.xml file
-  copy:
-    src="{{ access_xml_file }}"
+  template:
+    src="{{ access_xml_template }}"
     dest="{{ access_xml }}"
     owner=root
     group=wheel

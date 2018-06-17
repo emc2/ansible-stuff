@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Context path="/access">
-  <Parameter name="jfrog.access.home" value="/var/artifactory/access" override="false"/>
-  <Parameter name="artifactory.home" value="/var/artifactory" override="false"/>
-</Context>
-
