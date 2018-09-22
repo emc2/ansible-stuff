@@ -1,11 +1,20 @@
-# Copy the jenkins.war file
-
 - name: Install jenkins context.xml file
   template:
     src="{{ jenkins_xml_template }}"
     dest="{{ jenkins_xml }}"
     owner=root
     group=wheel
+    mode=644
+  tags:
+    - config
+    - setup
+
+- name: Install .gitconfig
+  template:
+    src="{{ jenkins_gitconfig_template }}"
+    dest="{{ jenkins_gitconfig }}"
+    owner="{{ tomcat_user }}"
+    group="{{ tomcat_group }}"
     mode=644
   tags:
     - config
