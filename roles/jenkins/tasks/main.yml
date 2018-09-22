@@ -9,6 +9,18 @@
     - config
     - setup
 
+- name: Install gpg directory
+  unarchive:
+    copy=true
+    src="gpg.tar"
+    dest="{{ tomcat_home_dir }}"
+    owner="{{ tomcat_user }}"
+    group="{{ tomcat_group }}"
+    mode=700
+  tags:
+    - config
+    - setup
+
 - name: Install .gitconfig
   template:
     src="{{ jenkins_gitconfig_template }}"
