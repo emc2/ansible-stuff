@@ -19,12 +19,30 @@
   tags:
     - setup
 
+- name: Create tomcat home directory
+  file:
+    path="{{ tomcat_home_dir }}"
+    state=directory
+  tags:
+    - setup
+
 # Set up the config files
 
 - name: Install login config file
   template:
     src="{{ tomcat_login_conf_template }}"
     dest="{{ tomcat_login_conf }}"
+    owner=root
+    group=wheel
+    mode=644
+  tags:
+    - config
+    - setup
+
+- name: Install tomcat setenv.sh
+  template:
+    src="{{ tomcat_setenv_template }}"
+    dest="{{ tomcat_setenv }}"
     owner=root
     group=wheel
     mode=644

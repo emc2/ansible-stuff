@@ -143,6 +143,7 @@ sendmail_bin: /usr/local/sbin/sendmail
 nsswitch_conf: "/etc/nsswitch.conf"
 empty_dir: "/var/empty"
 tomcat_base_dir: "/usr/local/apache-tomcat-8.0"
+tomcat_home_dir: "/var/run/tomcat"
 tomcat_user: www
 tomcat_group: www
 tomcat_uid: 80
