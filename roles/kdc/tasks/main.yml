@@ -1,0 +1,12 @@
+# Install the KDC configuration file
+
+- name: Install kdc.conf file
+  template:
+    src=kdc.conf.j2
+    dest="{{ kdc_conf }}"
+    owner=root
+    group=wheel
+    mode=644
+  tags:
+    - setup
+    - config

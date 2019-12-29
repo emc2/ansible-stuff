@@ -77,6 +77,20 @@
     - ssl
     - setup
 
+# Set up a cron job to periodically refresh the maia user's
+# Kerberos credentials
+
+- name: Add cron job to refresh maiad user's credentials
+  cron:
+    name="Refresh maia Kerberos credentials"
+    minute="0"
+    hour="*/6"
+    user="{{ www_user }}"
+    job="{{ kinit }} -k -t {{ maia_keytab }} {{ maia_principal }}"
+  tags:
+    - setup
+
+
 # Set up the dovecot.conf and dovecot-ldap.conf files
 
 - name: Create httpd.conf file

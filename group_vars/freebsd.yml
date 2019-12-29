@@ -6,6 +6,7 @@ keytabs_dir: /etc/keytabs
 nonexistent_home: /nonexistent
 nologin_class: /usr/sbin/nologin
 local_dir: /usr/local
+local_var_dir: "{{ local_dir }}/var"
 local_config_dir: "{{ local_dir }}/etc"
 local_sbin_dir: "{{ local_dir }}/sbin"
 local_libexec_dir: "{{ local_dir }}/libexec"
@@ -42,6 +43,8 @@ slapd_user: ldap
 slapd_group: ldap
 slapd_run: /var/run/openldap
 slapd_data: /var/db/openldap-data
+heimdal_run_dir: "/var/heimdal"
+kdc_conf_dir: "{{ local_var_dir }}/krb5kdc"
 sasl_conf_dir: "/usr/local/lib/sasl2"
 sasl_mux: /var/run/saslauthd/mux
 sasl_group: "{{ mail_group }}"
@@ -100,7 +103,7 @@ maia_config_dir: "{{ local_config_dir }}/maia"
 maia_postgres_cert_filename: "{{ ansible_hostname }}-maia-postgres-cert.pem"
 maia_postgres_cert: "{{ ssl_certs_dir }}/{{ maia_postgres_cert_filename }}"
 maia_postgres_key_filename: "{{ ansible_hostname }}-maia-postgres-key.pem"
-maia_postgres_key: "{{ ssl_certs_dir }}/{{ maia_postgres_key_filename }}"
+maia_postgres_key: "{{ ssl_keys_dir }}/{{ maia_postgres_key_filename }}"
 maia_salearn: "/usr/local/bin/sa-learn"
 maia_local_cf_dir: "{{ local_config_dir }}/mail/spamassassin"
 maia_rules_dir: "/var/db/spamassassin"

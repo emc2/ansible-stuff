@@ -59,9 +59,9 @@
   copy:
     src="/etc/ssl/CA/private/{{ maia_postgres_key_filename }}"
     dest="{{ maia_postgres_key }}"
-    owner=root
+    owner="{{ maia_user }}"
     group="{{ maia_group }}"
-    mode=640
+    mode=600
   tags:
     - setup
     - ssl
