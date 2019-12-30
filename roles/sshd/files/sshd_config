@@ -26,7 +26,7 @@ PubkeyAcceptedKeyTypes ssh-ed25519-cert-v01@openssh.com,ssh-ed25519,ssh-rsa-cert
 # of RipeMD160, but not over SHA512.  Prefer ETM (encrypt-then-MAC) modes
 # over any others.
 
-MACs hmac-sha2-512-etm@openssh.com,hmac-ripemd160-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-ripemd160,hmac-sha2-256
+MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256
 
 
 # Kerberos setup.  GSSAPI authentication allows use of an existing ticket to
