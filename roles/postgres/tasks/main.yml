@@ -77,8 +77,8 @@
 # Set up the pg_hba.conf and postgresql.conf files
 
 - name: Create pg_hba.conf file
-  copy:
-    src=pg_hba.conf
+  template:
+    src=pg_hba.conf.j2
     dest="{{ postgres_hba }}"
     owner=root
     group=wheel

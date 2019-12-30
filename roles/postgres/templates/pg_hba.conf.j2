@@ -6,8 +6,8 @@ host	all		all		127.0.0.1/32	trust
 
 # Allow GSSAPI authentication over SSL
 
-hostssl	all		all		::/0		gss
-hostssl	all		all		0.0.0.0/0	gss
+hostssl	all		all		::/0		gss include_realm=0 krb_realm="{{ kerberos_realm }}"
+hostssl	all		all		0.0.0.0/0	gss include_realm=0 krb_realm="{{ kerberos_realm }}"
 
 # Allow certificate authentication over SSL
 
