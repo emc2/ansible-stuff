@@ -7,4 +7,7 @@ private_wiki_path: "private_wiki"
 private_wiki_url: "ajp://{{ wiki_host }}:8009/private_wiki"
 public_wiki_path: "public_wiki"
 public_wiki_url: "ajp://{{ wiki_host }}:8009/public_wiki"
+artifactory_path: "artifactory"
+artifactory_url: "ajp://{{ wiki_host }}:8009/artifactory"
+maia_principal: "maia@{{ kerberos_realm }}"
 
