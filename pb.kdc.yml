@@ -6,4 +6,5 @@
     - ssh
     - sshd
     - kerberos
+    - kdc
     - ssl

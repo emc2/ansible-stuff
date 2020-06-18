@@ -1,5 +1,5 @@
 ---
 kdc_conf_file: "kdc.conf"
 kdc_conf: "{{ kdc_conf_dir }}/{{ kdc_conf_file }}"
-kadm5_acl_file "kadm5.acl"
+kadm5_acl_file: "kadm5.acl"
 kadm5_acl: "{{ kdc_conf_dir }}/{{ kadm5_acl_file }}"
